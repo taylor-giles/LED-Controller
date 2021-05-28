@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:padding="16dp">
+
+    <TextView
+            android:text="@string/black_hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/text_color_display" android:layout_weight="1"
+            android:textSize="20sp" android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/color_picker" android:layout_marginBottom="8dp"/>
+
+    <com.larswerkman.holocolorpicker.ColorPicker
+            android:id="@+id/color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="56dp"/>
+
+
+    <LinearLayout
+            android:id="@+id/layout_saturation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/color_picker"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="43dp" android:layout_marginEnd="43dp" android:layout_marginTop="8dp"
+            android:orientation="vertical" android:gravity="start|center_vertical">
+
+        <TextView
+                android:text="@string/saturation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/text_saturation_label"
+                android:textSize="12sp"
+                android:paddingStart="12dp" android:paddingEnd="12dp"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
