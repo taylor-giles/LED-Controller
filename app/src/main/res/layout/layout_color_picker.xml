@@ -11,10 +11,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/text_color_display" android:layout_weight="1"
             android:textSize="20sp" android:typeface="monospace"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/color_picker" android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/color_picker"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+    />
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_save_gray_24dp"
+            android:id="@+id/image_save_color" app:layout_constraintTop_toTopOf="@+id/text_color_display"
+            app:layout_constraintStart_toEndOf="@+id/text_color_display"
+            app:layout_constraintBottom_toBottomOf="@+id/text_color_display" android:layout_marginStart="4dp"/>
     <com.larswerkman.holocolorpicker.ColorPicker
             android:id="@+id/color_picker"
             android:layout_width="wrap_content"
@@ -40,8 +47,6 @@
                 android:layout_height="wrap_content" android:id="@+id/text_saturation_label"
                 android:textSize="12sp"
                 android:paddingStart="12dp" android:paddingEnd="12dp"/>
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
     <!-- Button & Layout Strings -->
     <string name="select_device">Select Device</string>
     <string name="refresh">Refresh</string>
-    <string name="color_label">Color: </string>
+    <string name="color_label">Color:</string>
     <string name="saturation">Saturation</string>
     <string name="brightness">Brightness</string>
     <string name="no_device_connected">No Device Connected</string>
@@ -16,4 +16,5 @@
     <string name="current_display_label">Current Display:</string>
     <string name="name">Name</string>
     <string name="mac_address">MAC Address</string>
+    <string name="save_color">Save Color</string>
 </resources>

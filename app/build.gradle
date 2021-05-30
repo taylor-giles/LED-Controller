@@ -38,4 +38,5 @@ dependencies {
     implementation 'com.larswerkman:HoloColorPicker:1.5'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 }
