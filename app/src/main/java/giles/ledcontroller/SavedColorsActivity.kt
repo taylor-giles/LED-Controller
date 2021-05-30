@@ -1,21 +1,13 @@
 package giles.ledcontroller
 
-import android.content.Context
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
-import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import giles.ledcontroller.AppData.savedColors
+import giles.ledcontroller.views.ColorView
 import giles.views.SquareView
 import kotlinx.android.synthetic.main.activity_saved_colors.*
 
@@ -31,68 +23,76 @@ class SavedColorsActivity : AppCompatActivity() {
 
         //Set up the RecyclerView with a GridLayoutManager showing all colors in squares
         layout_saved_colors.layoutManager = GridLayoutManager(this, maxCols)
-        layout_saved_colors.adapter = ColorViewAdapter(savedColors.toTypedArray().sortedArray())
+        layout_saved_colors.adapter = ColorViewAdapter(savedColors.toTypedArray())
     }
 }
 
-
-class ColorView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0
-) : FrameLayout(context, attrs, defStyle){
-
-    private var view = SquareView(context)
-    private var title = TextView(context)
-
-    init {
-        this.setPaddingRelative(25, 25, 25, 25)
-        title.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
-        title.textAlignment = View.TEXT_ALIGNMENT_CENTER
-        Log.d("Log", "Here")
-    }
-
-    constructor(view: SquareView): this(view.context){
-        this.view = view
-        addView(view)
-        addView(title)
-    }
-
-    fun setColor(color: Int){
-        view.setBackgroundColor(color)
-        title.text = String.format("#%06X", 0xFFFFFF and color)
-        title.typeface = Typeface.MONOSPACE
-        title.setBackgroundColor(getColor(context, android.R.color.white))
-        title.setTextColor(getColor(context, android.R.color.black))
-        title.textSize = 14f
-    }
-}
 
 /**
  * A RecyclerView adapter that creates framed square views to display chosen colors
  */
 class ColorViewAdapter(private val dataSet: Array<Int>):
     RecyclerView.Adapter<ColorViewAdapter.ColorViewHolder>(){
+    var selectedView: ColorView? = null
+    var selectedColor: Int? = null
 
     class ColorViewHolder constructor(
-        val view: ColorView
+        val view: ColorView,
+        private val parentAdapter: ColorViewAdapter
     ) : RecyclerView.ViewHolder(view) {
 
-        init{
-            //Define click listener for the view
-            view.setOnClickListener { Toast.makeText(view.context, "View has been clicked", Toast.LENGTH_SHORT).show() }
+        init {
+            //Select this view when it is clicked
+            view.setOnClickListener {
+                parentAdapter.selectView(view)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
-        val view = SquareView(parent.context)
-        return ColorViewHolder(ColorView(view))
+        val view = ColorView(SquareView(parent.context))
+        checkSelection(view)
+        return ColorViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
-        //Set color of the view
+        //Set color and selection status display of the view
         holder.view.setColor(dataSet[position])
+        checkSelection(holder.view)
     }
 
     override fun getItemCount() = dataSet.size
+
+
+    /**
+     * Determines whether or not the current ColorView should be selected and updates its background accordingly.
+     * Also updates the selectedView variable to ensure that the correct color stays selected even when it gets
+     * recycled to a different view.
+     */
+    private fun checkSelection(view: ColorView){
+        if(view.getColor() == selectedColor){
+            view.setBackgroundColor(getColor(view.context, android.R.color.white))
+            selectedView = view
+        } else {
+            view.setBackgroundColor(getColor(view.context, android.R.color.transparent))
+        }
+    }
+
+    fun selectView(view: ColorView){
+        //Change view background
+        view.setBackgroundColor(getColor(view.context, android.R.color.white))
+
+        //Change the background of the previously selected view (un-select it)
+        selectedView?.setBackgroundColor(getColor(view.context, android.R.color.transparent))
+
+        //If this view is the same as the previously selected view, then this view was just de-selected
+        if(view.getColor() == selectedColor){
+            selectedView = null
+            selectedColor = null
+        } else {
+            //Set the selected view and color to match this view
+            selectedView = view
+            selectedColor = view.getColor()
+        }
+    }
 }
