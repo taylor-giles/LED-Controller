@@ -1,5 +1,6 @@
 package giles.ledcontroller
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -16,7 +17,7 @@ import giles.util.ColorUtils
 import giles.views.WidthSquareView
 import kotlinx.android.synthetic.main.activity_saved_colors.*
 import androidx.appcompat.app.AlertDialog
-
+import giles.ledcontroller.views.ColorPickerView
 
 
 const val COLOR_VIEW_SIDE_LENGTH_DP = 95.0
@@ -72,6 +73,29 @@ class SavedColorsActivity : AppCompatActivity() {
             returnIntent.putExtra(getString(R.string.EXTRA_COLOR), adapter.selectedColor)
             setResult(RESULT_OK, returnIntent)
             finish()
+        }
+
+        //Set the add button action (color picker dialog and add selected color)
+        fab_add_saved_color.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+
+            //Create dialog to display color picker
+            val dialogPicker = ColorPickerView(this, false)
+            builder.setTitle("Save New Color")
+                .setView(dialogPicker)
+                .setPositiveButton(R.string.save_color) { _, _ ->
+                    //Save the color
+                    AppData.savedColors.add(dialogPicker.getColor())
+
+                    //Re-make adapter to update RecyclerView
+                    adapter = ColorViewAdapter(
+                        AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray(),
+                        selectedColorTextDisplay, selectedColorWindow, optionsPanel)
+                    layout_saved_colors.adapter = adapter
+                    adapter.deselect()
+                }
+                .setNegativeButton(android.R.string.no, null)
+                .show()
         }
     }
 }

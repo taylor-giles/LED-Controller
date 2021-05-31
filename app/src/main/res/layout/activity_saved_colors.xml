@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true" app:srcCompat="@drawable/ic_add_white_56dp"
-            android:id="@+id/floatingActionButton3" app:maxImageSize="48dp"
+            android:id="@+id/fab_add_saved_color" app:maxImageSize="48dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/layout_saved_colors"/>

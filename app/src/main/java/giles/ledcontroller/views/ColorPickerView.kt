@@ -63,6 +63,12 @@ class ColorPickerView @JvmOverloads constructor(
         updateDisplay(color_picker.color)
     }
 
+    constructor(context: Context, showSaveButton: Boolean = true): this(context, null, 0){
+        if(!showSaveButton){
+            saveButton.visibility = GONE
+        }
+    }
+
     private fun updateDisplay(color: Int){
         //Update hex color label
         colorDisplay.text = String.format("#%06X", 0xFFFFFF and color)
