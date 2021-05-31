@@ -3,11 +3,14 @@ package giles.ledcontroller.views
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.larswerkman.holocolorpicker.ColorPicker
 import com.larswerkman.holocolorpicker.SaturationBar
 import giles.ledcontroller.AppData
@@ -15,6 +18,10 @@ import giles.ledcontroller.R
 import kotlinx.android.synthetic.main.layout_color_picker.view.*
 
 
+/**
+ * A custom view which uses the functionality of ColorPicker and SaturationBar to update
+ * a hex display. Includes a button for saving colors to the associated AppData variable.
+ */
 class ColorPickerView @JvmOverloads constructor(
     context : Context,
     attrs: AttributeSet? = null,
@@ -49,8 +56,9 @@ class ColorPickerView @JvmOverloads constructor(
         colorPicker.setTouchAnywhereOnColorWheelEnabled(true)
         colorPicker.showOldCenterColor = false
 
-        //Set up save button
-        saveButton.setOnClickListener{saveColor(colorPicker.color)}
+
+        //Set up save button onclick and animation
+        saveButton.setOnClickListener{ saveColor(colorPicker.color) }
 
         updateDisplay(color_picker.color)
     }
@@ -64,9 +72,7 @@ class ColorPickerView @JvmOverloads constructor(
         colorPicker.onColorSelectedListener = listener
     }
 
-    fun getColor(): Int{
-        return colorPicker.color
-    }
+    fun getColor() = colorPicker.color
 
     private fun saveColor(color: Int){
         if(AppData.savedColors.add(color)){

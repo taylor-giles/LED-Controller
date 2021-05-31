@@ -7,5 +7,5 @@ import java.util.*
  */
 object AppData {
     //Ordered set (no duplicates) to store saved colors
-    var savedColors = TreeSet<Int>()
+    var savedColors = HashSet<Int>()
 }

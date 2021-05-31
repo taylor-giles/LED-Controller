@@ -3,12 +3,17 @@ package giles.ledcontroller
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
+import android.app.Activity
+import android.telephony.MbmsDownloadSession.RESULT_CANCELLED
+import com.larswerkman.holocolorpicker.ColorPicker
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,17 +25,18 @@ class MainActivity : AppCompatActivity() {
 
         //Set up color picker
         val colorPickerView = ColorPickerView(this)
-//        colorPickerView.setOnColorSelectedListener(ColorPicker.OnColorSelectedListener{
-//            colorChange(colorPickerView.getColor())
-//        })
+        val colorPickerListener = ColorPicker.OnColorSelectedListener { color: Int -> colorChange(color)}
+        colorPickerView.setOnColorSelectedListener(colorPickerListener)
 
         //Add manual color selection menu item
         val manualPickerItem = MenuItem(this, "Manual Color Selection", colorPickerView, true)
 
         //Add saved colors menu item
         val savedColorsMenuItem = MenuItem(this, "Saved Colors")
-        var savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
-        savedColorsMenuItem.view.setOnClickListener{startActivity(savedColorsIntent)}
+        val savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
+        savedColorsMenuItem.view.setOnClickListener{
+            startActivityForResult(savedColorsIntent, resources.getInteger(R.integer.SAVED_COLORS_REQUEST))
+        }
 
         //Add patterns menu item
         val patternsMenuItem = MenuItem(this, "Patterns")
@@ -65,5 +71,17 @@ class MainActivity : AppCompatActivity() {
 
         //Change brightness bar color
         //bar_brightness.thumb.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(resultCode){
+            RESULT_OK ->
+                when(requestCode){
+                    //Saved Colors activity - a color was selected
+                    resources.getInteger(R.integer.SAVED_COLORS_REQUEST) ->
+                        colorChange(data!!.getIntExtra(getString(R.string.EXTRA_COLOR), 0))
+                }
+        }
     }
 }

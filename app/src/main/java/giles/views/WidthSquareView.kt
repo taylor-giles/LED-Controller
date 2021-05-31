@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
  * A View that will always be square, with side length
  * equal to the original width
  */
-class SquareView @JvmOverloads constructor(
+class WidthSquareView @JvmOverloads constructor(
     context : Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -20,5 +20,21 @@ class SquareView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         //Re-measure to be a square with side length equal to the original width (ignore height)
         super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+    }
+}
+
+/**
+ * A View that will always be square, with side length
+ * equal to the original height
+ */
+class HeightSquareView @JvmOverloads constructor(
+    context : Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr) {
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        //Re-measure to be a square with side length equal to the original height (ignore width)
+        super.onMeasure(heightMeasureSpec, heightMeasureSpec)
     }
 }

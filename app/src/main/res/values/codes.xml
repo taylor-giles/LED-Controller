@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Names of Extras -->
+    <string name="EXTRA_ADDRESS">Address</string>
+    <string name="EXTRA_COLOR">Color</string>
+
+    <!--Request Codes-->
+    <integer name="SAVED_COLORS_REQUEST"> 1 </integer>
+
+</resources>
