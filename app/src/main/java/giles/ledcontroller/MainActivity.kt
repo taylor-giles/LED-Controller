@@ -1,19 +1,15 @@
 package giles.ledcontroller
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.larswerkman.holocolorpicker.ColorPicker
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-import android.app.Activity
-import android.telephony.MbmsDownloadSession.RESULT_CANCELLED
-import com.larswerkman.holocolorpicker.ColorPicker
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-
 
         //Set up color picker
         val colorPickerView = ColorPickerView(this)

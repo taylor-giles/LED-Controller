@@ -1,6 +1,5 @@
 package giles.ledcontroller
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,16 +7,16 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.ColorView
 import giles.util.ColorUtils
 import giles.views.WidthSquareView
 import kotlinx.android.synthetic.main.activity_saved_colors.*
-import androidx.appcompat.app.AlertDialog
-import giles.ledcontroller.views.ColorPickerView
 
 
 const val COLOR_VIEW_SIDE_LENGTH_DP = 95.0
@@ -111,7 +110,7 @@ class ColorViewAdapter(
     private val panel: View
 ): RecyclerView.Adapter<ColorViewAdapter.ColorViewHolder>(){
 
-    var selectedView: ColorView? = null
+    private var selectedView: ColorView? = null
     var selectedColor: Int? = null
 
     class ColorViewHolder constructor(
