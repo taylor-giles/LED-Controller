@@ -101,7 +101,7 @@ class SavedColorsActivity : AppCompatActivity() {
 
 
 /**
- * A RecyclerView adapter that creates square views to textDisplay colors
+ * A RecyclerView adapter that creates square views to display colors
  */
 class ColorViewAdapter(
     private val dataSet: Array<Int>,

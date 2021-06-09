@@ -1,10 +1,9 @@
 package giles.views
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Shader
+import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 
 /**
@@ -12,22 +11,29 @@ import android.view.View
  */
 class ShaderRectView @JvmOverloads constructor(
     context: Context,
-    shader: Shader? = null,
+    colors: IntArray? = null,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ): View(context, attrs, defStyle) {
     private val paint = Paint()
 
     init {
-        setShader(shader)
+        setShaderColors(colors)
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawRect(left.toFloat(), right.toFloat(), top.toFloat(), bottom.toFloat(), paint)
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
     }
 
-    fun setShader(shader: Shader?){
-        paint.shader = shader
+    fun setShaderColors(colors: IntArray?){
+        if(colors == null){
+            paint.shader = null
+        } else {
+            for(color: Int in colors){
+                Log.d("log", color.toString())
+            }
+            paint.shader = LinearGradient(0f, 0f, width.toFloat(), height.toFloat(), colors, null, Shader.TileMode.CLAMP)
+        }
         invalidate()
     }
 }

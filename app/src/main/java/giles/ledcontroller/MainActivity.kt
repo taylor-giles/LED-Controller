@@ -1,7 +1,11 @@
 package giles.ledcontroller
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
+import giles.views.ShaderRectView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -55,6 +60,11 @@ class MainActivity : AppCompatActivity() {
             layout_menu_items.addView(item.view)
             layout_menu_items.addView(divider)
         }
+
+        val shaderRectView = ShaderRectView(this)
+        shaderRectView.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 200)
+        shaderRectView.setShaderColors(intArrayOf(Color.WHITE, Color.BLACK, Color.BLUE))
+        layout_menu_items.addView(shaderRectView)
 
         //address = intent.getStringExtra(resources.getString(R.string.EXTRA_ADDRESS))
         //BluetoothConnection.connect(address, uuid, this)
