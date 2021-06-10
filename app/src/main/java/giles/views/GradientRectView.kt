@@ -7,32 +7,38 @@ import android.util.Log
 import android.view.View
 
 /**
- * A rectangular view which displays the given shader
+ * A rectangular view which displays a gradient of the given colors from left to right
  */
-class ShaderRectView @JvmOverloads constructor(
+class GradientRectView @JvmOverloads constructor(
     context: Context,
-    colors: IntArray? = null,
+    private var colors: IntArray? = null,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ): View(context, attrs, defStyle) {
     private val paint = Paint()
 
     init {
-        setShaderColors(colors)
+        setGradientColors(colors)
     }
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
     }
 
-    fun setShaderColors(colors: IntArray?){
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        setGradientColors(colors)
+    }
+
+    fun setGradientColors(colors: IntArray?){
+        this.colors = colors
         if(colors == null){
             paint.shader = null
         } else {
             for(color: Int in colors){
                 Log.d("log", color.toString())
             }
-            paint.shader = LinearGradient(0f, 0f, width.toFloat(), height.toFloat(), colors, null, Shader.TileMode.CLAMP)
+            paint.shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors, null, Shader.TileMode.REPEAT)
         }
         invalidate()
     }
