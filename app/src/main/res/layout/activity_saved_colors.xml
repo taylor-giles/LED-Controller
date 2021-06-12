@@ -70,7 +70,7 @@
                 android:text="@string/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/btn_delete_saved_color"
-                style="@style/Widget.AppCompat.Button.Borderless" android:textColor="@android:color/holo_red_light"
+                style="@style/Widget.AppCompat.Button.Borderless" android:textColor="@android:color/text_color_primary"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_select_saved_color"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"/>
@@ -89,6 +89,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                android:textColor="@color/colorAccent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

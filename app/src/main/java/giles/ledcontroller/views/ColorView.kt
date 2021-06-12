@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import giles.views.WidthSquareView
 
+const val COLOR_VIEW_PADDING = 30
+
 class ColorView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -21,14 +23,14 @@ class ColorView @JvmOverloads constructor(
     private var color: Int = 0
 
     init {
-        this.setPaddingRelative(25, 25, 25, 25)
+        this.setPaddingRelative(COLOR_VIEW_PADDING, COLOR_VIEW_PADDING, COLOR_VIEW_PADDING, COLOR_VIEW_PADDING)
         title.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
         title.textAlignment = View.TEXT_ALIGNMENT_CENTER
     }
 
-    constructor(viewWidth: WidthSquareView): this(viewWidth.context){
-        this.view = viewWidth
-        addView(viewWidth)
+    constructor(view: WidthSquareView): this(view.context){
+        this.view = view
+        addView(view)
         addView(title)
     }
 
