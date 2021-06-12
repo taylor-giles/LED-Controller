@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import giles.views.WidthSquareView
 
-const val COLOR_VIEW_PADDING = 30
+const val COLOR_VIEW_PADDING = 30 //The amount of padding, in pixels, around the color/textbox square
 
 class ColorView @JvmOverloads constructor(
     context: Context,

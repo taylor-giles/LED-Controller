@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import giles.bluetooth.BluetoothDeviceItemAdapter
 import kotlinx.android.synthetic.main.activity_device_select.*
 
-const val REQUEST_ENABLE_BLUETOOTH = 1
-
 class DeviceSelectActivity : AppCompatActivity() {
     private var bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +25,7 @@ class DeviceSelectActivity : AppCompatActivity() {
         //Request to enable bluetooth if disabled
         if(!bluetoothAdapter!!.isEnabled){
             val enableBluetoothIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BLUETOOTH)
+            startActivityForResult(enableBluetoothIntent, resources.getInteger(R.integer.ENABLE_BLUETOOTH_REQUEST))
         }
 
         btn_refresh.setOnClickListener{ refreshList() }
@@ -59,7 +57,7 @@ class DeviceSelectActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_ENABLE_BLUETOOTH){
+        if(requestCode == resources.getInteger(R.integer.ENABLE_BLUETOOTH_REQUEST)){
             if(resultCode == Activity.RESULT_OK){
                 if(bluetoothAdapter!!.isEnabled){
                     Toast.makeText(this, "Bluetooth has been enabled", Toast.LENGTH_SHORT).show()
