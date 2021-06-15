@@ -1,9 +1,8 @@
-package giles.views
+package giles.ledcontroller.views
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 
 /**
@@ -30,15 +29,18 @@ class GradientRectView @JvmOverloads constructor(
         setGradientColors(colors)
     }
 
-    fun setGradientColors(colors: IntArray?){
-        this.colors = colors
+    fun setGradientColors(newColors: IntArray?){
+        this.colors = newColors
         if(colors == null){
             paint.shader = null
         } else {
-            for(color: Int in colors){
-                Log.d("log", color.toString())
+            //If only one color was given, then make a gradient of that color to the same color
+            if(newColors!!.size == 1){
+                this.colors = intArrayOf(newColors[0], newColors[0])
             }
-            paint.shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors, null, Shader.TileMode.REPEAT)
+
+            //Make the gradient
+            paint.shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
         }
         invalidate()
     }

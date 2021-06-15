@@ -38,10 +38,9 @@ class SavedColorsActivity : AppCompatActivity() {
         val maxCols = (screenWidthDp / COLOR_VIEW_SIDE_LENGTH_DP + 0.5).toInt()
 
         //Set up the RecyclerView with a GridLayoutManager showing all colors in squares, sorted by hue
+        val sortedSavedColors = AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray()
         layout_saved_colors.layoutManager = GridLayoutManager(this, maxCols)
-        adapter = ColorViewAdapter(
-            AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray(),
-            selectedColorTextDisplay, selectedColorWindow, optionsPanel)
+        adapter = ColorViewAdapter(sortedSavedColors, selectedColorTextDisplay, selectedColorWindow, optionsPanel)
         layout_saved_colors.adapter = adapter
 
         //Set the delete button action (confirmation dialog and delete behavior)

@@ -1,7 +1,6 @@
 package giles.ledcontroller
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -10,7 +9,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
-import giles.views.GradientRectView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +35,10 @@ class MainActivity : AppCompatActivity() {
 
         //Add patterns menu item
         val patternsMenuItem = MenuItem(this, "Patterns")
+        val gradientEditIntent = Intent(this, GradientEditActivity::class.java)
+        patternsMenuItem.view.setOnClickListener{
+            startActivityForResult(gradientEditIntent, 7)
+        }
 
         //Add notifications menu item
         val notificationsMenuItem = MenuItem(this, "Notification Lighting")

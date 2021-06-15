@@ -70,7 +70,7 @@
                 android:text="@string/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/btn_delete_saved_color"
-                style="@style/Widget.AppCompat.Button.Borderless" android:textColor="@android:color/text_color_primary"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/btn_select_saved_color"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toTopOf="parent"/>

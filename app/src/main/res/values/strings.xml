@@ -18,4 +18,5 @@
     <string name="select_color">Select Color</string>
     <string name="preview_label">Preview:</string>
     <string name="save">Save</string>
+    <string name="add_color">Add Color</string>
 </resources>
