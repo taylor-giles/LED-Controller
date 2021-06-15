@@ -2,25 +2,37 @@ package giles.ledcontroller
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import giles.ledcontroller.views.GradientRectView
+import giles.util.ItemTouchHelperAdapter
+import giles.util.ItemTouchHelperCallback
+import giles.util.OnDragStartListener
 import kotlinx.android.synthetic.main.activity_gradient_edit.*
 import kotlinx.android.synthetic.main.item_add_color_button.view.*
 import kotlinx.android.synthetic.main.item_gradient_color.view.*
 
-
+//It should be impossible for this color to be displayed
+//The color given to a GradientColorView when a holder has been created but not yet given a color
 const val DEFAULT_COLOR_ID = android.R.color.black
-class GradientEditActivity : AppCompatActivity() {
 
+/**
+ * Activity that allows a user to create or edit a gradient
+ */
+class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
     private lateinit var gradientView: GradientRectView
     private val gradientColors = ArrayList<Int>()
     private lateinit var adapter: GradientColorViewAdapter
+    private lateinit var touchHelper: ItemTouchHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +44,23 @@ class GradientEditActivity : AppCompatActivity() {
         layout_gradient_preview.addView(gradientView)
 
         //Set up RecyclerView to display colors and open activity to choose new color when "Add Color" button is clicked
-        layout_gradient_colors.layoutManager = LinearLayoutManager(this)
-        adapter = GradientColorViewAdapter(gradientColors, View.OnClickListener {
-            val savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
-            startActivityForResult(savedColorsIntent, resources.getInteger(R.integer.CHOOSE_COLOR_REQUEST))
-        })
-        layout_gradient_colors.adapter = adapter
+        val gradientColorsList = layout_gradient_colors
+        gradientColorsList.layoutManager = LinearLayoutManager(this)
+        adapter = GradientColorViewAdapter(gradientColors,
+            //OnClickListener for "Add Color" button
+            View.OnClickListener {
+                val savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
+                startActivityForResult(savedColorsIntent, resources.getInteger(R.integer.CHOOSE_COLOR_REQUEST))
+            },
+            this, gradientView
+        )
+        gradientColorsList.adapter = adapter
+
+        //Attach the ItemTouchHelper so that views can be dragged and reordered
+        touchHelper = ItemTouchHelper(
+            ItemTouchHelperCallback(adapter, isLongPressDraggable = false, isDraggable = true, isSwipable = false)
+        )
+        touchHelper.attachToRecyclerView(gradientColorsList)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,6 +79,10 @@ class GradientEditActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onDragStart(viewHolder: RecyclerView.ViewHolder) {
+        touchHelper.startDrag(viewHolder)
+    }
 }
 
 
@@ -65,11 +92,12 @@ class GradientEditActivity : AppCompatActivity() {
 //View types
 const val COLOR_TYPE = 1
 const val BUTTON_TYPE = 2
-
 class GradientColorViewAdapter(
     private val dataSet: ArrayList<Int>,
-    private val addButtonListener: View.OnClickListener
-): RecyclerView.Adapter<GradientColorViewAdapter.GradientColorViewHolder>(){
+    private val addButtonListener: View.OnClickListener,
+    private val dragListener: OnDragStartListener,
+    private val gradientView: GradientRectView
+): RecyclerView.Adapter<GradientColorViewAdapter.GradientColorViewHolder>(), ItemTouchHelperAdapter{
 
     /**
      * A ViewHolder for views displaying gradient colors and the button used to add a new color to the gradient
@@ -81,7 +109,10 @@ class GradientColorViewAdapter(
 
         private val colorPreview: View? = view.view_gradient_color
         private val textDisplay: TextView? = view.text_gradient_color
-        val addColorButton: View? = view.text_btn_add_color
+        val dragHandle: View? = view.image_gradient_color_drag_handle
+        val removeButton: View? = view.image_gradient_color_remove
+
+        val addColorButton: View? = view.text_btn_add_gradient_color
 
         fun setColor(color: Int){
             colorPreview!!.setBackgroundColor(color)
@@ -101,12 +132,39 @@ class GradientColorViewAdapter(
         } else {
             //Set color of the view
             holder.setColor(dataSet[position])
+
+            //TODO fix bugs introduced by reordering and removing
+            //Give behavior to the remove button
+            holder.removeButton!!.setOnClickListener{
+                dataSet.remove(dataSet[holder.absoluteAdapterPosition])
+                notifyItemRemoved(holder.absoluteAdapterPosition)
+                gradientView.setGradientColors(dataSet.toIntArray())
+            }
+
+            //Attach the onDrag listener to the handle via onTouch
+            holder.dragHandle!!.setOnTouchListener { _, event ->
+                if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                    dragListener.onDragStart(holder)
+                }
+                false
+            }
         }
     }
 
+    //There is an item for every value in the data set, plus one for the add button, which is at the end
+    override fun getItemCount() = dataSet.size + 1
     override fun getItemViewType(position: Int): Int {
         return if (position == dataSet.size) BUTTON_TYPE else COLOR_TYPE
     }
 
-    override fun getItemCount() = dataSet.size + 1 //There is an item for every value in the dataset, plus one for the add button
+    /**
+     * Called when an item is dragged and moved to a different position
+     */
+    override fun moveItem(fromPosition: Int, toPosition: Int) {
+        val movedItem = dataSet[fromPosition]
+        dataSet.remove(movedItem)
+        dataSet.add(toPosition, movedItem)
+        notifyItemMoved(fromPosition, toPosition)
+        gradientView.setGradientColors(dataSet.toIntArray())
+    }
 }

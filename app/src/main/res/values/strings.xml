@@ -19,4 +19,7 @@
     <string name="preview_label">Preview:</string>
     <string name="save">Save</string>
     <string name="add_color">Add Color</string>
+    <string name="drag_handle_description">drag handle</string>
+    <string name="remove_description">remove</string>
+    <string name="gradient_name">Gradient Name</string>
 </resources>

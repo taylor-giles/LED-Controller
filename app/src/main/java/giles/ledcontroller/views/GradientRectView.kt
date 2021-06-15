@@ -31,16 +31,18 @@ class GradientRectView @JvmOverloads constructor(
 
     fun setGradientColors(newColors: IntArray?){
         this.colors = newColors
-        if(colors == null){
-            paint.shader = null
-        } else {
-            //If only one color was given, then make a gradient of that color to the same color
-            if(newColors!!.size == 1){
-                this.colors = intArrayOf(newColors[0], newColors[0])
-            }
+        when {
+            colors == null -> paint.shader = null
+            colors!!.isEmpty() -> setGradientColors(null)
+            else -> {
+                //If only one color was given, then make a gradient of that color to the same color
+                if(newColors!!.size == 1){
+                    this.colors = intArrayOf(newColors[0], newColors[0])
+                }
 
-            //Make the gradient
-            paint.shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
+                //Make the gradient
+                paint.shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
+            }
         }
         invalidate()
     }

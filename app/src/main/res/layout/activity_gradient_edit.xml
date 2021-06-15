@@ -6,15 +6,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".GradientEditActivity">
+
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text="Name"
-            android:ems="10"
-            android:id="@+id/editText" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
+        android:id="@+id/text_edit_gradient_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/gradient_name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
     <TextView
             android:text="@string/preview_label"
             android:layout_width="wrap_content"
@@ -24,7 +28,7 @@
     <FrameLayout
             android:layout_width="0dp"
             android:layout_height="64dp" android:layout_marginTop="56dp"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
+            app:layout_constraintTop_toBottomOf="@+id/text_edit_gradient_name"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
             android:id="@+id/layout_gradient_preview" android:background="@android:color/darker_gray"
             android:padding="4dp" android:layout_marginStart="24dp" app:layout_constraintStart_toStartOf="parent">
@@ -38,21 +42,32 @@
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/layout_gradient_preview"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/divider4" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" android:layout_marginTop="16dp" android:id="@+id/layout_gradient_colors"
-            android:layout_marginBottom="16dp" app:layout_constraintBottom_toTopOf="@+id/divider6"/>
+        android:id="@+id/layout_gradient_colors"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
     <Button
-            android:text="@android:string/cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/btn_cancel_gradient"
-            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/divider6" android:layout_marginEnd="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            style="@style/Widget.AppCompat.Button.Borderless"/>
+        android:id="@+id/btn_cancel_gradient"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@android:string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider6"
+        app:layout_constraintStart_toStartOf="parent" />
     <View
             android:id="@+id/divider6"
             android:layout_width="1dp"
@@ -62,12 +77,18 @@
             app:layout_constraintBottom_toBottomOf="@+id/btn_save_gradient"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"/>
+
     <Button
-            android:text="@string/save"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/btn_save_gradient"
-            android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toEndOf="@+id/divider6"
-            android:layout_marginStart="8dp" style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/colorAccent"/>
+        android:id="@+id/btn_save_gradient"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/save"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider6" />
 </androidx.constraintlayout.widget.ConstraintLayout>
