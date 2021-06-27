@@ -15,6 +15,7 @@ class GradientRectView @JvmOverloads constructor(
     defStyle: Int = 0
 ): View(context, attrs, defStyle) {
     private val paint = Paint()
+    var gradient: LinearGradient? = null
 
     init {
         setGradientColors(colors)
@@ -32,7 +33,10 @@ class GradientRectView @JvmOverloads constructor(
     fun setGradientColors(newColors: IntArray?){
         this.colors = newColors
         when {
-            colors == null -> paint.shader = null
+            colors == null -> {
+                gradient = null
+                paint.shader = gradient
+            }
             colors!!.isEmpty() -> setGradientColors(null)
             else -> {
                 //If only one color was given, then make a gradient of that color to the same color
@@ -41,7 +45,8 @@ class GradientRectView @JvmOverloads constructor(
                 }
 
                 //Make the gradient
-                paint.shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
+                gradient = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
+                paint.shader = gradient
             }
         }
         invalidate()

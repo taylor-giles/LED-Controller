@@ -22,4 +22,11 @@
     <string name="drag_handle_description">drag handle</string>
     <string name="remove_description">remove</string>
     <string name="gradient_name">Gradient Name</string>
+    <string name="title_activity_saved_colors">Saved Colors</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="colors">Colors</string>
+    <string name="gradients">Gradients</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

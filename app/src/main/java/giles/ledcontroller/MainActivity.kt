@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val manualPickerItem = MenuItem(this, "Manual Color Selection", colorPickerView, true)
 
         //Add saved colors menu item
-        val savedColorsMenuItem = MenuItem(this, "Saved Colors")
+        val savedColorsMenuItem = MenuItem(this, "Saved Colors & Gradients")
         val savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
         savedColorsMenuItem.view.setOnClickListener{
             startActivityForResult(savedColorsIntent, resources.getInteger(R.integer.SAVED_COLORS_REQUEST))

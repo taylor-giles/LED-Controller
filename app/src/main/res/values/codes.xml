@@ -3,6 +3,7 @@
     <!-- Names of Extras -->
     <string name="EXTRA_ADDRESS">Address</string>
     <string name="EXTRA_COLOR">Color</string>
+    <string name="EXTRA_GRADIENT">Gradient</string>
 
     <!--Request Codes-->
     <integer name="SAVED_COLORS_REQUEST"> 1 </integer>

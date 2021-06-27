@@ -43,6 +43,8 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         gradientView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         layout_gradient_preview.addView(gradientView)
 
+        //TODO: Assign actions to the cancel and save buttons
+
         //Set up RecyclerView to display colors and open activity to choose new color when "Add Color" button is clicked
         val gradientColorsList = layout_gradient_colors
         gradientColorsList.layoutManager = LinearLayoutManager(this)
@@ -133,7 +135,6 @@ class GradientColorViewAdapter(
             //Set color of the view
             holder.setColor(dataSet[position])
 
-            //TODO fix bugs introduced by reordering and removing
             //Give behavior to the remove button
             holder.removeButton!!.setOnClickListener{
                 dataSet.remove(dataSet[holder.absoluteAdapterPosition])
