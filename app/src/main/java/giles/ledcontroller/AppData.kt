@@ -8,4 +8,7 @@ import java.util.*
 object AppData {
     //Set (no duplicates) to store saved colors
     var savedColors = HashSet<Int>()
+
+    //Set to store saved gradients
+    var savedGradients = HashSet<Gradient>()
 }

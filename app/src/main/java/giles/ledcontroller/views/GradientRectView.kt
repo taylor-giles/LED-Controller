@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import giles.ledcontroller.Gradient
 
 /**
  * A rectangular view which displays a gradient of the given colors from left to right
@@ -15,7 +16,7 @@ class GradientRectView @JvmOverloads constructor(
     defStyle: Int = 0
 ): View(context, attrs, defStyle) {
     private val paint = Paint()
-    var gradient: LinearGradient? = null
+    private var shader: LinearGradient? = null
 
     init {
         setGradientColors(colors)
@@ -34,8 +35,8 @@ class GradientRectView @JvmOverloads constructor(
         this.colors = newColors
         when {
             colors == null -> {
-                gradient = null
-                paint.shader = gradient
+                shader = null
+                paint.shader = shader
             }
             colors!!.isEmpty() -> setGradientColors(null)
             else -> {
@@ -45,10 +46,14 @@ class GradientRectView @JvmOverloads constructor(
                 }
 
                 //Make the gradient
-                gradient = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
-                paint.shader = gradient
+                shader = LinearGradient(0f, 0f, width.toFloat(), 0f, colors!!, null, Shader.TileMode.REPEAT)
+                paint.shader = shader
             }
         }
         invalidate()
+    }
+
+    fun displayGradient(gradient: Gradient){
+        setGradientColors(gradient.colors)
     }
 }

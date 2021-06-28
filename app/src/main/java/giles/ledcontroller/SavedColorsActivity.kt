@@ -17,8 +17,8 @@ class SavedColorsActivity : AppCompatActivity() {
         val adapter = ViewPagerAdapter(this)
         viewpager_saved_colors.adapter = adapter
 
-        //Decide what to do when creating the tabs
-        val tabNames = arrayOf<String>(getString(R.string.colors), getString(R.string.gradients))
+        //Create tabs
+        val tabNames = arrayOf(getString(R.string.colors), getString(R.string.gradients))
         TabLayoutMediator(tabs_saved_colors, viewpager_saved_colors) { tab, position ->
             tab.text = tabNames[position]
         }.attach()
@@ -30,7 +30,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            1 -> { Fragment() } //TODO: Replace with SavedGradientsFragment
+            1 -> { SavedGradientsFragment() } //TODO: Replace with SavedGradientsFragment
             else -> { SavedColorsFragment() }
         }
     }

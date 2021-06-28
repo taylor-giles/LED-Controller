@@ -14,7 +14,9 @@
         <activity
             android:name=".SavedColorsActivity"
             android:label="@string/title_activity_saved_colors" />
-        <activity android:name=".GradientEditActivity" />
+        <activity
+            android:name=".GradientEditActivity"
+            android:label="@string/title_activity_gradient_edit"/>
         <activity android:name=".DeviceSelectActivity" />
         <activity
             android:name=".MainActivity"

@@ -9,5 +9,6 @@
     <integer name="SAVED_COLORS_REQUEST"> 1 </integer>
     <integer name="ENABLE_BLUETOOTH_REQUEST"> 2 </integer>
     <integer name="CHOOSE_COLOR_REQUEST"> 3 </integer>
+    <integer name="EDIT_GRADIENT_REQUEST"> 4 </integer>
 
 </resources>

@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +18,9 @@ import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
 import kotlinx.android.synthetic.main.activity_gradient_edit.*
-import kotlinx.android.synthetic.main.item_add_color_button.view.*
+import kotlinx.android.synthetic.main.component_add_color_button.view.*
 import kotlinx.android.synthetic.main.item_gradient_color.view.*
 
-//It should be impossible for this color to be displayed
-//The color given to a GradientColorView when a holder has been created but not yet given a color
-const val DEFAULT_COLOR_ID = android.R.color.black
 
 /**
  * Activity that allows a user to create or edit a gradient
@@ -43,14 +40,13 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         gradientView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         layout_gradient_preview.addView(gradientView)
 
-        //TODO: Assign actions to the cancel and save buttons
-
-        //Set up RecyclerView to display colors and open activity to choose new color when "Add Color" button is clicked
+        //Set up RecyclerView to display colors and choose new color when "Add Color" button is clicked
         val gradientColorsList = layout_gradient_colors
         gradientColorsList.layoutManager = LinearLayoutManager(this)
         adapter = GradientColorViewAdapter(gradientColors,
             //OnClickListener for "Add Color" button
             View.OnClickListener {
+                //TODO: Open color picker dialog with option for saved colors
                 val savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
                 startActivityForResult(savedColorsIntent, resources.getInteger(R.integer.CHOOSE_COLOR_REQUEST))
             },
@@ -63,6 +59,39 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
             ItemTouchHelperCallback(adapter, isLongPressDraggable = false, isDraggable = true, isSwipable = false)
         )
         touchHelper.attachToRecyclerView(gradientColorsList)
+
+        //Assign action to cancel button
+        btn_cancel_gradient.setOnClickListener {
+            finish()
+        }
+
+        //Assign action to save button
+        btn_save_gradient.setOnClickListener {
+            //Get name
+            var name = text_edit_gradient_name.text.toString()
+
+            //Make default name if none is given
+            if(name.isBlank() || name.isEmpty()){
+                name = "Gradient " + (AppData.savedGradients.size + 1)
+            }
+
+            //See if a gradient with this name already exists
+            var proceed = true
+            for(gradient: Gradient in AppData.savedGradients){
+                if(gradient.name == name){
+                    Toast.makeText(this, "A gradient with this name already exists.", Toast.LENGTH_SHORT).show()
+                    proceed = false
+                    break
+                }
+            }
+
+            //Only proceed if this gradient's name was not found in the list of existing saved gradients
+            if(proceed){
+                AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
+                Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -105,8 +134,7 @@ class GradientColorViewAdapter(
      * A ViewHolder for views displaying gradient colors and the button used to add a new color to the gradient
      */
     class GradientColorViewHolder constructor(
-        val view: View,
-        val color: Int = getColor(view.context, DEFAULT_COLOR_ID)
+        val view: View
     ) : RecyclerView.ViewHolder(view){
 
         private val colorPreview: View? = view.view_gradient_color
@@ -124,7 +152,7 @@ class GradientColorViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GradientColorViewHolder {
         //If the type of this viewHolder is BUTTON_TYPE, then use the button layout, otherwise use the gradient color layout
-        val layoutID = if(viewType == BUTTON_TYPE) R.layout.item_add_color_button else R.layout.item_gradient_color
+        val layoutID = if(viewType == BUTTON_TYPE) R.layout.component_add_color_button else R.layout.item_gradient_color
         return GradientColorViewHolder(LayoutInflater.from(parent.context).inflate(layoutID, parent, false))
     }
 

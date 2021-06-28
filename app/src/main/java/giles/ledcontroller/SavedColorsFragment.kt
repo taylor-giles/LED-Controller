@@ -18,7 +18,6 @@ import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.ColorView
 import giles.util.ColorUtils
 import giles.views.WidthSquareView
-import kotlinx.android.synthetic.main.fragment_saved_colors.*
 
 /**
  * A simple [Fragment] subclass.
@@ -102,7 +101,7 @@ class SavedColorsFragment : Fragment() {
                     adapter = ColorViewAdapter(
                         AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray(),
                         selectedColorTextDisplay, selectedColorWindow, optionsPanel)
-                    layout_saved_colors.adapter = adapter
+                    savedColorsList.adapter = adapter
                     adapter.deselect()
                 }
                 .setNegativeButton(android.R.string.cancel, null)
