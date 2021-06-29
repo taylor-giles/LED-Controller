@@ -29,4 +29,7 @@
     <string name="select_gradient">Select Gradient</string>
     <string name="add_gradient">Add Gradient</string>
     <string name="gradients_description">Gradients create smooth transitions between multiple colors.</string>
+    <string name="saved_colors">Saved Colors</string>
+    <string name="remove_from_saved_colors">Remove from Saved Colors</string>
+    <string name="remove_color">Remove Color</string>
 </resources>

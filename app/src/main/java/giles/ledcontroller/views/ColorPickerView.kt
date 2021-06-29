@@ -3,14 +3,12 @@ package giles.ledcontroller.views
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.larswerkman.holocolorpicker.ColorPicker
 import com.larswerkman.holocolorpicker.SaturationBar
 import giles.ledcontroller.AppData
@@ -47,7 +45,6 @@ class ColorPickerView @JvmOverloads constructor(
         saturationBar = SaturationBar(context, attrs, defStyle)
         saturationBar.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         saturationLayout.addView(saturationBar)
-        Log.d("Log", "Saturation bar: $saturationBar")
 
         //Set up color picker
         colorPicker.addSaturationBar(saturationBar)
@@ -59,6 +56,9 @@ class ColorPickerView @JvmOverloads constructor(
 
         //Set up save button onclick and animation
         saveButton.setOnClickListener{ saveColor(colorPicker.color) }
+
+        //TODO: Set up saved colors layout
+        val savedColorsList = RecyclerView(context)
 
         updateDisplay(color_picker.color)
     }

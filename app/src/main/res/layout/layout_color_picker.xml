@@ -7,14 +7,19 @@
         android:padding="16dp">
 
     <TextView
-            android:text="@string/black_hex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/text_color_display" android:layout_weight="1"
-            android:textSize="20sp" android:typeface="monospace"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/color_picker"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-    />
+        android:id="@+id/text_color_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="1"
+        android:text="@string/black_hex"
+        android:textSize="20sp"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/color_picker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
             android:layout_width="wrap_content"
@@ -22,31 +27,39 @@
             android:id="@+id/image_save_color" app:layout_constraintTop_toTopOf="@+id/text_color_display"
             app:layout_constraintStart_toEndOf="@+id/text_color_display"
             app:layout_constraintBottom_toBottomOf="@+id/text_color_display" android:layout_marginStart="4dp"/>
+
     <com.larswerkman.holocolorpicker.ColorPicker
-            android:id="@+id/color_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="56dp"/>
+        android:id="@+id/color_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout
-            android:id="@+id/layout_saturation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/color_picker"
-            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="43dp" android:layout_marginEnd="43dp" android:layout_marginTop="8dp"
-            android:orientation="vertical" android:gravity="start|center_vertical">
+        android:id="@+id/layout_saturation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="43dp"
+        android:gravity="start|center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/color_picker">
 
         <TextView
-                android:text="@string/saturation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/text_saturation_label"
-                android:textSize="12sp"
-                android:paddingStart="12dp" android:paddingEnd="12dp"/>
+            android:id="@+id/text_saturation_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:text="@string/saturation"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
