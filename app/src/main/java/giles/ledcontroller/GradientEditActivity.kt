@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.GradientRectView
-import giles.util.ColorUtils
 import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
@@ -59,7 +58,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                     .setPositiveButton(R.string.add_color) { _, _ ->
                         //Add the selected color to the gradient
                         gradientColors.add(dialogPicker.getColor())
-                        adapter.notifyItemInserted(gradientColors.indexOf(dialogPicker.getColor()))
+                        adapter.notifyItemInserted(gradientColors.size - 1)
                         gradientView.setGradientColors(gradientColors.toIntArray())
                     }
                     .setNegativeButton(android.R.string.cancel, null)
@@ -118,7 +117,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                     resources.getInteger(R.integer.CHOOSE_COLOR_REQUEST) -> {
                         val chosenColor = data!!.getIntExtra(getString(R.string.EXTRA_COLOR), 0)
                         gradientColors.add(chosenColor)
-                        adapter.notifyItemInserted(gradientColors.indexOf(chosenColor))
+                        adapter.notifyItemInserted(gradientColors.size - 1)
                         gradientView.setGradientColors(gradientColors.toIntArray())
                     }
                 }
@@ -206,7 +205,7 @@ class GradientColorViewAdapter(
      */
     override fun moveItem(fromPosition: Int, toPosition: Int) {
         val movedItem = dataSet[fromPosition]
-        dataSet.remove(movedItem)
+        dataSet.removeAt(fromPosition)
         dataSet.add(toPosition, movedItem)
         notifyItemMoved(fromPosition, toPosition)
         gradientView.setGradientColors(dataSet.toIntArray())
