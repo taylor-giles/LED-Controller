@@ -1,65 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:padding="16dp">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/text_color_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="1"
-        android:text="@string/black_hex"
-        android:textSize="20sp"
-        android:typeface="monospace"
-        app:layout_constraintBottom_toTopOf="@+id/color_picker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ic_save_gray_24dp"
-            android:id="@+id/image_save_color" app:layout_constraintTop_toTopOf="@+id/text_color_display"
-            app:layout_constraintStart_toEndOf="@+id/text_color_display"
-            app:layout_constraintBottom_toBottomOf="@+id/text_color_display" android:layout_marginStart="4dp"/>
-
-    <com.larswerkman.holocolorpicker.ColorPicker
-        android:id="@+id/color_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-
-    <LinearLayout
-        android:id="@+id/layout_saturation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="43dp"
-        android:layout_marginEnd="43dp"
-        android:gravity="start|center_vertical"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/color_picker">
-
-        <TextView
-            android:id="@+id/text_saturation_label"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="@string/saturation"
-            android:textSize="12sp" />
-    </LinearLayout>
+            android:orientation="vertical">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/image_save_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:contentDescription="@string/save"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_color_display"
+                    app:layout_constraintStart_toEndOf="@+id/text_color_display"
+                    app:layout_constraintTop_toTopOf="@+id/text_color_display"
+                    app:srcCompat="@drawable/ic_save_gray_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/layout_saturation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="43dp"
+                    android:layout_marginEnd="43dp"
+                    android:gravity="start|center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/color_picker">
+
+                    <TextView
+                        android:id="@+id/text_saturation_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="@string/saturation"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_picker_saved_colors"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_saturation">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:text="@string/saved_colors"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!--The RecyclerView's height is set in the ColorPickerView code-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_picker_saved_colors"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/text_color_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/black_hex"
+                    android:textSize="20sp"
+                    android:typeface="monospace"
+                    app:layout_constraintBottom_toTopOf="@+id/color_picker"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.larswerkman.holocolorpicker.ColorPicker
+                    android:id="@+id/color_picker"
+                    android:layout_width="263dp"
+                    android:layout_height="259dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

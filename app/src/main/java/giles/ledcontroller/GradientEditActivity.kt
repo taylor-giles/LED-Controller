@@ -1,5 +1,6 @@
 package giles.ledcontroller
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.GradientRectView
+import giles.util.ColorUtils
 import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
@@ -45,10 +48,22 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         gradientColorsList.layoutManager = LinearLayoutManager(this)
         adapter = GradientColorViewAdapter(gradientColors,
             //OnClickListener for "Add Color" button
-            View.OnClickListener {
-                //TODO: Open color picker dialog with option for saved colors
-                val savedColorsIntent = Intent(this, SavedColorsActivity::class.java)
-                startActivityForResult(savedColorsIntent, resources.getInteger(R.integer.CHOOSE_COLOR_REQUEST))
+            {
+                //Open color picker dialog with option for saved colors
+                val builder = AlertDialog.Builder(this)
+
+                //Create dialog to display color picker
+                val dialogPicker = ColorPickerView(this, showSaveButton = true, showSavedColors = true)
+                builder.setTitle("Add Color to Gradient")
+                    .setView(dialogPicker)
+                    .setPositiveButton(R.string.add_color) { _, _ ->
+                        //Add the selected color to the gradient
+                        gradientColors.add(dialogPicker.getColor())
+                        adapter.notifyItemInserted(gradientColors.indexOf(dialogPicker.getColor()))
+                        gradientView.setGradientColors(gradientColors.toIntArray())
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
             },
             this, gradientView
         )

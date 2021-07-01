@@ -32,4 +32,5 @@
     <string name="saved_colors">Saved Colors</string>
     <string name="remove_from_saved_colors">Remove from Saved Colors</string>
     <string name="remove_color">Remove Color</string>
+    <string name="remove">remove</string>
 </resources>

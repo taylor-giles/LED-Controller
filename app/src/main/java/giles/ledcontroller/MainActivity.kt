@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         //Set up color picker
-        val colorPickerView = ColorPickerView(this)
+        val colorPickerView = ColorPickerView(this, showSavedColors = false)
         val colorPickerListener = ColorPicker.OnColorSelectedListener { color: Int -> colorChange(color)}
         colorPickerView.setOnColorSelectedListener(colorPickerListener)
 

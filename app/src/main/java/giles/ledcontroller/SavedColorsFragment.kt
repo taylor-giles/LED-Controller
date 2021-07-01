@@ -105,7 +105,7 @@ class SavedColorsFragment : Fragment() {
             val builder = AlertDialog.Builder(fragmentView.context)
 
             //Create dialog to display color picker
-            val dialogPicker = ColorPickerView(fragmentView.context, false)
+            val dialogPicker = ColorPickerView(fragmentView.context, showSaveButton = false, showSavedColors = false)
             builder.setTitle("Save New Color")
                 .setView(dialogPicker)
                 .setPositiveButton(R.string.save_color) { _, _ ->
