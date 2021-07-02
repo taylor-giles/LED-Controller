@@ -32,5 +32,8 @@
     <string name="saved_colors">Saved Colors</string>
     <string name="remove_from_saved_colors">Remove from Saved Colors</string>
     <string name="remove_color">Remove Color</string>
-    <string name="remove">remove</string>
+    <string name="remove_gradient">Remove Gradient</string>
+    <string name="remove">Remove</string>
+    <string name="empty_saved_colors_palette_description">When you save colors, they will appear in this palette.</string>
+    <string name="edit">Edit</string>
 </resources>

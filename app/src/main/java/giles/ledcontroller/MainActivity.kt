@@ -35,10 +35,6 @@ class MainActivity : AppCompatActivity() {
 
         //Add patterns menu item
         val patternsMenuItem = MenuItem(this, "Patterns")
-        val gradientEditIntent = Intent(this, GradientEditActivity::class.java)
-        patternsMenuItem.view.setOnClickListener{
-            startActivityForResult(gradientEditIntent, 7)
-        }
 
         //Add notifications menu item
         val notificationsMenuItem = MenuItem(this, "Notification Lighting")

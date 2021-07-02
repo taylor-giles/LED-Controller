@@ -37,10 +37,17 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gradient_edit)
 
+        //Get the gradient to be edited (if there is one)
+        val gradient = intent.getSerializableExtra(getString(R.string.EXTRA_GRADIENT)) as Gradient?
+
         //Put the gradient view into the preview frame
         gradientView = GradientRectView(this)
         gradientView.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         layout_gradient_preview.addView(gradientView)
+
+        //Display the gradient to be edited, if applicable
+        gradientView.displayGradient(gradient)
+        gradient?.colors?.toCollection(gradientColors)
 
         //Set up RecyclerView to display colors and choose new color when "Add Color" button is clicked
         val gradientColorsList = layout_gradient_colors

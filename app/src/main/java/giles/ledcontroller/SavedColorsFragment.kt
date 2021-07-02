@@ -24,7 +24,9 @@ import kotlinx.android.synthetic.main.layout_selected_color_preview.view.*
  */
 const val COLOR_VIEW_SIDE_LENGTH_DP = 95.0
 class SavedColorsFragment : Fragment() {
+
     private lateinit var adapter: ColorViewAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,14 +79,10 @@ class SavedColorsFragment : Fragment() {
                     .setTitle(R.string.remove_color)
                     .setMessage("Are you sure you want to remove " +
                             String.format("#%06X", 0xFFFFFF and adapter.selectedColor!!) + " from your saved colors list?")
-                    .setPositiveButton(R.string.delete) { _, _ ->
-                        //Delete the currently selected color
+                    .setPositiveButton(R.string.remove) { _, _ ->
+                        //Delete the currently selected color and update the list
                         AppData.savedColors.remove(adapter.selectedColor!!)
-
-                        //Re-make adapter dataset to update RecyclerView
-                        adapter.dataSet = AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray()
-                        adapter.notifyDataSetChanged()
-                        adapter.deselect()
+                        updateAdapter()
 
                         //Dismiss the dialog
                         previewDialog.dismiss()
@@ -109,19 +107,27 @@ class SavedColorsFragment : Fragment() {
             builder.setTitle("Save New Color")
                 .setView(dialogPicker)
                 .setPositiveButton(R.string.save_color) { _, _ ->
-                    //Save the color
+                    //Save the color and update the list
                     AppData.savedColors.add(dialogPicker.getColor())
-
-                    //Re-make adapter dataset to update RecyclerView
-                    adapter.dataSet = AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray()
-                    adapter.notifyDataSetChanged()
-                    adapter.deselect()
+                    updateAdapter()
                 }
                 .setNegativeButton(android.R.string.cancel, null)
                 .show()
         }
 
         return fragmentView
+    }
+
+    override fun onResume(){
+        super.onResume()
+        updateAdapter()
+    }
+
+    private fun updateAdapter(){
+        //Re-make adapter dataset to update RecyclerView
+        adapter.dataSet = AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray()
+        adapter.notifyDataSetChanged()
+        adapter.deselect()
     }
 
     companion object {

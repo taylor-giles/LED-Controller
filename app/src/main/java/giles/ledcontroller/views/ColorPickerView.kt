@@ -1,7 +1,6 @@
 package giles.ledcontroller.views
 
 import android.content.Context
-import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,7 +22,7 @@ class ColorPickerView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
     showSaveButton: Boolean = true,
-    private val showSavedColors: Boolean = true
+    showSavedColors: Boolean = true
     ) : FrameLayout(context, attrs, defStyle){
 
     private var colorPicker: ColorPicker
@@ -38,6 +37,8 @@ class ColorPickerView @JvmOverloads constructor(
     init {
         isClickable = false
         inflate(context, R.layout.layout_color_picker, this)
+
+        //Get components
         colorPicker = findViewById(R.id.color_picker)
         colorDisplay = findViewById(R.id.text_color_display)
         saturationLayout = findViewById(R.id.layout_saturation)
@@ -109,16 +110,6 @@ class ColorPickerView @JvmOverloads constructor(
             Toast.makeText(context, "Saved color " + String.format("#%06X", 0xFFFFFF and color), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "Color " + String.format("#%06X", 0xFFFFFF and color) + " is already saved", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-
-        //Update the saved colors list
-        if(showSavedColors){
-            savedColorsAdapter?.dataSet = AppData.savedColors.sortedBy{ color -> ColorUtils.getHue(color) }.toTypedArray()
-            savedColorsAdapter?.notifyDataSetChanged()
         }
     }
 }

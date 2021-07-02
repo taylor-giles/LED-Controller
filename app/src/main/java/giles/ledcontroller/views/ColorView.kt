@@ -3,7 +3,6 @@ package giles.ledcontroller.views
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import giles.ledcontroller.R
 import giles.views.WidthSquareView
 
 const val COLOR_VIEW_PADDING = 30 //The amount of padding, in pixels, around the color/TextBox square
@@ -30,6 +30,9 @@ class ColorView @JvmOverloads constructor(
         this.setPaddingRelative(COLOR_VIEW_PADDING, COLOR_VIEW_PADDING, COLOR_VIEW_PADDING, COLOR_VIEW_PADDING)
         title.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM)
         title.textAlignment = View.TEXT_ALIGNMENT_CENTER
+
+        //Add ripple click effect
+        foreground = ContextCompat.getDrawable(view.context, R.drawable.ripple_effect)
     }
 
     constructor(view: WidthSquareView): this(view.context){
@@ -153,7 +156,6 @@ class ColorViewAdapter @JvmOverloads constructor(
 
     /**
      * If there is a currently selected view, de-select it.
-     * Hide the button panel (delete, select, etc.) since no selection is made
      */
     fun deselect(){
         selectedColor = null

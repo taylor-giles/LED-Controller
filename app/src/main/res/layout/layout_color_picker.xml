@@ -77,6 +77,7 @@
                         android:textStyle="bold" />
 
                     <!--The RecyclerView's height is set in the ColorPickerView code-->
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/list_picker_saved_colors"
                         android:layout_width="match_parent"
