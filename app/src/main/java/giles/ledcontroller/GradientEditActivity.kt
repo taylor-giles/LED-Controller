@@ -38,7 +38,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         setContentView(R.layout.activity_gradient_edit)
 
         //Get the gradient to be edited (if there is one)
-        val gradient = intent.getSerializableExtra(getString(R.string.EXTRA_GRADIENT)) as Gradient?
+        val givenGradient = intent.getSerializableExtra(getString(R.string.EXTRA_GRADIENT)) as Gradient?
 
         //Put the gradient view into the preview frame
         gradientView = GradientRectView(this)
@@ -46,8 +46,9 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         layout_gradient_preview.addView(gradientView)
 
         //Display the gradient to be edited, if applicable
-        gradientView.displayGradient(gradient)
-        gradient?.colors?.toCollection(gradientColors)
+        gradientView.displayGradient(givenGradient)
+        givenGradient?.colors?.toCollection(gradientColors)
+        text_edit_gradient_name.setText(givenGradient?.name)
 
         //Set up RecyclerView to display colors and choose new color when "Add Color" button is clicked
         val gradientColorsList = layout_gradient_colors
@@ -93,25 +94,24 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
 
             //Make default name if none is given
             if(name.isBlank() || name.isEmpty()){
-                name = "Gradient " + (AppData.savedGradients.size + 1)
+                name = "New Gradient"
             }
 
-            //See if a gradient with this name already exists
-            var proceed = true
-            for(gradient: Gradient in AppData.savedGradients){
-                if(gradient.name == name){
-                    Toast.makeText(this, "A gradient with this name already exists.", Toast.LENGTH_SHORT).show()
-                    proceed = false
-                    break
+            //Keep incrementing the suffix number until the name is valid
+            if(!checkName(name)){
+                var suffix = 1
+                name += (suffix++).toString()
+                while(!checkName(name)){
+                    name = (name.substring(0, name.length - (suffix-1).toString().length)) + (suffix++).toString()
                 }
             }
 
-            //Only proceed if this gradient's name was not found in the list of existing saved gradients
-            if(proceed){
-                AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
-                Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
-                finish()
-            }
+
+            //Save the gradient and finish the activity
+            AppData.savedGradients.remove(givenGradient)
+            AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
+            Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
@@ -134,6 +134,21 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
 
     override fun onDragStart(viewHolder: RecyclerView.ViewHolder) {
         touchHelper.startDrag(viewHolder)
+    }
+
+    /**
+     * Checks whether or not the given String can be used as a name for a [Gradient].
+     * A name is valid iff there are no [Gradient]s already saved with that name.
+     *
+     * @return true if the name is valid, false otherwise.
+     */
+    private fun checkName(name: String) : Boolean{
+        for(gradient: Gradient in AppData.savedGradients){
+            if(gradient.name == name){
+                return false
+            }
+        }
+        return true
     }
 }
 

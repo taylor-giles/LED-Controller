@@ -21,7 +21,7 @@
 
             <TextView
                 android:id="@+id/text_gradient_item_name"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/gradient_name"
                 android:textSize="16sp"
@@ -30,7 +30,7 @@
 
             <FrameLayout
                 android:id="@+id/layout_gradient_item_preview"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:background="@android:color/darker_gray"

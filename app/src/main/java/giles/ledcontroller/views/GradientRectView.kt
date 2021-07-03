@@ -14,9 +14,10 @@ class GradientRectView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ): View(context, attrs, defStyle) {
+
     private val paint = Paint()
     private var shader: LinearGradient? = null
-
+    private var colors: IntArray? = null
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
@@ -24,9 +25,11 @@ class GradientRectView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
+        setGradientColors(colors)
     }
 
     fun setGradientColors(colors: IntArray?){
+        this.colors = colors
         when {
             //If a null list was given, clear the gradient shader
             colors == null -> {

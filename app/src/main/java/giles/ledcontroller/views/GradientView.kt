@@ -15,7 +15,7 @@ class GradientView @JvmOverloads constructor(
     context : Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-    val gradient: Gradient? = null
+    var gradient: Gradient? = null
 ) : ConstraintLayout(context, attrs, defStyle) {
 
     init {
@@ -66,6 +66,7 @@ class GradientViewAdapter(
 
         fun setGradient(gradient: Gradient){
             view.text_gradient_item_name.text = gradient.name
+            view.gradient = gradient
             preview.displayGradient(gradient)
         }
     }
