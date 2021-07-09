@@ -100,6 +100,7 @@ class SavedGradientsFragment : Fragment() {
                 //Open the GradientEditActivity to edit this gradient
                 gradientEditIntent.putExtra(getString(R.string.EXTRA_GRADIENT), adapter.selectedGradient)
                 startActivityForResult(gradientEditIntent, R.integer.EDIT_GRADIENT_REQUEST)
+                previewDialog.dismiss()
             }
 
             //Display the dialog

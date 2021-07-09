@@ -38,7 +38,7 @@ class SavedColorsFragment : Fragment() {
         val savedColorsList = fragmentView.findViewById<RecyclerView>(R.id.layout_saved_colors)
         val addButton = fragmentView.findViewById<FloatingActionButton>(R.id.fab_add_saved_color)
 
-        //Get the maximum number of cols that can fit on the screen, where each col has preferred size COLOR_VIEW_SIDE_LENGTH_DP
+        //Get the maximum number of cols that can fit on the screen, where each col has the preferred size set by the sideLength val
         val screenWidthDp = resources.displayMetrics.widthPixels / resources.displayMetrics.density
         val maxCols = (screenWidthDp / colorViewSideLengthDp + 0.5).toInt()
 

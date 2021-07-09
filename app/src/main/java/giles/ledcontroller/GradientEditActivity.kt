@@ -1,7 +1,6 @@
 package giles.ledcontroller
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -89,12 +88,22 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
 
         //Assign action to save button
         btn_save_gradient.setOnClickListener {
+            //Remove the old version of the edited gradient, if it exists
+            if(givenGradient != null){
+                for(gradient: Gradient in AppData.savedGradients){
+                    if(gradient == givenGradient){
+                        AppData.savedGradients.remove(gradient)
+                        break
+                    }
+                }
+            }
+
             //Get name
             var name = text_edit_gradient_name.text.toString()
 
             //Make default name if none is given
             if(name.isBlank() || name.isEmpty()){
-                name = "New Gradient"
+                name = "Untitled Gradient"
             }
 
             //Keep incrementing the suffix number until the name is valid
@@ -106,29 +115,10 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                 }
             }
 
-
-            //Save the gradient and finish the activity
-            AppData.savedGradients.remove(givenGradient)
+            //Save the gradient and finish the activity.
             AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
             Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
             finish()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when(resultCode){
-            RESULT_OK -> {
-                when(requestCode){
-                    //Choose color request - add the chosen color to the gradient
-                    resources.getInteger(R.integer.CHOOSE_COLOR_REQUEST) -> {
-                        val chosenColor = data!!.getIntExtra(getString(R.string.EXTRA_COLOR), 0)
-                        gradientColors.add(chosenColor)
-                        adapter.notifyItemInserted(gradientColors.size - 1)
-                        gradientView.setGradientColors(gradientColors.toIntArray())
-                    }
-                }
-            }
         }
     }
 
