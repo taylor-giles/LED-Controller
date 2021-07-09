@@ -1,5 +1,6 @@
 package giles.ledcontroller
 
+import giles.util.SortedArrayList
 import java.util.*
 
 /**
@@ -9,6 +10,8 @@ object AppData {
     //Set (no duplicates) to store saved colors
     var savedColors = HashSet<Int>()
 
-    //Set to store saved gradients
-    var savedGradients = HashSet<Gradient>()
+    //ArrayList to store saved gradients
+    var savedGradients = SortedArrayList<Gradient> { gradient: Gradient, gradient2: Gradient ->
+        gradient.compareTo(gradient2)
+    }
 }

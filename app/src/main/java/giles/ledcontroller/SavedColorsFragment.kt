@@ -22,9 +22,9 @@ import kotlinx.android.synthetic.main.layout_selected_color_preview.view.*
  * Use the [SavedColorsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-const val COLOR_VIEW_SIDE_LENGTH_DP = 95.0
 class SavedColorsFragment : Fragment() {
 
+    private val colorViewSideLengthDp = 95.0
     private lateinit var adapter: ColorViewAdapter
 
     override fun onCreateView(
@@ -40,7 +40,7 @@ class SavedColorsFragment : Fragment() {
 
         //Get the maximum number of cols that can fit on the screen, where each col has preferred size COLOR_VIEW_SIDE_LENGTH_DP
         val screenWidthDp = resources.displayMetrics.widthPixels / resources.displayMetrics.density
-        val maxCols = (screenWidthDp / COLOR_VIEW_SIDE_LENGTH_DP + 0.5).toInt()
+        val maxCols = (screenWidthDp / colorViewSideLengthDp + 0.5).toInt()
 
         //Set up the preview dialog which shows when the user clicks on a color
         val previewDialogView = layoutInflater.inflate(R.layout.layout_selected_color_preview, container, false)

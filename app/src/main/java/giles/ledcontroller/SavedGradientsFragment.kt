@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,11 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import giles.ledcontroller.views.GradientRectView
 import giles.ledcontroller.views.GradientView
 import giles.ledcontroller.views.GradientViewAdapter
-import kotlinx.android.synthetic.main.item_gradient.view.*
-import kotlinx.android.synthetic.main.layout_selected_color_preview.view.*
-import kotlinx.android.synthetic.main.layout_selected_gradient_preview.*
 import kotlinx.android.synthetic.main.layout_selected_gradient_preview.view.*
-
 
 /**
  * A simple [Fragment] subclass.
@@ -69,9 +63,8 @@ class SavedGradientsFragment : Fragment() {
             .create()
 
         //Set up the RecyclerView with a LinearLayoutManager showing all gradients, sorted alphabetically by name
-        val sortedSavedGradients = ArrayList(AppData.savedGradients.sortedBy{ gradient -> gradient.name })
         savedGradientsList.layoutManager = LinearLayoutManager(requireActivity())
-        adapter = GradientViewAdapter(sortedSavedGradients) { clickedView ->
+        adapter = GradientViewAdapter(AppData.savedGradients) { clickedView ->
             //Select the clicked view
             adapter.selectView(clickedView as GradientView)
 
@@ -124,7 +117,7 @@ class SavedGradientsFragment : Fragment() {
 
     private fun updateAdapter(){
         //Update adapter
-        adapter.dataSet = ArrayList(AppData.savedGradients.sortedBy{ gradient -> gradient.name })
+        adapter.dataSet = AppData.savedGradients
         adapter.notifyDataSetChanged()
         adapter.deselect()
     }
