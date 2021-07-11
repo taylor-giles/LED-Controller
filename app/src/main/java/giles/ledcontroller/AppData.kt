@@ -14,4 +14,7 @@ object AppData {
     var savedGradients = SortedArrayList<Gradient> { gradient: Gradient, gradient2: Gradient ->
         gradient.compareTo(gradient2)
     }
+
+    //Set to store LED displays
+    var displays = HashSet<LEDDisplay>()
 }
