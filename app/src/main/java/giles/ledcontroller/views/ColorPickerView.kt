@@ -6,7 +6,7 @@ import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.larswerkman.holocolorpicker.ColorPicker
-import com.larswerkman.holocolorpicker.SaturationBar
+import com.larswerkman.holocolorpicker.SVBar
 import giles.ledcontroller.AppData
 import giles.ledcontroller.R
 import giles.util.ColorUtils
@@ -28,7 +28,7 @@ class ColorPickerView @JvmOverloads constructor(
     private var colorPicker: ColorPicker
     private var colorDisplay: TextView
     private var saturationLayout: LinearLayout
-    private var saturationBar: SaturationBar
+    private var svBar: SVBar
     private var saveButton: ImageView
     private var savedColorsLayout: LinearLayout
     private var savedColorsList: RecyclerView
@@ -49,13 +49,13 @@ class ColorPickerView @JvmOverloads constructor(
         //Set up saturation bar
         /*NOTE: The saturation bar is created here programmatically because it would not appear in the inflated view
             when it was placed directly into the XML. This is a workaround.*/
-        saturationBar = SaturationBar(context, attrs, defStyle)
-        saturationBar.layoutParams =
+        svBar = SVBar(context, attrs, defStyle)
+        svBar.layoutParams =
             LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        saturationLayout.addView(saturationBar)
+        saturationLayout.addView(svBar)
 
         //Set up color picker
-        colorPicker.addSaturationBar(saturationBar)
+        colorPicker.addSVBar(svBar)
         //saturationBar.setOnSaturationChangedListener { updateDisplay(color_picker.color) }
         colorPicker.setOnColorChangedListener { updateDisplay(color_picker.color) }
         colorPicker.setTouchAnywhereOnColorWheelEnabled(true)

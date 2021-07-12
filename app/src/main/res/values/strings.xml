@@ -36,4 +36,5 @@
     <string name="remove">Remove</string>
     <string name="empty_saved_colors_palette_description">When you save colors, they will appear in this palette.</string>
     <string name="edit">Edit</string>
+    <string name="saturation_brightness"><![CDATA[Saturation & Brightness]]></string>
 </resources>
