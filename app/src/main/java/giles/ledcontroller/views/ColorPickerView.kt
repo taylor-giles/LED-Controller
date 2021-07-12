@@ -25,13 +25,15 @@ class ColorPickerView @JvmOverloads constructor(
     showSavedColors: Boolean = true
     ) : FrameLayout(context, attrs, defStyle){
 
-    private var colorPicker: ColorPicker
-    private var colorDisplay: TextView
-    private var saturationLayout: LinearLayout
-    private var svBar: SVBar
-    private var saveButton: ImageView
-    private var savedColorsLayout: LinearLayout
-    private var savedColorsList: RecyclerView
+    //Components
+    private val colorPicker: ColorPicker
+    private val colorDisplay: TextView
+    private val svBar: SVBar
+    private val saveButton: Button
+    private val savedColorsLayout: LinearLayout
+    private val savedColorsList: RecyclerView
+
+    //RecyclerView adapter
     private var savedColorsAdapter: ColorViewAdapter? = null
 
     init {
@@ -41,18 +43,10 @@ class ColorPickerView @JvmOverloads constructor(
         //Get components
         colorPicker = findViewById(R.id.color_picker)
         colorDisplay = findViewById(R.id.text_color_display)
-        saturationLayout = findViewById(R.id.layout_saturation)
-        saveButton = findViewById(R.id.image_save_color)
+        saveButton = findViewById(R.id.btn_save_color)
+        svBar = findViewById(R.id.sv_bar)
         savedColorsLayout = findViewById(R.id.layout_picker_saved_colors)
         savedColorsList = findViewById(R.id.list_picker_saved_colors)
-
-        //Set up saturation bar
-        /*NOTE: The saturation bar is created here programmatically because it would not appear in the inflated view
-            when it was placed directly into the XML. This is a workaround.*/
-        svBar = SVBar(context, attrs, defStyle)
-        svBar.layoutParams =
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        saturationLayout.addView(svBar)
 
         //Set up color picker
         colorPicker.addSVBar(svBar)

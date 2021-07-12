@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -22,50 +23,70 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-                <ImageView
-                    android:id="@+id/image_save_color"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_picker_main"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:contentDescription="@string/save"
-                    app:layout_constraintBottom_toBottomOf="@+id/text_color_display"
-                    app:layout_constraintStart_toEndOf="@+id/text_color_display"
-                    app:layout_constraintTop_toTopOf="@+id/text_color_display"
-                    app:srcCompat="@drawable/ic_save_gray_24dp" />
-
-                <LinearLayout
-                    android:id="@+id/layout_saturation"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="43dp"
-                    android:layout_marginEnd="43dp"
-                    android:gravity="start|center_vertical"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/color_picker">
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/btn_save_color"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="@string/save"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_color_display"
+                        app:layout_constraintStart_toEndOf="@+id/text_color_display"
+                        app:layout_constraintTop_toTopOf="@+id/text_color_display" />
 
                     <TextView
-                        android:id="@+id/text_saturation_label"
+                        android:id="@+id/text_color_display"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/saturation"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        android:text="@string/black_hex"
+                        android:textSize="20sp"
+                        android:typeface="monospace"
+                        app:layout_constraintBottom_toTopOf="@+id/color_picker"
+                        app:layout_constraintEnd_toEndOf="@+id/color_picker"
+                        app:layout_constraintStart_toStartOf="@+id/color_picker"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.larswerkman.holocolorpicker.ColorPicker
+                        android:id="@+id/color_picker"
+                        android:layout_width="225dp"
+                        android:layout_height="225dp"
+                        android:layout_marginTop="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <com.larswerkman.holocolorpicker.SVBar
+                        android:id="@+id/sv_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        app:bar_orientation_horizontal="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/color_picker"
+                        app:layout_constraintTop_toTopOf="@+id/color_picker" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/layout_picker_saved_colors"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_saturation">
+                    app:layout_constraintTop_toBottomOf="@+id/layout_picker_main">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -82,34 +103,8 @@
                         android:id="@+id/list_picker_saved_colors"
                         android:layout_width="match_parent"
                         android:layout_height="150dp" />
+
                 </LinearLayout>
-
-
-                <TextView
-                    android:id="@+id/text_color_display"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
-                    android:text="@string/black_hex"
-                    android:textSize="20sp"
-                    android:typeface="monospace"
-                    app:layout_constraintBottom_toTopOf="@+id/color_picker"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <com.larswerkman.holocolorpicker.ColorPicker
-                    android:id="@+id/color_picker"
-                    android:layout_width="263dp"
-                    android:layout_height="259dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
