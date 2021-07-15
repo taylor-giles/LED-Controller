@@ -1,14 +1,14 @@
 package giles.ledcontroller
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -167,12 +167,16 @@ class GradientColorViewAdapter(
         private val textDisplay: TextView? = view.text_gradient_color
         val dragHandle: View? = view.image_gradient_color_drag_handle
         val removeButton: View? = view.image_gradient_color_remove
+        val opacityBar: SeekBar? = view.slider_gradient_color_opacity
+        val opacityText: EditText? = view.text_gradient_color_opacity
 
         val addColorButton: View? = view.text_btn_add_gradient_color
 
         fun setColor(color: Int){
             colorPreview!!.setBackgroundColor(color)
             textDisplay!!.text = String.format("#%06X", 0xFFFFFF and color)
+            opacityText!!.setText(Color.alpha(color).toString())
+            opacityBar!!.progress = Color.alpha(color)
         }
     }
 
@@ -186,8 +190,10 @@ class GradientColorViewAdapter(
         if(holder.itemViewType == BUTTON_TYPE){
             holder.addColorButton!!.setOnClickListener(addButtonListener)
         } else {
+            val color = dataSet[position]
+
             //Set color of the view
-            holder.setColor(dataSet[position])
+            holder.setColor(color)
 
             //Give behavior to the remove button
             holder.removeButton!!.setOnClickListener{
@@ -203,6 +209,21 @@ class GradientColorViewAdapter(
                 }
                 false
             }
+
+            //Give behavior to the opacity bar
+            holder.opacityBar?.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                override fun onStopTrackingTouch(seekBar: SeekBar) {
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    val newColor = Color.argb(progress, Color.red(color), Color.green(color), Color.blue(color))
+                    holder.setColor(newColor)
+                    dataSet[position] = newColor
+                    gradientView.setGradientColors(dataSet.toIntArray())
+                }
+            })
         }
     }
 

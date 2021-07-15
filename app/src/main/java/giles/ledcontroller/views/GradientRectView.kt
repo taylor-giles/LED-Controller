@@ -4,7 +4,9 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import giles.ledcontroller.Gradient
+import giles.ledcontroller.R
 
 /**
  * A rectangular view which displays gradients
@@ -18,6 +20,10 @@ class GradientRectView @JvmOverloads constructor(
     private val paint = Paint()
     private var shader: LinearGradient? = null
     private var colors: IntArray? = null
+
+    init{
+        background = ContextCompat.getDrawable(context, R.drawable.transparent_background_bitmap)
+    }
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)

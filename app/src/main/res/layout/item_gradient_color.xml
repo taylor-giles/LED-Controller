@@ -17,18 +17,55 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="wrap_content"
+            android:padding="8dp">
 
-            <giles.views.HeightSquareView
-                android:id="@+id/view_gradient_color"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+            <EditText
+                android:id="@+id/text_gradient_color_opacity"
+                style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="@string/_255"
+                android:textAlignment="center"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/text_opacity_label"
+                app:layout_constraintTop_toBottomOf="@+id/text_gradient_color"
+                android:autofillHints="@string/opacity_label" />
+
+            <ImageView
+                android:id="@+id/image_gradient_color_drag_handle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/drag_handle_description"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_drag_handle_gray_24dp" />
+
+            <ImageView
+                android:id="@+id/image_gradient_color_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_clear_24"
+                android:contentDescription="@string/remove" />
+
+            <SeekBar
+                android:id="@+id/slider_gradient_color_opacity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:max="255"
+                android:progress="255"
+                app:layout_constraintBottom_toBottomOf="@+id/text_gradient_color_opacity"
+                app:layout_constraintEnd_toStartOf="@+id/image_gradient_color_drag_handle"
+                app:layout_constraintStart_toEndOf="@+id/text_gradient_color_opacity"
+                app:layout_constraintTop_toTopOf="@+id/text_gradient_color_opacity" />
 
             <TextView
                 android:id="@+id/text_gradient_color"
@@ -36,38 +73,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/black_hex"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_gradient_color"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/image_gradient_color_remove"
+            <giles.views.HeightSquareView
+                android:id="@+id/view_gradient_color"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="@string/remove_description"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/image_gradient_color_drag_handle"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_remove_circle_outline_gray_24dp" />
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/text_gradient_color"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_gradient_color" />
 
-            <ImageView
-                android:id="@+id/image_gradient_color_drag_handle"
+            <TextView
+                android:id="@+id/text_opacity_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:contentDescription="@string/drag_handle_description"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_drag_handle_gray_24dp" />
+                android:layout_marginStart="8dp"
+                android:text="@string/opacity_label"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_gradient_color_opacity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_gradient_color_opacity" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

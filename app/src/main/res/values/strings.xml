@@ -37,4 +37,7 @@
     <string name="empty_saved_colors_palette_description">When you save colors, they will appear in this palette.</string>
     <string name="edit">Edit</string>
     <string name="saturation_brightness"><![CDATA[Saturation & Brightness]]></string>
+    <string name="opacity_label">Opacity:</string>
+    <string name="_100">100</string>
+    <string name="_255">255</string>
 </resources>
