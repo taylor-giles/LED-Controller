@@ -3,6 +3,23 @@
     <string name="app_name">LEDController</string>
     <string name="title_activity_saved_colors">Saved Colors</string>
     <string name="title_activity_gradient_edit">Edit Gradient</string>
+    <string name="title_activity_patterns">Patterns</string>
+    <string name="title_activity_edit_pattern">Edit Pattern</string>
+    <string name="title_activity_edit_layer">Edit Layer</string>
+
+    <!-- Effect Names -->
+    <string name="solid_color">Solid Color</string>
+    <string name="solid_gradient">Solid Gradient</string>
+    <string name="gradient_cycle">Gradient Cycle</string>
+    <string name="gradient_wave">Gradient Wave</string>
+    <string name="timed_changes">Timed Changes</string>
+    <string-array name="effect_names">
+        <item>Solid Color</item>
+        <item>Solid Gradient</item>
+        <item>Gradient Cycle</item>
+        <item>Gradient Wave</item>
+        <item>Timed Changes</item>
+    </string-array>
 
     <!-- Button & Display Strings -->
     <string name="select_device">Select Device</string>
@@ -40,4 +57,8 @@
     <string name="opacity_label">Opacity:</string>
     <string name="_100">100</string>
     <string name="_255">255</string>
+    <string name="effect">Effect</string>
+    <string name="selection_label">Applies to Lights:</string>
+    <string name="none">None</string>
+    <string name="add_layer">Add Layer</string>
 </resources>

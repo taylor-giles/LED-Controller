@@ -1,4 +1,4 @@
-package giles.ledcontroller
+package giles.ledcontroller.activities
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -11,13 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import giles.ledcontroller.AppData
+import giles.ledcontroller.R
 import giles.ledcontroller.views.GradientRectView
 import giles.ledcontroller.views.GradientView
 import giles.ledcontroller.views.GradientViewAdapter
 import kotlinx.android.synthetic.main.layout_selected_gradient_preview.view.*
 
 /**
- * A simple [Fragment] subclass.
+ * A [Fragment] subclass to display a list of saved gradients.
  * Use the [SavedGradientsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
@@ -40,14 +42,14 @@ class SavedGradientsFragment : Fragment() {
         //Set the add button action (open the GradientEditActivity for a new gradient)
         val gradientEditIntent = Intent(requireActivity(), GradientEditActivity::class.java)
         addButton.setOnClickListener{
-            startActivityForResult(gradientEditIntent, R.integer.EDIT_GRADIENT_REQUEST)
+            startActivity(gradientEditIntent)
         }
 
         //Set up the preview dialog which shows when the user clicks on a gradient
         val previewDialogView = layoutInflater.inflate(R.layout.layout_selected_gradient_preview, container, false)
         val previewDialog: AlertDialog = AlertDialog.Builder(fragmentView.context)
             //Select button
-            .setPositiveButton(R.string.select_gradient) {_, _ ->
+            .setPositiveButton(R.string.select_gradient) { _, _ ->
                 //Return from this activity with the selected gradient as an extra
                 val returnIntent = Intent()
                 returnIntent.putExtra(getString(R.string.EXTRA_GRADIENT), adapter.selectedGradient)
@@ -99,7 +101,7 @@ class SavedGradientsFragment : Fragment() {
             previewDialogView.btn_edit_selected_gradient.setOnClickListener {
                 //Open the GradientEditActivity to edit this gradient
                 gradientEditIntent.putExtra(getString(R.string.EXTRA_GRADIENT), adapter.selectedGradient)
-                startActivityForResult(gradientEditIntent, R.integer.EDIT_GRADIENT_REQUEST)
+                startActivity(gradientEditIntent)
                 previewDialog.dismiss()
             }
 

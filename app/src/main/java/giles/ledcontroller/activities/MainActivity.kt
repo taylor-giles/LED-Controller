@@ -1,4 +1,4 @@
-package giles.ledcontroller
+package giles.ledcontroller.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
+import giles.ledcontroller.R
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity() {
 
         //Add patterns menu item
         val patternsMenuItem = MenuItem(this, "Patterns")
+        val patternsIntent = Intent(this, PatternsActivity::class.java)
+        patternsMenuItem.view.setOnClickListener{
+            startActivityForResult(patternsIntent, resources.getInteger(R.integer.PATTERNS_REQUEST))
+        }
 
         //Add notifications menu item
         val notificationsMenuItem = MenuItem(this, "Notification Lighting")

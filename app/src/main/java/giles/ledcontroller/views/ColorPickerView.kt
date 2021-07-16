@@ -50,7 +50,6 @@ class ColorPickerView @JvmOverloads constructor(
 
         //Set up color picker
         colorPicker.addSVBar(svBar)
-        //saturationBar.setOnSaturationChangedListener { updateDisplay(color_picker.color) }
         colorPicker.setOnColorChangedListener { updateDisplay(color_picker.color) }
         colorPicker.setTouchAnywhereOnColorWheelEnabled(true)
         colorPicker.showOldCenterColor = false

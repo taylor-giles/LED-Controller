@@ -1,7 +1,7 @@
 package giles.ledcontroller
 
 class Light(
-    val display: LEDDisplay,
+    val display: LightDisplay,
     val index: Int
 ) : Comparable<Light> {
     init {

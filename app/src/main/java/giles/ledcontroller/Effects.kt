@@ -1,5 +1,6 @@
 package giles.ledcontroller
 
+val EFFECT_NAMES = arrayOf("Solid Color", "Solid Gradient", "Gradient Cycle", "Gradient Wave", "Timed Changes")
 interface Effect {
     fun display(layer: Layer)
 }

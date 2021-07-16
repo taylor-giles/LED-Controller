@@ -1,4 +1,4 @@
-package giles.ledcontroller
+package giles.ledcontroller.activities
 
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import giles.ledcontroller.AppData
+import giles.ledcontroller.R
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.ColorView
 import giles.ledcontroller.views.ColorViewAdapter
@@ -18,7 +20,7 @@ import giles.util.ColorUtils
 import kotlinx.android.synthetic.main.layout_selected_color_preview.view.*
 
 /**
- * A simple [Fragment] subclass.
+ * A [Fragment] subclass to display saved colors.
  * Use the [SavedColorsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
@@ -46,7 +48,7 @@ class SavedColorsFragment : Fragment() {
         val previewDialogView = layoutInflater.inflate(R.layout.layout_selected_color_preview, container, false)
         val previewDialog: AlertDialog = AlertDialog.Builder(fragmentView.context)
             //Select button
-            .setPositiveButton(R.string.select_color) {_, _ ->
+            .setPositiveButton(R.string.select_color) { _, _ ->
                 //Return from this activity with the selected color as an extra
                 val returnIntent = Intent()
                 returnIntent.putExtra(getString(R.string.EXTRA_COLOR), adapter.selectedColor)

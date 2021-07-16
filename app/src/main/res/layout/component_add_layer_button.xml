@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:drawablePadding="4dp"
-        android:text="@string/add_color"
+        android:text="@string/add_layer"
         android:textColor="@color/colorAccent"
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_add_accent_24dp" />

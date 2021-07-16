@@ -16,5 +16,5 @@ object AppData {
     }
 
     //Set to store LED displays
-    var displays = HashSet<LEDDisplay>()
+    var displays = HashSet<LightDisplay>()
 }

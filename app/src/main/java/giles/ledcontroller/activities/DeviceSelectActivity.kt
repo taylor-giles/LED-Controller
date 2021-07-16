@@ -1,4 +1,4 @@
-package giles.ledcontroller
+package giles.ledcontroller.activities
 
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import giles.bluetooth.BluetoothDeviceItemAdapter
+import giles.ledcontroller.R
 import kotlinx.android.synthetic.main.activity_device_select.*
 
 class DeviceSelectActivity : AppCompatActivity() {

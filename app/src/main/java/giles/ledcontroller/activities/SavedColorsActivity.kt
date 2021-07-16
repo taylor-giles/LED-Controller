@@ -1,4 +1,4 @@
-package giles.ledcontroller
+package giles.ledcontroller.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import giles.ledcontroller.R
 import kotlinx.android.synthetic.main.activity_saved_colors.*
 
 const val NUM_FRAGMENTS = 2
@@ -30,7 +31,7 @@ class ViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            1 -> { SavedGradientsFragment() } //TODO: Replace with SavedGradientsFragment
+            1 -> { SavedGradientsFragment() }
             else -> { SavedColorsFragment() }
         }
     }
