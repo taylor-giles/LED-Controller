@@ -151,7 +151,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
  */
 //View types
 const val COLOR_TYPE = 1
-const val BUTTON_TYPE = 2
+const val ADD_GRADIENT_COLOR_TYPE = 2
 class GradientColorViewAdapter(
     private val dataSet: ArrayList<Int>,
     private val addButtonListener: View.OnClickListener,
@@ -173,7 +173,7 @@ class GradientColorViewAdapter(
         val opacityBar: SeekBar? = view.slider_gradient_color_opacity
         val opacityText: EditText? = view.text_gradient_color_opacity
 
-        val addColorButton: View? = view.text_btn_add_pattern_layer
+        val addColorButton: View? = view.text_btn_add_gradient_color
 
         fun setColor(color: Int){
             colorPreview!!.setBackgroundColor(color)
@@ -185,12 +185,12 @@ class GradientColorViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GradientColorViewHolder {
         //If the type of this viewHolder is BUTTON_TYPE, then use the button layout, otherwise use the gradient color layout
-        val layoutID = if(viewType == BUTTON_TYPE) R.layout.component_add_color_button else R.layout.item_gradient_color
+        val layoutID = if(viewType == ADD_GRADIENT_COLOR_TYPE) R.layout.component_add_color_button else R.layout.item_gradient_color
         return GradientColorViewHolder(LayoutInflater.from(parent.context).inflate(layoutID, parent, false))
     }
 
     override fun onBindViewHolder(holder: GradientColorViewHolder, position: Int) {
-        if(holder.itemViewType == BUTTON_TYPE){
+        if(holder.itemViewType == ADD_GRADIENT_COLOR_TYPE){
             holder.addColorButton!!.setOnClickListener(addButtonListener)
         } else {
             //Set color of the view
@@ -231,7 +231,7 @@ class GradientColorViewAdapter(
     //There is an item for every value in the data set, plus one for the add button, which is at the end
     override fun getItemCount() = dataSet.size + 1
     override fun getItemViewType(position: Int): Int {
-        return if (position == dataSet.size) BUTTON_TYPE else COLOR_TYPE
+        return if (position == dataSet.size) ADD_GRADIENT_COLOR_TYPE else COLOR_TYPE
     }
 
     /**

@@ -32,7 +32,6 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"
             android:id="@+id/layout_gradient_preview" android:background="@android:color/darker_gray"
             android:padding="4dp" android:layout_marginStart="24dp" app:layout_constraintStart_toStartOf="parent">
-
     </FrameLayout>
     <View
             android:id="@+id/divider4"
@@ -51,7 +50,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/divider6"
+        app:layout_constraintBottom_toTopOf="@+id/divider8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider4" />
@@ -66,10 +65,10 @@
         android:layout_marginBottom="8dp"
         android:text="@android:string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/divider6"
+        app:layout_constraintEnd_toStartOf="@+id/divider8"
         app:layout_constraintStart_toStartOf="parent" />
     <View
-            android:id="@+id/divider6"
+            android:id="@+id/divider8"
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="?android:attr/listDivider"
@@ -84,11 +83,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/save"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider6" />
+        app:layout_constraintStart_toEndOf="@+id/divider8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,12 +51,13 @@
                 android:layout_width="175dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="8dp"
+                android:gravity="center|start"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/image_layer_drag_handle"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/text_effect_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

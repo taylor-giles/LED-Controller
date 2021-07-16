@@ -7,7 +7,7 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/text_btn_add_pattern_layer"
+        android:id="@+id/text_btn_add_gradient_color"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"

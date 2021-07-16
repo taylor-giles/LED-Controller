@@ -20,3 +20,4 @@ class PatternsActivity : AppCompatActivity() {
         }
     }
 }
+
