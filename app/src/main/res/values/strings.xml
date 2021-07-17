@@ -61,4 +61,13 @@
     <string name="selection_label">Applies to Lights:</string>
     <string name="none">None</string>
     <string name="add_layer">Add Layer</string>
+    <string name="effect_type_label">Effect Type:</string>
+    <string name="select_lights_label">Select which lights are affected by this layer:</string>
+    <string name="all_lights">All Lights</string>
+    <string name="alternating">Alternating</string>
+    <string name="advanced_selection">Advanced Selection</string>
+    <string name="_1">1</string>
+    <string name="num_lights_on_label">light(s) on,</string>
+    <string name="num_lights_off_label">light(s) off.</string>
+    <string name="alternating_lights_selection_title">Alternating Lights Selection</string>
 </resources>
