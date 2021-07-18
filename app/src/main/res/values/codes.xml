@@ -5,6 +5,7 @@
     <string name="EXTRA_COLOR">Color</string>
     <string name="EXTRA_GRADIENT">Gradient</string>
     <string name="EXTRA_PATTERN">Pattern</string>
+    <string name="EXTRA_LAYER">Layer</string>
 
     <!--Request Codes-->
     <integer name="SAVED_COLORS_REQUEST"> 1 </integer>

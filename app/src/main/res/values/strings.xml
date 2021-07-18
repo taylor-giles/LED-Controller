@@ -76,4 +76,6 @@
     <string name="advanced_selection_instructions">Select a region of lights by using the format [start] - [end] (e.g. 15-30). Separate selections with commas.</string>
     <string name="advanced_selection_example">e.g. 10-50, 85, 100-205</string>
     <string name="effect_options">Effect Options</string>
+    <string name="no_gradient_selected">- No Gradient Selected -</string>
+    <string name="choose_gradient">Choose Gradient</string>
 </resources>
