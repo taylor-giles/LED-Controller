@@ -176,7 +176,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Advanced Lights Selection"
+                    android:text="@string/advanced_lights_selection"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -185,7 +185,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select a region of lights by using the format [start] - [end] (e.g. 15-30). Separate selections with commas."
+                    android:text="@string/advanced_selection_instructions"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -200,9 +200,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView11">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:hint="e.g. 10-50, 85, 100-205" />
+                        android:layout_height="50dp"
+                        android:hint="@string/advanced_selection_example" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -213,12 +214,34 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_lights_selection_layouts" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/effect_options"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+        <LinearLayout
+            android:id="@+id/layout_effect_options"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

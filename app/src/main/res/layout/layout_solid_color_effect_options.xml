@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/change_color_button"
+        app:layout_constraintEnd_toEndOf="@+id/text_solid_color_option_color"
+        app:layout_constraintStart_toStartOf="@+id/preview_solid_color_option_color"
+        app:layout_constraintTop_toBottomOf="@+id/preview_solid_color_option_color" />
+
+    <EditText
+        android:id="@+id/text_solid_color_opacity"
+        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/opacity_label"
+        android:ems="10"
+        android:inputType="number"
+        android:text="@string/_255"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+    <SeekBar
+        android:id="@+id/slider_solid_color_opacity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:max="255"
+        android:progress="255"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/text_solid_color_opacity" />
+
+    <TextView
+        android:id="@+id/text_solid_color_option_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:text="@string/black_hex"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/preview_solid_color_option_color"
+        app:layout_constraintStart_toEndOf="@+id/preview_solid_color_option_color"
+        app:layout_constraintTop_toTopOf="@+id/preview_solid_color_option_color" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/opacity_label"
+        app:layout_constraintStart_toStartOf="@+id/slider_solid_color_opacity"
+        app:layout_constraintTop_toTopOf="@+id/text_solid_color_option_color" />
+
+    <giles.views.HeightSquareView
+        android:id="@+id/preview_solid_color_option_color"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

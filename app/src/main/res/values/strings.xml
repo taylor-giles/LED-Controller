@@ -70,4 +70,10 @@
     <string name="num_lights_on_label">light(s) on,</string>
     <string name="num_lights_off_label">light(s) off.</string>
     <string name="alternating_lights_selection_title">Alternating Lights Selection</string>
+    <string name="solid_color_effect_options_title">Solid Color Effect Options</string>
+    <string name="change_color_button">Change Color...</string>
+    <string name="advanced_lights_selection">Advanced Lights Selection</string>
+    <string name="advanced_selection_instructions">Select a region of lights by using the format [start] - [end] (e.g. 15-30). Separate selections with commas.</string>
+    <string name="advanced_selection_example">e.g. 10-50, 85, 100-205</string>
+    <string name="effect_options">Effect Options</string>
 </resources>
