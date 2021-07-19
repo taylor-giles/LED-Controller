@@ -10,8 +10,8 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Direction"
+        android:layout_marginStart="12dp"
+        android:text="@string/direction"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,6 +20,7 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9">
@@ -29,24 +30,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Start to End" />
+            android:text="@string/start_to_end" />
 
         <RadioButton
             android:id="@+id/radio_effect_end_to_start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="End to Start" />
+            android:text="@string/end_to_start" />
 
         <RadioButton
             android:id="@+id/radio_effect_center_to_edge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Center to Edge (Outward)" />
+            android:text="@string/center_to_edge_outward" />
 
         <RadioButton
             android:id="@+id/radio_effect_edge_to_center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edge to Center (Inward)" />
+            android:text="@string/edge_to_center_inward" />
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

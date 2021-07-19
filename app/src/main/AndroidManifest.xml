@@ -2,25 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="giles.ledcontroller">
 
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
-        android:screenOrientation="portrait"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.GradientSelectionActivity"
+            android:label="@string/select_gradient"/>
+        <activity
             android:name=".activities.LayerEditActivity"
-            android:label="@string/title_activity_edit_layer"/>
+            android:label="@string/title_activity_edit_layer" />
         <activity
             android:name=".activities.PatternEditActivity"
-            android:label="@string/title_activity_edit_pattern"/>
+            android:label="@string/title_activity_edit_pattern" />
         <activity
             android:name=".activities.PatternsActivity"
-            android:label="@string/title_activity_patterns"/>
+            android:label="@string/title_activity_patterns" />
         <activity
             android:name=".activities.SavedColorsActivity"
             android:label="@string/title_activity_saved_colors" />
@@ -31,7 +34,6 @@
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

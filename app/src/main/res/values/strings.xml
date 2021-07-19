@@ -13,16 +13,9 @@
     <string name="gradient_cycle">Gradient Cycle</string>
     <string name="gradient_wave">Gradient Wave</string>
     <string name="timed_changes">Timed Changes</string>
-    <string-array name="effect_names">
-        <item>Solid Color</item>
-        <item>Solid Gradient</item>
-        <item>Gradient Cycle</item>
-        <item>Gradient Wave</item>
-        <item>Timed Changes</item>
-    </string-array>
+    <string name="select_device">Select Device</string>
 
     <!-- Button & Display Strings -->
-    <string name="select_device">Select Device</string>
     <string name="refresh">Refresh</string>
     <string name="color_label">Color:</string>
     <string name="saturation">Saturation</string>
@@ -71,11 +64,24 @@
     <string name="num_lights_off_label">light(s) off.</string>
     <string name="alternating_lights_selection_title">Alternating Lights Selection</string>
     <string name="solid_color_effect_options_title">Solid Color Effect Options</string>
-    <string name="change_color_button">Change Color...</string>
+    <string name="change_color_button">Change Color…</string>
     <string name="advanced_lights_selection">Advanced Lights Selection</string>
-    <string name="advanced_selection_instructions">Select a region of lights by using the format [start] - [end] (e.g. 15-30). Separate selections with commas.</string>
-    <string name="advanced_selection_example">e.g. 10-50, 85, 100-205</string>
+    <string name="advanced_selection_instructions">Select regions of lights by using the format [start] – [end] (e.g. 15–30). Separate selections with commas.</string>
+    <string name="advanced_selection_example">e.g. 10–50, 85, 100–205</string>
     <string name="effect_options">Effect Options</string>
     <string name="no_gradient_selected">- No Gradient Selected -</string>
     <string name="choose_gradient">Choose Gradient</string>
+    <string name="direction">Direction</string>
+    <string name="start_to_end">Start to End</string>
+    <string name="end_to_start">End to Start</string>
+    <string name="center_to_edge_outward">Center to Edge (Outward)</string>
+    <string name="edge_to_center_inward">Edge to Center (Inward)</string>
+    <string name="gradient_select_prompt">Select a gradient or create a new one to add to your pattern.</string>
+    <string-array name="effect_names">
+        <item>Solid Color</item>
+        <item>Solid Gradient</item>
+        <item>Gradient Cycle</item>
+        <item>Gradient Wave</item>
+        <item>Timed Changes</item>
+    </string-array>
 </resources>

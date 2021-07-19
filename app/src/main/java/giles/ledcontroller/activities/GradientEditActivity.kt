@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_gradient_edit.*
 import kotlinx.android.synthetic.main.component_add_color_button.view.*
 import kotlinx.android.synthetic.main.item_gradient_color.view.*
 
-
 /**
  * Activity that allows a user to create or edit a gradient
  */
