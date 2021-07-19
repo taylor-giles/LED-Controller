@@ -1,9 +1,11 @@
 package giles.ledcontroller
 
+import java.io.Serializable
+
 class Light(
     val display: LightDisplay,
     val index: Int
-) : Comparable<Light> {
+) : Comparable<Light>, Serializable {
     init {
         //Bounds checking on index
         if(index > display.numLights){

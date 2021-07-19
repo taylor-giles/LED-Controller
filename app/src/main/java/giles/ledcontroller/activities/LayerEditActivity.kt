@@ -1,5 +1,6 @@
 package giles.ledcontroller.activities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -10,13 +11,10 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import giles.ledcontroller.Gradient
-import giles.ledcontroller.GradientWaveEffect
-import giles.ledcontroller.Layer
-import giles.ledcontroller.R
+import giles.ledcontroller.*
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.GradientRectView
-import java.lang.Integer.getInteger
+import kotlinx.android.synthetic.main.activity_layer_edit.*
 
 
 class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
@@ -25,6 +23,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private lateinit var cancelButton: Button
     private lateinit var effectTypeSpinner: Spinner
     private lateinit var lightSelectionGroup: RadioGroup
+    private lateinit var directionGroup: RadioGroup
     private lateinit var alternatingLightsLayout: ConstraintLayout
     private lateinit var advancedLightsLayout: ConstraintLayout
     private lateinit var effectOptionsLayout: LinearLayout
@@ -43,7 +42,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
     private var color: Int = 0
     private lateinit var gradient: Gradient
-    private lateinit var direction: GradientWaveEffect.GradientWaveDirection
+    private var direction: EffectDirection = EffectDirection.START_TO_END
+    private lateinit var display: LightDisplay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +107,22 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             startActivityForResult(intent, R.integer.SELECT_GRADIENT_REQUEST)
         }
 
+        //Views for directional effect options
+        directionGroup = directionalOptionsLayout.findViewById(R.id.group_radio_direction_options)
+
+        //Set behavior on direction change
+        directionGroup.setOnCheckedChangeListener { _, checkedID ->
+            when (checkedID) {
+                R.id.radio_effect_start_to_end -> direction = EffectDirection.START_TO_END
+                R.id.radio_effect_end_to_start -> direction = EffectDirection.END_TO_START
+                R.id.radio_effect_center_to_edge -> direction = EffectDirection.CENTER_TO_EDGE
+                R.id.radio_effect_edge_to_center -> direction = EffectDirection.EDGE_TO_CENTER
+            }
+        }
+
+        //Get the display
+        display = intent.getSerializableExtra(getString(R.string.EXTRA_DISPLAY)) as LightDisplay
+
         //Get the layer to be edited (if there is one)
         val givenLayer = intent.getSerializableExtra(getString(R.string.EXTRA_LAYER)) as Layer?
 
@@ -129,7 +145,46 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
         //Set behavior for save button
         saveButton.setOnClickListener {
+            //Make the effect
+            val effect: Effect = when((effectTypeSpinner.selectedItem as TextView).text){
+                getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient) }
+                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient) }
+                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, direction) }
+                else -> { SolidColorEffect(color) }
+            }
 
+            //Get the lights selection
+            val lightsSelection = ArrayList<Light>()
+            when(lightSelectionGroup.checkedRadioButtonId){
+                R.id.radio_alternating_lights -> {
+                    val numOn = edit_text_lights_on.text.toString().toInt()
+                    val numOff = edit_text_lights_off.text.toString().toInt()
+
+                    var counter: Int = 0
+                    while(counter < display.numLights){
+                        for(i in 0..numOn){
+                            if(++counter < display.numLights){
+                                lightsSelection.add(Light(display, counter))
+                            }
+                        }
+                        counter += numOff
+                    }
+                }
+
+                //TODO: Advanced lights selection
+
+                else -> {
+                    for(i in 0..display.numLights){
+                        lightsSelection.add(Light(display, i))
+                    }
+                }
+            }
+
+            //Build the layer and return from this activity with the layer as an extra
+            val returnIntent = Intent()
+            returnIntent.putExtra(getString(R.string.EXTRA_LAYER), Layer(effect, lightsSelection))
+            setResult(Activity.RESULT_OK, returnIntent)
+            finish()
         }
     }
 
