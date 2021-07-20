@@ -28,10 +28,14 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
     private val patternLayers = ArrayList<Layer>()
     private lateinit var adapter: LayerViewAdapter
     private lateinit var touchHelper: ItemTouchHelper
+    private lateinit var display: LightDisplay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pattern_edit)
+
+        //TODO: Ask user to choose display
+        display = LightDisplay(600)
 
         //Get the pattern to be edited (if there is one)
         val givenPattern = intent.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern?
@@ -43,9 +47,12 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
         adapter = LayerViewAdapter(patternLayers,
             //OnClickListener for "Add Color" button
             {
-                //Open LayerEditActivity
+                //Store display as intent extra
                 val layerEditIntent = Intent(this, LayerEditActivity::class.java)
-                startActivity(layerEditIntent)
+                layerEditIntent.putExtra(getString(R.string.EXTRA_DISPLAY), display)
+
+                //Open LayerEditActivity
+                startActivityForResult(layerEditIntent, R.integer.EDIT_LAYER_REQUEST)
             },
             this
         )
@@ -65,6 +72,16 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
 
     override fun onDragStart(viewHolder: RecyclerView.ViewHolder) {
         touchHelper.startDrag(viewHolder)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(resultCode){
+            RESULT_OK -> {
+                patternLayers.add(data?.getSerializableExtra(getString(R.string.EXTRA_LAYER)) as Layer)
+                adapter.notifyItemInserted(patternLayers.size - 1)
+            }
+        }
     }
 }
 
@@ -88,58 +105,49 @@ class LayerViewAdapter(
     class LayerViewHolder constructor(
         val view: View
     ) : RecyclerView.ViewHolder(view){
-        private val descriptionLayout: LinearLayout? = view.layout_effect_description
+        private val descriptionLayout: FrameLayout? = view.layout_effect_description
         val dragHandle: View? = view.image_layer_drag_handle
         val removeButton: View? = view.image_layer_remove
         val titleText: TextView? = view.text_effect_title
+        val contentText: TextView? = view.text_layer_content_description
 
         val addLayerButton: View? = view.text_btn_add_pattern_layer
 
-        private val colorPreview = HeightSquareView(view.context)
-        private val colorPreviewText = TextView(view.context)
-
-        private val gradientFrame = FrameLayout(view.context)
+        private val colorPreview = View(view.context)
         private val gradientView = GradientRectView(view.context)
 
         init{
             //Set up description views for both the color-type and gradient-type effects
-            colorPreviewText.textSize = 16f
-            gradientFrame.layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT
-            )
-            gradientFrame.setBackgroundColor(getColor(view.context, android.R.color.darker_gray))
-            gradientFrame.setPadding(4, 4, 4, 4)
             gradientView.layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
             )
-            gradientFrame.addView(gradientView)
+            colorPreview.layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+            )
 
             //All description-related views should be GONE by default
-            gradientFrame.visibility = View.GONE
+            gradientView.visibility = View.GONE
             colorPreview.visibility = View.GONE
-            colorPreviewText.visibility = View.GONE
 
             //Add all description-related views to layout
-            descriptionLayout?.addView(gradientFrame)
-            descriptionLayout?.addView(colorPreviewText)
+            descriptionLayout?.addView(gradientView)
             descriptionLayout?.addView(colorPreview)
         }
 
         fun setColor(color: Int){
             colorPreview.setBackgroundColor(color)
-            colorPreviewText.text = String.format("#%06X", 0xFFFFFF and color)
-            gradientFrame.visibility = View.GONE
+            contentText?.text = String.format("#%06X", 0xFFFFFF and color)
+            gradientView.visibility = View.GONE
             colorPreview.visibility = View.VISIBLE
-            colorPreviewText.visibility = View.VISIBLE
         }
 
         fun setGradient(gradient: Gradient){
             gradientView.displayGradient(gradient)
+            contentText?.text = gradient.name
             colorPreview.visibility = View.GONE
-            colorPreviewText.visibility = View.GONE
-            gradientFrame.visibility = View.VISIBLE
+            gradientView.visibility = View.VISIBLE
         }
     }
 

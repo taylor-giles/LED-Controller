@@ -15,5 +15,6 @@
     <integer name="EDIT_GRADIENT_REQUEST"> 4 </integer>
     <integer name="PATTERNS_REQUEST"> 5 </integer>
     <integer name="SELECT_GRADIENT_REQUEST"> 6 </integer>
+    <integer name="EDIT_LAYER_REQUEST"> 7 </integer>
 
 </resources>

@@ -11,11 +11,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
 import giles.ledcontroller.*
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.GradientRectView
 import kotlinx.android.synthetic.main.activity_layer_edit.*
-
 
 class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -30,6 +30,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private lateinit var solidColorOptionsLayout: View
     private lateinit var gradientOptionsLayout: View
     private lateinit var directionalOptionsLayout: View
+    private lateinit var advancedSelectionText: TextInputEditText
     private lateinit var colorPreview: View
     private lateinit var colorPreviewText: TextView
     private lateinit var chooseColorButton: Button
@@ -53,6 +54,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         saveButton = this.findViewById(R.id.btn_save_layer)
         cancelButton = this.findViewById(R.id.btn_cancel_layer)
         effectTypeSpinner = this.findViewById(R.id.spinner_effect_type)
+        advancedSelectionText = this.findViewById(R.id.input_advanced_selection)
         lightSelectionGroup = this.findViewById(R.id.group_radio_lights_selection)
         alternatingLightsLayout = this.findViewById(R.id.layout_alternating_lights_selection)
         advancedLightsLayout = this.findViewById(R.id.layout_advanced_lights_selection)
@@ -123,7 +125,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         //Get the display
         display = intent.getSerializableExtra(getString(R.string.EXTRA_DISPLAY)) as LightDisplay
 
-        //Get the layer to be edited (if there is one)
+        //TODO: Get the layer to be edited (if there is one)
         val givenLayer = intent.getSerializableExtra(getString(R.string.EXTRA_LAYER)) as Layer?
 
         //Set behavior on effect type change
@@ -146,7 +148,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         //Set behavior for save button
         saveButton.setOnClickListener {
             //Make the effect
-            val effect: Effect = when((effectTypeSpinner.selectedItem as TextView).text){
+            val effect: Effect = when(effectTypeSpinner.selectedItem){
                 getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient) }
                 getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient) }
                 getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, direction) }
@@ -160,7 +162,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
                     val numOn = edit_text_lights_on.text.toString().toInt()
                     val numOff = edit_text_lights_off.text.toString().toInt()
 
-                    var counter: Int = 0
+                    var counter = 0
                     while(counter < display.numLights){
                         for(i in 0..numOn){
                             if(++counter < display.numLights){
