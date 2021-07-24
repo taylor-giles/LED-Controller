@@ -127,6 +127,14 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
         //TODO: Get the layer to be edited (if there is one)
         val givenLayer = intent.getSerializableExtra(getString(R.string.EXTRA_LAYER)) as Layer?
+        if(givenLayer != null){
+            effectTypeSpinner.setSelection((effectTypeSpinner.adapter as ArrayAdapter<String>).getPosition(givenLayer.effect.title))
+            if(givenLayer.effect is GradientEffect){
+                setGradient((givenLayer.effect as GradientEffect).gradient)
+            } else {
+                setColor((givenLayer.effect as ColorEffect).color)
+            }
+        }
 
         //Set behavior on effect type change
         effectTypeSpinner.onItemSelectedListener = this

@@ -77,6 +77,8 @@
     <string name="center_to_edge_outward">Center to Edge (Outward)</string>
     <string name="edge_to_center_inward">Edge to Center (Inward)</string>
     <string name="gradient_select_prompt">Select a gradient or create a new one to add to your pattern.</string>
+    <string name="layers">Layers</string>
+    <string name="pattern_creation_description">Patterns are comprised of different effects, displayed in layers. Add layers to create endless custom display patterns!</string>
     <string-array name="effect_names">
         <item>Solid Color</item>
         <item>Solid Gradient</item>

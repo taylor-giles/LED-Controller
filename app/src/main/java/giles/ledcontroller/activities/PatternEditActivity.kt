@@ -108,6 +108,7 @@ class LayerViewAdapter(
         private val descriptionLayout: FrameLayout? = view.layout_effect_description
         val dragHandle: View? = view.image_layer_drag_handle
         val removeButton: View? = view.image_layer_remove
+        val editButton: View? = view.image_layer_edit
         val titleText: TextView? = view.text_effect_title
         val contentText: TextView? = view.text_layer_content_description
 

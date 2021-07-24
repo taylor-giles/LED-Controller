@@ -2,7 +2,6 @@ package giles.ledcontroller
 
 import java.io.Serializable
 
-val EFFECT_NAMES = arrayOf("Solid Color", "Solid Gradient", "Gradient Cycle", "Gradient Wave", "Timed Changes")
 interface Effect : Serializable {
     val title: String
     fun display(layer: List<Light>)
