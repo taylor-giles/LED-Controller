@@ -4,7 +4,7 @@ import java.io.Serializable
 
 interface Effect : Serializable {
     val title: String
-    fun display(layer: List<Light>)
+    fun display(lights: List<Light>)
 }
 
 enum class EffectDirection { START_TO_END, END_TO_START, CENTER_TO_EDGE, EDGE_TO_CENTER }
@@ -20,7 +20,7 @@ interface GradientEffect : Effect {
 
 class SolidColorEffect(override val color: Int) : ColorEffect {
     override val title = "Solid Color"
-    override fun display(layer: List<Light>){
+    override fun display(lights: List<Light>){
 
     }
 }
@@ -32,7 +32,7 @@ class SolidGradientEffect(
 
     override val title = "Solid Gradient"
 
-    override fun display(layer: List<Light>){
+    override fun display(lights: List<Light>){
 
     }
 }
@@ -40,7 +40,7 @@ class SolidGradientEffect(
 
 class GradientCycleEffect(override val gradient: Gradient) : GradientEffect {
     override val title = "Gradient Cycle"
-    override fun display(layer: List<Light>){
+    override fun display(lights: List<Light>){
 
     }
 }
@@ -52,18 +52,7 @@ class GradientWaveEffect(
     ) : GradientEffect{
     override val title = "Gradient Wave"
 
-    override fun display(layer: List<Light>){
-
-    }
-}
-
-
-class TimedChangeEffect(
-    val effects: List<Effect>,
-    val timers: List<Float>
-    ) : Effect{
-    override val title = "Timed Changes"
-    override fun display(layer: List<Light>){
+    override fun display(lights: List<Light>){
 
     }
 }

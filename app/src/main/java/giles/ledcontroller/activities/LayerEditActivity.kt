@@ -30,6 +30,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private lateinit var solidColorOptionsLayout: View
     private lateinit var gradientOptionsLayout: View
     private lateinit var directionalOptionsLayout: View
+    private lateinit var delayOptionsLayout: View
+    private lateinit var speedOptionsLayout: View
     private lateinit var advancedSelectionText: TextInputEditText
     private lateinit var colorPreview: View
     private lateinit var colorPreviewText: TextView
@@ -62,6 +64,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         solidColorOptionsLayout = layoutInflater.inflate(R.layout.layout_solid_color_effect_options, ConstraintLayout(this), false)
         gradientOptionsLayout = layoutInflater.inflate(R.layout.layout_gradient_effect_options, ConstraintLayout(this), false)
         directionalOptionsLayout = layoutInflater.inflate(R.layout.layout_directional_effect_options, ConstraintLayout(this), false)
+        delayOptionsLayout = layoutInflater.inflate(R.layout.layout_delay_effect_options, ConstraintLayout(this), false)
+        speedOptionsLayout = layoutInflater.inflate(R.layout.layout_speed_effect_options, ConstraintLayout(this), false)
 
         //Views for Solid Color options
         colorPreview = solidColorOptionsLayout.findViewById(R.id.preview_solid_color_option_color)
@@ -121,6 +125,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
                 R.id.radio_effect_edge_to_center -> direction = EffectDirection.EDGE_TO_CENTER
             }
         }
+
+        //TODO: Delay and speed options
 
         //Get the display
         display = intent.getSerializableExtra(getString(R.string.EXTRA_DISPLAY)) as LightDisplay

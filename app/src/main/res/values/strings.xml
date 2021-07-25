@@ -12,8 +12,13 @@
     <string name="solid_gradient">Solid Gradient</string>
     <string name="gradient_cycle">Gradient Cycle</string>
     <string name="gradient_wave">Gradient Wave</string>
-    <string name="timed_changes">Timed Changes</string>
     <string name="select_device">Select Device</string>
+    <string-array name="effect_names">
+        <item>Solid Color</item>
+        <item>Solid Gradient</item>
+        <item>Gradient Cycle</item>
+        <item>Gradient Wave</item>
+    </string-array>
 
     <!-- Button & Display Strings -->
     <string name="refresh">Refresh</string>
@@ -79,11 +84,8 @@
     <string name="gradient_select_prompt">Select a gradient or create a new one to add to your pattern.</string>
     <string name="layers">Layers</string>
     <string name="pattern_creation_description">Patterns are comprised of different effects, displayed in layers. Add layers to create endless custom display patterns!</string>
-    <string-array name="effect_names">
-        <item>Solid Color</item>
-        <item>Solid Gradient</item>
-        <item>Gradient Cycle</item>
-        <item>Gradient Wave</item>
-        <item>Timed Changes</item>
-    </string-array>
+    <string name="patterns_description">Patterns are collections of effects that can be used to create endless stunning visual displays.</string>
+    <string name="delay_start_label">Delay Start:</string>
+    <string name="_0">0</string>
+    <string name="seconds">seconds</string>
 </resources>
