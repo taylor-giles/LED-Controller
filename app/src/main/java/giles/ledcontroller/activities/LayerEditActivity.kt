@@ -42,6 +42,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private lateinit var chooseGradientButton: Button
     private lateinit var gradientText: TextView
     private lateinit var gradientView: GradientRectView
+    private lateinit var speedSlider: SeekBar
+    private lateinit var delayText: EditText
 
     private var color: Int = 0
     private lateinit var gradient: Gradient
@@ -126,7 +128,11 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             }
         }
 
-        //TODO: Delay and speed options
+        //Views for delay options
+        delayText = delayOptionsLayout.findViewById(R.id.edit_text_delay_seconds)
+
+        //Views for speed options
+        speedSlider = speedOptionsLayout.findViewById(R.id.slider_effect_speed)
 
         //Get the display
         display = intent.getSerializableExtra(getString(R.string.EXTRA_DISPLAY)) as LightDisplay
@@ -161,12 +167,16 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
         //Set behavior for save button
         saveButton.setOnClickListener {
+            //Get values
+            val speed = speedSlider.progress.toFloat()
+            val delay = delayText.text.toString().toFloat()
+
             //Make the effect
             val effect: Effect = when(effectTypeSpinner.selectedItem){
-                getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient) }
-                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient) }
-                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, direction) }
-                else -> { SolidColorEffect(color) }
+                getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient, delay) }
+                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient, delay, speed) }
+                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, delay, speed, direction) }
+                else -> { SolidColorEffect(color, delay) }
             }
 
             //Get the lights selection
@@ -234,15 +244,26 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
         effectOptionsLayout.removeAllViews()
 
+        //Color or gradient options
         if (chosenItem == getString(R.string.solid_color)){
             effectOptionsLayout.addView(solidColorOptionsLayout)
         } else {
             effectOptionsLayout.addView(gradientOptionsLayout)
         }
 
+        //Directional options
         if(chosenItem == getString(R.string.gradient_wave)){
             effectOptionsLayout.addView(directionalOptionsLayout)
         }
+
+        //Speed options
+        when(chosenItem){
+            getString(R.string.gradient_wave) -> effectOptionsLayout.addView(speedOptionsLayout)
+            getString(R.string.gradient_cycle) -> effectOptionsLayout.addView(speedOptionsLayout)
+        }
+
+        //Delay options
+        effectOptionsLayout.addView(delayOptionsLayout)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

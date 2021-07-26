@@ -62,12 +62,13 @@
         app:layout_constraintStart_toStartOf="@+id/slider_solid_color_opacity"
         app:layout_constraintTop_toTopOf="@+id/text_solid_color_option_color" />
 
-    <giles.views.HeightSquareView
+    <View
         android:id="@+id/preview_solid_color_option_color"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_solid_color_effect_change_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
