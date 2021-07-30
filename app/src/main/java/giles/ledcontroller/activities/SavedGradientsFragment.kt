@@ -40,9 +40,9 @@ class SavedGradientsFragment : Fragment() {
         val addButton = fragmentView.findViewById<FloatingActionButton>(R.id.fab_add_saved_gradient)
 
         //Set the add button action (open the GradientEditActivity for a new gradient)
-        val gradientEditIntent = Intent(requireActivity(), GradientEditActivity::class.java)
+        val gradientCreateIntent = Intent(requireActivity(), GradientEditActivity::class.java)
         addButton.setOnClickListener{
-            startActivity(gradientEditIntent)
+            startActivity(gradientCreateIntent)
         }
 
         //Set up the preview dialog which shows when the user clicks on a gradient
@@ -100,6 +100,7 @@ class SavedGradientsFragment : Fragment() {
             //Set the behavior of the preview dialog edit button
             previewDialogView.btn_edit_selected_gradient.setOnClickListener {
                 //Open the GradientEditActivity to edit this gradient
+                val gradientEditIntent = Intent(requireActivity(), GradientEditActivity::class.java)
                 gradientEditIntent.putExtra(getString(R.string.EXTRA_GRADIENT), adapter.selectedGradient)
                 startActivity(gradientEditIntent)
                 previewDialog.dismiss()

@@ -17,4 +17,9 @@ object AppData {
 
     //Set to store LED displays
     var displays = HashSet<LightDisplay>()
+
+    //ArrayList to store saved patterns
+    var patterns = SortedArrayList<Pattern> { pattern1: Pattern, pattern2: Pattern ->
+        pattern1.compareTo(pattern2)
+    }
 }

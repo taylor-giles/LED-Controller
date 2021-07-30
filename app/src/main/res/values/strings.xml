@@ -91,4 +91,11 @@
     <string name="speed">Speed</string>
     <string name="slow">Slow</string>
     <string name="fast">Fast</string>
+    <string name="pattern_name">Pattern Name</string>
+    <string name="duration_label">Duration:</string>
+    <string name="layers_label">Layers:</string>
+    <string name="effects_label">Effects:</string>
+    <string name="layers_unit">layer(s)</string>
+    <string name="select_pattern">Select Pattern</string>
+    <string name="delete_pattern">Delete Pattern</string>
 </resources>

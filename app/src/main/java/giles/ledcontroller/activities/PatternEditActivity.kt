@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -20,6 +21,7 @@ import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
 import giles.views.HeightSquareView
+import kotlinx.android.synthetic.main.activity_gradient_edit.*
 import kotlinx.android.synthetic.main.activity_pattern_edit.*
 import kotlinx.android.synthetic.main.component_add_layer_button.view.*
 import kotlinx.android.synthetic.main.item_layer.view.*
@@ -68,6 +70,74 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
         btn_cancel_pattern.setOnClickListener {
             finish()
         }
+
+        //Assign action to save button
+        btn_save_pattern.setOnClickListener {
+            //Remove the old version of the edited pattern, if it exists
+            if(givenPattern != null){
+                for(pattern: Pattern in AppData.patterns){
+                    if(pattern == givenPattern){
+                        AppData.patterns.remove(pattern)
+                        break
+                    }
+                }
+            }
+
+            //Get name
+            var name = edit_text_pattern_name.text.toString()
+
+            //Make default name if none is given
+            if(name.isBlank() || name.isEmpty()){
+                name = "Untitled Pattern"
+            }
+
+            //Keep incrementing the suffix number until the name is valid
+            if(!checkName(name)){
+                var suffix = 1
+                name += (suffix++).toString()
+                while(!checkName(name)){
+                    name = (name.substring(0, name.length - (suffix-1).toString().length)) + (suffix++).toString()
+                }
+            }
+
+            //TODO: Figure out why original pattern is not removed after edit
+
+            //If the given pattern exists, then edit it
+            var handled = false
+            if(givenPattern != null){
+                for(pattern: Pattern in AppData.patterns){
+                    if(pattern == givenPattern){
+                        pattern.name = name
+                        pattern.layers = patternLayers
+                        Toast.makeText(this, "Pattern saved as $name", Toast.LENGTH_SHORT).show()
+                        handled = true
+                        break
+                    }
+                }
+            }
+
+            //If the given pattern does not exist, save a new one
+            if(!handled){
+                AppData.patterns.add(Pattern(name, patternLayers))
+                Toast.makeText(this, "Pattern saved as $name", Toast.LENGTH_SHORT).show()
+            }
+            finish()
+        }
+    }
+
+    /**
+     * Checks whether or not the given String can be used as a name for a [Pattern].
+     * A name is valid iff there are no [Pattern]s already saved with that name.
+     *
+     * @return true if the name is valid, false otherwise.
+     */
+    private fun checkName(name: String) : Boolean{
+        for(pattern: Pattern in AppData.patterns){
+            if(pattern.name == name){
+                return false
+            }
+        }
+        return true
     }
 
     override fun onDragStart(viewHolder: RecyclerView.ViewHolder) {
@@ -85,8 +155,9 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
     }
 }
 
+
 /**
- * A RecyclerView adapter for representing layers in a pattern
+ * A RecyclerView adapter for displaying layers in a pattern
  */
 //View types
 const val COLOR_LAYER_TYPE = 1
@@ -100,7 +171,7 @@ class LayerViewAdapter(
     ItemTouchHelperAdapter {
 
     /**
-     * A ViewHolder for views displaying gradient colors and the button used to add a new color to the gradient
+     * A ViewHolder for views displaying pattern layers and the button used to add a new layer to the pattern
      */
     class LayerViewHolder constructor(
         val view: View

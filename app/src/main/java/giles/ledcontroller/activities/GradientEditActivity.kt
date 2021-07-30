@@ -90,16 +90,6 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
 
         //Assign action to save button
         btn_save_gradient.setOnClickListener {
-            //Remove the old version of the edited gradient, if it exists
-            if(givenGradient != null){
-                for(gradient: Gradient in AppData.savedGradients){
-                    if(gradient == givenGradient){
-                        AppData.savedGradients.remove(gradient)
-                        break
-                    }
-                }
-            }
-
             //Get name
             var name = text_edit_gradient_name.text.toString()
 
@@ -117,9 +107,25 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                 }
             }
 
-            //Save the gradient and finish the activity.
-            AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
-            Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
+            //If the given gradient exists, then edit it
+            var handled = false
+            if(givenGradient != null){
+                for(gradient: Gradient in AppData.savedGradients){
+                    if(gradient == givenGradient){
+                        gradient.name = name
+                        gradient.colors = gradientColors.toIntArray()
+                        Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
+                        handled = true
+                        break
+                    }
+                }
+            }
+
+            //If the given gradient does not exist, save a new one
+            if(!handled){
+                AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
+                Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
+            }
             finish()
         }
     }
