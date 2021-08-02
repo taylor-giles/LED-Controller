@@ -171,6 +171,12 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             val speed = speedSlider.progress.toFloat()
             val delay = delayText.text.toString().toFloat()
 
+            //Make sure the gradient is initialized if it needs to be
+            if(!this::gradient.isInitialized && effectTypeSpinner.selectedItem != getString(R.string.solid_color)){
+                Toast.makeText(this, "Please select a gradient", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             //Make the effect
             val effect: Effect = when(effectTypeSpinner.selectedItem){
                 getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient, delay) }

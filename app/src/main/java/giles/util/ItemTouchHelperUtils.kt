@@ -10,12 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
  * @param isLongPressDraggable Determines whether or not this callback should allow dragging initiated by long press, default true
  * @param isDraggable Determines whether or not this callback should support dragging, default true
  * @param isSwipable Determines whether or not this callback should support swiping, default true
+ * @param viewTypes Defines the list of view types between which movement should be allowed
  */
 class ItemTouchHelperCallback @JvmOverloads constructor(
     val adapter: ItemTouchHelperAdapter,
     val isLongPressDraggable: Boolean = true,
     val isDraggable: Boolean = true,
-    val isSwipable: Boolean = true
+    val isSwipable: Boolean = true,
+    val viewTypes: Array<Int>? = null
 ): ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
@@ -29,9 +31,15 @@ class ItemTouchHelperCallback @JvmOverloads constructor(
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        //Do not allow movement between items of different type
-        if (viewHolder.itemViewType != target.itemViewType) {
-            return false;
+        if(viewTypes == null){
+            //Do not allow movement between items of different type
+            if (viewHolder.itemViewType != target.itemViewType) {
+                return false
+            }
+        } else {
+            if(!viewTypes.contains(viewHolder.itemViewType) || !viewTypes.contains(target.itemViewType)){
+                return false
+            }
         }
 
         adapter.moveItem(viewHolder.absoluteAdapterPosition, target.absoluteAdapterPosition)

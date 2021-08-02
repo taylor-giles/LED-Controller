@@ -62,7 +62,12 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
 
         //Attach the ItemTouchHelper so that views can be dragged and reordered
         touchHelper = ItemTouchHelper(
-            ItemTouchHelperCallback(adapter, isLongPressDraggable = false, isDraggable = true, isSwipable = false)
+            ItemTouchHelperCallback(adapter,
+                isLongPressDraggable = false,
+                isDraggable = true,
+                isSwipable = false,
+                viewTypes = arrayOf(COLOR_LAYER_TYPE, GRADIENT_LAYER_TYPE)
+            )
         )
         touchHelper.attachToRecyclerView(patternLayersList)
 
