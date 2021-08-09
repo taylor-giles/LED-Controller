@@ -32,7 +32,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private lateinit var solidColorOptionsLayout: View
     private lateinit var gradientOptionsLayout: View
     private lateinit var directionalOptionsLayout: View
-    private lateinit var delayOptionsLayout: View
+//    private lateinit var delayOptionsLayout: View
     private lateinit var speedOptionsLayout: View
     private lateinit var advancedSelectionText: TextInputEditText
     private lateinit var colorPreview: View
@@ -45,7 +45,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private lateinit var gradientText: TextView
     private lateinit var gradientView: GradientRectView
     private lateinit var speedSlider: SeekBar
-    private lateinit var delayText: EditText
+//    private lateinit var delayText: EditText
 
     private var color: Int = 0
     private lateinit var gradient: Gradient
@@ -68,7 +68,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         solidColorOptionsLayout = layoutInflater.inflate(R.layout.layout_solid_color_effect_options, ConstraintLayout(this), false)
         gradientOptionsLayout = layoutInflater.inflate(R.layout.layout_gradient_effect_options, ConstraintLayout(this), false)
         directionalOptionsLayout = layoutInflater.inflate(R.layout.layout_directional_effect_options, ConstraintLayout(this), false)
-        delayOptionsLayout = layoutInflater.inflate(R.layout.layout_delay_effect_options, ConstraintLayout(this), false)
+//        delayOptionsLayout = layoutInflater.inflate(R.layout.layout_delay_effect_options, ConstraintLayout(this), false)
         speedOptionsLayout = layoutInflater.inflate(R.layout.layout_speed_effect_options, ConstraintLayout(this), false)
 
         //Views for Solid Color options
@@ -129,7 +129,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         }
 
         //Views for delay options
-        delayText = delayOptionsLayout.findViewById(R.id.edit_text_delay_seconds)
+//        delayText = delayOptionsLayout.findViewById(R.id.edit_text_delay_seconds)
 
         //Views for speed options
         speedSlider = speedOptionsLayout.findViewById(R.id.slider_effect_speed)
@@ -169,7 +169,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         saveButton.setOnClickListener {
             //Get values
             val duration = (MIN_EFFECT_DURATION * 2f.pow(speedSlider.max - speedSlider.progress)).roundToInt()
-            val delay = delayText.text.toString().toFloat()
+//            val delay = delayText.text.toString().toFloat()
 
             //Make sure the gradient is initialized if it needs to be
             if(!this::gradient.isInitialized && effectTypeSpinner.selectedItem != getString(R.string.solid_color)){
@@ -179,14 +179,14 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
             //Make the effect
             val effect: Effect = when(effectTypeSpinner.selectedItem){
-                getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient, delay) }
-                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient, delay, duration) }
-                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, delay, duration, direction) }
-                else -> { SolidColorEffect(color, delay) }
+                getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient) }
+                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient, duration) }
+                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, duration, direction) }
+                else -> { SolidColorEffect(color) }
             }
 
             //Get the lights selection
-            val lightsSelection = ArrayList<Light>()
+            val lightsSelection = ArrayList<Int>()
             when(lightSelectionGroup.checkedRadioButtonId){
                 R.id.radio_alternating_lights -> {
                     val numOn = edit_text_lights_on.text.toString().toInt()
@@ -196,7 +196,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
                     while(counter < display.numLights){
                         for(i in 0..numOn){
                             if(++counter < display.numLights){
-                                lightsSelection.add(Light(display, counter))
+                                lightsSelection.add(counter)
                             }
                         }
                         counter += numOff
@@ -207,7 +207,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
                 else -> {
                     for(i in 0..display.numLights){
-                        lightsSelection.add(Light(display, i))
+                        lightsSelection.add(i)
                     }
                 }
             }
@@ -269,7 +269,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         }
 
         //Delay options
-        effectOptionsLayout.addView(delayOptionsLayout)
+//        effectOptionsLayout.addView(delayOptionsLayout)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

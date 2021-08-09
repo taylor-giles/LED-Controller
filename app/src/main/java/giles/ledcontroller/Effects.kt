@@ -9,7 +9,7 @@ enum class EffectDirection { START_TO_END, END_TO_START }
 
 interface Effect : Serializable {
     val title: String
-    val delay: Float
+    val numFrames: Int
     fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray>
 }
 interface ColorEffect : Effect {
@@ -18,17 +18,15 @@ interface ColorEffect : Effect {
 interface GradientEffect : Effect {
     val gradient: Gradient
 }
-interface DynamicEffect : Effect {
-    val duration: Int //The duration of this effect, in seconds
-}
 
 
 class SolidColorEffect(
-    override val color: Int,
-    override val delay: Float
+    override val color: Int
 ) : ColorEffect {
 
     override val title = "Solid Color"
+    override val numFrames = 1
+
     override fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray> {
         val output = ArrayList<IntArray>()
         val frame = IntArray(totalNumLights)
@@ -50,11 +48,11 @@ class SolidColorEffect(
 
 
 class SolidGradientEffect(
-    override val gradient: Gradient,
-    override val delay: Float
+    override val gradient: Gradient
 ) : GradientEffect {
 
     override val title = "Solid Gradient"
+    override val numFrames = 1
 
     override fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray> {
         val output = ArrayList<IntArray>()
@@ -78,11 +76,11 @@ class SolidGradientEffect(
 
 class GradientCycleEffect(
     override val gradient: Gradient,
-    override val delay: Float,
-    override val duration: Int
-) : GradientEffect, DynamicEffect {
+    val duration: Int
+) : GradientEffect {
 
     override val title = "Gradient Cycle"
+    override val numFrames: Int = duration / MILLIS_BETWEEN_FRAMES
 
     override fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray> {
         val output = ArrayList<IntArray>()
@@ -109,12 +107,12 @@ class GradientCycleEffect(
 
 class GradientWaveEffect(
     override val gradient: Gradient,
-    override val delay: Float,
-    override val duration: Int,
+    val duration: Int,
     val direction: EffectDirection
-) : GradientEffect, DynamicEffect{
+) : GradientEffect{
 
     override val title = "Gradient Wave"
+    override val numFrames: Int = duration / MILLIS_BETWEEN_FRAMES
 
     override fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray> {
         val output = ArrayList<IntArray>()
