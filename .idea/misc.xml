@@ -5,6 +5,15 @@
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_delay_effect_options.xml" value="0.24259259259259258" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_directional_effect_options.xml" value="0.24259259259259258" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_speed_effect_options.xml" value="0.24722222222222223" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

@@ -11,8 +11,8 @@ object AppData {
     var savedColors = HashSet<Int>()
 
     //ArrayList to store saved gradients
-    var savedGradients = SortedArrayList<Gradient> { gradient: Gradient, gradient2: Gradient ->
-        gradient.compareTo(gradient2)
+    var savedGradients = SortedArrayList<Gradient> { gradient1: Gradient, gradient2: Gradient ->
+        gradient1.compareTo(gradient2)
     }
 
     //Set to store LED displays

@@ -12,6 +12,7 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="numberDecimal"
+        android:minHeight="48dp"
         android:text="@string/_0"
         android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/textView12"

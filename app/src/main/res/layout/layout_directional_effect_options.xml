@@ -30,24 +30,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
+            android:minHeight="48dp"
             android:text="@string/start_to_end" />
 
         <RadioButton
             android:id="@+id/radio_effect_end_to_start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:text="@string/end_to_start" />
 
-        <RadioButton
-            android:id="@+id/radio_effect_center_to_edge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/center_to_edge_outward" />
-
-        <RadioButton
-            android:id="@+id/radio_effect_edge_to_center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/edge_to_center_inward" />
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

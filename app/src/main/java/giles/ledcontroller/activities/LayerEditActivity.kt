@@ -16,6 +16,8 @@ import giles.ledcontroller.*
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.GradientRectView
 import kotlinx.android.synthetic.main.activity_layer_edit.*
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -123,8 +125,6 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             when (checkedID) {
                 R.id.radio_effect_start_to_end -> direction = EffectDirection.START_TO_END
                 R.id.radio_effect_end_to_start -> direction = EffectDirection.END_TO_START
-                R.id.radio_effect_center_to_edge -> direction = EffectDirection.CENTER_TO_EDGE
-                R.id.radio_effect_edge_to_center -> direction = EffectDirection.EDGE_TO_CENTER
             }
         }
 
@@ -168,7 +168,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         //Set behavior for save button
         saveButton.setOnClickListener {
             //Get values
-            val speed = speedSlider.progress.toFloat()
+            val duration = (MIN_EFFECT_DURATION * 2f.pow(speedSlider.max - speedSlider.progress)).roundToInt()
             val delay = delayText.text.toString().toFloat()
 
             //Make sure the gradient is initialized if it needs to be
@@ -180,8 +180,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             //Make the effect
             val effect: Effect = when(effectTypeSpinner.selectedItem){
                 getString(R.string.solid_gradient) -> { SolidGradientEffect(gradient, delay) }
-                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient, delay, speed) }
-                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, delay, speed, direction) }
+                getString(R.string.gradient_cycle) -> { GradientCycleEffect(gradient, delay, duration) }
+                getString(R.string.gradient_wave) -> { GradientWaveEffect(gradient, delay, duration, direction) }
                 else -> { SolidColorEffect(color, delay) }
             }
 

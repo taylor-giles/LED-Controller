@@ -107,25 +107,19 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                 }
             }
 
-            //If the given gradient exists, then edit it
-            var handled = false
+            //If the given gradient exists, then remove it
             if(givenGradient != null){
                 for(gradient: Gradient in AppData.savedGradients){
                     if(gradient == givenGradient){
-                        gradient.name = name
-                        gradient.colors = gradientColors.toIntArray()
-                        Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
-                        handled = true
+                        AppData.savedGradients.remove(gradient)
                         break
                     }
                 }
             }
 
-            //If the given gradient does not exist, save a new one
-            if(!handled){
-                AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
-                Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
-            }
+            //Make and save the new gradient
+            AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
+            Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
