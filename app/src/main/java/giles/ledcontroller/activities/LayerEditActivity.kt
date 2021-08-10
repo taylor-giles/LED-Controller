@@ -194,7 +194,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
                     var counter = 0
                     while(counter < display.numLights){
-                        for(i in 0..numOn){
+                        for(i in 0 until numOn){
                             if(++counter < display.numLights){
                                 lightsSelection.add(counter)
                             }
@@ -206,7 +206,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
                 //TODO: Advanced lights selection
 
                 else -> {
-                    for(i in 0..display.numLights){
+                    for(i in 0 until display.numLights){
                         lightsSelection.add(i)
                     }
                 }

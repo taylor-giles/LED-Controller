@@ -76,28 +76,28 @@ class SolidGradientEffect(
 
 class GradientCycleEffect(
     override val gradient: Gradient,
-    val duration: Int
+    val duration: Int //In seconds
 ) : GradientEffect {
 
     override val title = "Gradient Cycle"
-    override val numFrames: Int = duration / MILLIS_BETWEEN_FRAMES
+    override val numFrames: Int = duration * 1000 / MILLIS_BETWEEN_FRAMES
 
     override fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray> {
         val output = ArrayList<IntArray>()
         val frame = IntArray(totalNumLights)
 
         //Iteratively build the frames in this effect
-        var frameTime = 0
-        while(frameTime < duration){
+        var frameNum = 0
+        while(frameNum < numFrames){
             for(light in 0 until totalNumLights){
                 if(lights.contains(light)){
-                    frame[light] = gradient.colorAtPosition(frameTime.toFloat() / duration.toFloat())
+                    frame[light] = gradient.colorAtPosition(frameNum.toFloat() / numFrames.toFloat())
                 } else {
                     frame[light] = 0x7F000000
                 }
             }
             output.add(frame.copyOf())
-            frameTime += MILLIS_BETWEEN_FRAMES
+            frameNum++
         }
 
         return output
@@ -107,26 +107,25 @@ class GradientCycleEffect(
 
 class GradientWaveEffect(
     override val gradient: Gradient,
-    val duration: Int,
+    val duration: Int, //In seconds
     val direction: EffectDirection
 ) : GradientEffect{
 
     override val title = "Gradient Wave"
-    override val numFrames: Int = duration / MILLIS_BETWEEN_FRAMES
+    override val numFrames: Int = duration * 1000 / MILLIS_BETWEEN_FRAMES
 
     override fun generateFrameMatrix(lights: List<Int>, totalNumLights: Int): List<IntArray> {
         val output = ArrayList<IntArray>()
         val frame = IntArray(totalNumLights)
 
         //Iteratively build the frames in this effect
-        var frameTime = 0
-        while(frameTime < duration){
+        var frameNum = 0
+        while(frameNum < numFrames){
             for(light in 0 until totalNumLights){
                 if(lights.contains(light)){
-                    val offset = (frameTime / MILLIS_BETWEEN_FRAMES)
                     val position = when(direction){
-                        EffectDirection.START_TO_END -> (light + offset) % totalNumLights
-                        EffectDirection.END_TO_START -> (totalNumLights + (light - offset)) % totalNumLights
+                        EffectDirection.START_TO_END -> (light + frameNum) % totalNumLights
+                        EffectDirection.END_TO_START -> (totalNumLights + (light - frameNum)) % totalNumLights
                     }
                     frame[light] = gradient.colorAtPosition(position.toFloat() / totalNumLights.toFloat())
                 } else {
@@ -134,7 +133,7 @@ class GradientWaveEffect(
                 }
             }
             output.add(frame.copyOf())
-            frameTime += MILLIS_BETWEEN_FRAMES
+            frameNum++
         }
 
         return output

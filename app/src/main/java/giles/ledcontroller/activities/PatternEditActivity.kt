@@ -37,7 +37,7 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
         setContentView(R.layout.activity_pattern_edit)
 
         //TODO: Ask user to choose display
-        display = LightDisplay(600)
+        display = LightDisplay(1000)
 
         //Get the pattern to be edited (if there is one)
         val givenPattern = intent.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern?

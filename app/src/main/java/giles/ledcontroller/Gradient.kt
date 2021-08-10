@@ -1,6 +1,7 @@
 package giles.ledcontroller
 
 import android.graphics.Color
+import android.util.Log
 import java.io.Serializable
 
 class Gradient @JvmOverloads constructor (
@@ -20,7 +21,7 @@ class Gradient @JvmOverloads constructor (
      * Constructor for generating the positions of the colors equally spaced apart
      */
     constructor(name: String, colors: IntArray = IntArray(0)): this(name, colors, FloatArray(colors.size)){
-        val spacing: Float = 1f / colors.size
+        val spacing: Float = 1f / (colors.size - 1)
         for(i: Int in colors.indices){
             positions[i] = spacing * i
         }
@@ -61,7 +62,7 @@ class Gradient @JvmOverloads constructor (
                 val blue = Color.blue(lowerColor) + relPos * (Color.blue(upperColor) - Color.blue(lowerColor))
 
                 //Build and return color
-                Color.argb(alpha, red, green, blue)
+                Color.argb(alpha.toInt(), red.toInt(), green.toInt(), blue.toInt())
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import giles.ledcontroller.*
+import giles.ledcontroller.views.PatternDemoView
 import giles.ledcontroller.views.PatternView
 import giles.ledcontroller.views.PatternViewAdapter
 import kotlinx.android.synthetic.main.activity_patterns.*
@@ -54,6 +55,8 @@ class PatternsActivity : AppCompatActivity() {
             adapter.selectView(clickedView as PatternView)
 
             //Update the information in the preview display
+            val demoView = PatternDemoView(this)
+            previewDialogView.layout_pattern_preview_demo.addView(demoView)
             previewDialogView.text_pattern_preview_number_layers.text = adapter.selectedPattern!!.layers.size.toString()
             previewDialogView.text_pattern_preview_duration.text = adapter.selectedPattern!!.duration.toString()
             previewDialog.setTitle(adapter.selectedPattern?.name)
@@ -104,6 +107,9 @@ class PatternsActivity : AppCompatActivity() {
                 startActivity(patternEditIntent)
                 previewDialog.dismiss()
             }
+
+            //Start the preview demo
+            demoView.demo(adapter.selectedPattern!!, 1000)
 
             //Display the dialog
             previewDialog.show()

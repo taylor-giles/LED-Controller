@@ -17,6 +17,7 @@ class Pattern(
                 length = layer.effect.numFrames
             }
         }
+        duration = (length * MILLIS_BETWEEN_FRAMES) / 1000
 
         //Start with a solid black base layer on all frames
         val output = ArrayList<IntArray>()
@@ -35,7 +36,7 @@ class Pattern(
             for(effectMatrix: List<IntArray> in effectMatrices){
                 val frame = effectMatrix[frameNum % effectMatrix.size]
                 for(light: Int in 0 until totalNumLights){
-                    val alpha = Color.alpha(frame[light])
+                    val alpha = Color.alpha(frame[light]) / 255
                     val red = Color.red(output[frameNum][light]) * (1-alpha) + Color.red(frame[light]) * alpha
                     val green = Color.green(output[frameNum][light]) * (1-alpha) + Color.green(frame[light]) * alpha
                     val blue = Color.blue(output[frameNum][light]) * (1-alpha) + Color.blue(frame[light]) * alpha
