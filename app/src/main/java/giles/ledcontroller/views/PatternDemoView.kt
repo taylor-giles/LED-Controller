@@ -3,12 +3,11 @@ package giles.ledcontroller.views
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import giles.ledcontroller.MILLIS_BETWEEN_FRAMES
 import giles.ledcontroller.Pattern
-import kotlin.concurrent.thread
+
 
 class PatternDemoView @JvmOverloads constructor(
     context : Context,
@@ -27,32 +26,40 @@ class PatternDemoView @JvmOverloads constructor(
      */
     fun demo(pattern: Pattern, numLights: Int){
         val frameMatrix = pattern.generateFrameMatrix(numLights)
+        val views = ArrayList<View>()
+        this.removeAllViews()
+
+        //Build the views to be shown and add them to the layout
+        for(i in 0 until numLights){
+            val view = View(context)
+            view.layoutParams = LayoutParams(1, LayoutParams.MATCH_PARENT, 1f)
+            views.add(view)
+            this.addView(view)
+        }
 
         //Create thread to run demo until this view is no longer on the screen
-        thread{
-            val views = ArrayList<View>()
-            this.removeAllViews()
-
-            //Build the views to be shown and add them to the layout
-            for(i in 0 until numLights){
-                val view = View(context)
-                view.layoutParams = LayoutParams(1, LayoutParams.MATCH_PARENT, 1f)
-                views.add(view)
-                this.addView(view)
-            }
-
-            Log.d("-----------------", "Here in the demo thread!")
+        val thread = Thread {
             do {
+                //Iterate over frames
                 for (frame in frameMatrix) {
+                    //Iterate over lights in frame
                     for (light in 0 until numLights) {
-                        views[light].setBackgroundColor(frame[light])
+                        //Change color of view corresponding to light
+                        views[light].post{ views[light].setBackgroundColor(frame[light]) }
                     }
-                    Thread.sleep(MILLIS_BETWEEN_FRAMES.toLong())
+
+                    //Wait
+                    try {
+                        Thread.sleep(MILLIS_BETWEEN_FRAMES.toLong())
+                    } catch (e: InterruptedException) {
+                        e.printStackTrace()
+                    }
                     if (!this.isShown) {
                         break
                     }
                 }
-            }while(this.isShown)
+            } while(this.isShown)
         }
+        thread.start()
     }
 }

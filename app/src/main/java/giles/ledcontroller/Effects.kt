@@ -123,11 +123,14 @@ class GradientWaveEffect(
         while(frameNum < numFrames){
             for(light in 0 until totalNumLights){
                 if(lights.contains(light)){
+                    /* The gradient positions are from 0 to totalNumLights. The position in the gradient
+                    of any given light in a frame is determined based on the relative position [0..1]
+                    of that frame within the matrix. This way, the number of frames can remain time-based.*/
                     val position = when(direction){
-                        EffectDirection.START_TO_END -> (light + frameNum) % totalNumLights
-                        EffectDirection.END_TO_START -> (totalNumLights + (light - frameNum)) % totalNumLights
+                        EffectDirection.START_TO_END -> (totalNumLights + (light - (frameNum.toFloat() / numFrames.toFloat()) * totalNumLights.toFloat())) % totalNumLights
+                        EffectDirection.END_TO_START -> (light + ((frameNum.toFloat() / numFrames.toFloat()) * totalNumLights.toFloat())) % totalNumLights
                     }
-                    frame[light] = gradient.colorAtPosition(position.toFloat() / totalNumLights.toFloat())
+                    frame[light] = gradient.colorAtPosition(position / totalNumLights.toFloat())
                 } else {
                     frame[light] = 0x7F000000
                 }
@@ -135,7 +138,6 @@ class GradientWaveEffect(
             output.add(frame.copyOf())
             frameNum++
         }
-
         return output
     }
 }
