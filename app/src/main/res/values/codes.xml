@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- File Names -->
+    <string name="FILE_COLORS">colors</string>
+    <string name="FILE_GRADIENTS">gradients</string>
+    <string name="FILE_PATTERNS">patterns</string>
+    <string name="FILE_DISPLAYS">displays</string>
+
     <!-- Names of Extras -->
     <string name="EXTRA_ADDRESS">Address</string>
     <string name="EXTRA_COLOR">Color</string>

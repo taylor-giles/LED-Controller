@@ -83,6 +83,7 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
                 for(pattern: Pattern in AppData.patterns){
                     if(pattern == givenPattern){
                         AppData.patterns.remove(pattern)
+                        AppData.savePatterns(this)
                         break
                     }
                 }
@@ -124,6 +125,7 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
             //If the given pattern does not exist, save a new one
             if(!handled){
                 AppData.patterns.add(Pattern(name, patternLayers))
+                AppData.savePatterns(this)
                 Toast.makeText(this, "Pattern saved as $name", Toast.LENGTH_SHORT).show()
             }
             finish()

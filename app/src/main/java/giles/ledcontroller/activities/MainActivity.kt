@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
+import giles.ledcontroller.AppData
 import giles.ledcontroller.R
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppData.load(this)
 
         //Set up color picker
         val colorPickerView = ColorPickerView(this, showSavedColors = false)

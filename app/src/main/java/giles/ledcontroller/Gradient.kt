@@ -10,6 +10,15 @@ class Gradient @JvmOverloads constructor (
     val positions: FloatArray
 ) : Serializable, Comparable<Gradient>{
 
+    //This is necessary since lambdas are not serializable
+    companion object {
+        class GradientComparator: Serializable, Comparator<Gradient>{
+            override fun compare(o1: Gradient, o2: Gradient): Int {
+                return o1.compareTo(o2)
+            }
+        }
+    }
+
     init{
         //Ensure that there is exactly one position per color
         if(colors.size != positions.size){

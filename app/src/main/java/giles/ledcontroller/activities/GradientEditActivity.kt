@@ -112,6 +112,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                 for(gradient: Gradient in AppData.savedGradients){
                     if(gradient == givenGradient){
                         AppData.savedGradients.remove(gradient)
+                        AppData.saveGradients(this)
                         break
                     }
                 }
@@ -119,6 +120,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
 
             //Make and save the new gradient
             AppData.savedGradients.add(Gradient(name, gradientColors.toIntArray()))
+            AppData.saveGradients(this)
             Toast.makeText(this, "Gradient saved as $name", Toast.LENGTH_SHORT).show()
             finish()
         }

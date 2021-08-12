@@ -84,6 +84,7 @@ class SavedColorsFragment : Fragment() {
                     .setPositiveButton(R.string.remove) { _, _ ->
                         //Delete the currently selected color and update the list
                         AppData.savedColors.remove(adapter.selectedColor!!)
+                        AppData.saveColors(this.requireContext())
                         updateAdapter()
 
                         //Dismiss the dialog
@@ -111,6 +112,7 @@ class SavedColorsFragment : Fragment() {
                 .setPositiveButton(R.string.save_color) { _, _ ->
                     //Save the color and update the list
                     AppData.savedColors.add(dialogPicker.getColor())
+                    AppData.saveColors(this.requireContext())
                     updateAdapter()
                 }
                 .setNegativeButton(android.R.string.cancel, null)

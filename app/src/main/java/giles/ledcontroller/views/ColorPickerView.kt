@@ -99,6 +99,7 @@ class ColorPickerView @JvmOverloads constructor(
             //Update the saved colors list
             savedColorsAdapter?.dataSet = AppData.savedColors.sortedBy{ savedColor -> ColorUtils.getHue(savedColor) }.toTypedArray()
             savedColorsAdapter?.notifyDataSetChanged()
+            AppData.saveColors(this.context)
 
             Toast.makeText(context, "Saved color " + String.format("#%06X", 0xFFFFFF and color), Toast.LENGTH_SHORT).show()
         } else {

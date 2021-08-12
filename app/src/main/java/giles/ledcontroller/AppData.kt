@@ -1,25 +1,117 @@
 package giles.ledcontroller
 
+import android.content.Context
 import giles.util.SortedArrayList
+import java.io.*
 import java.util.*
 
 /**
  * Static object to store app data shared by multiple classes
  */
-object AppData {
+object AppData{
     //Set (no duplicates) to store saved colors
     var savedColors = HashSet<Int>()
 
     //ArrayList to store saved gradients
-    var savedGradients = SortedArrayList<Gradient> { gradient1: Gradient, gradient2: Gradient ->
-        gradient1.compareTo(gradient2)
-    }
+    var savedGradients = SortedArrayList(Gradient.Companion.GradientComparator())
 
     //Set to store LED displays
     var displays = HashSet<LightDisplay>()
 
     //ArrayList to store saved patterns
-    var patterns = SortedArrayList<Pattern> { pattern1: Pattern, pattern2: Pattern ->
-        pattern1.compareTo(pattern2)
+    var patterns = SortedArrayList(Pattern.Companion.PatternComparator())
+
+
+    /**
+     * Functions to save data to file
+     */
+    fun save(context: Context){
+        saveColors(context)
+        saveGradients(context)
+        savePatterns(context)
+        saveDisplays(context)
+    }
+    fun saveColors(context: Context){
+        //Save colors
+        val colorsFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_COLORS), Context.MODE_PRIVATE)
+        val colorsObjOut = ObjectOutputStream(colorsFileOut)
+        colorsObjOut.writeObject(savedColors)
+        colorsObjOut.close()
+        colorsFileOut.close()
+    }
+    fun saveGradients(context: Context){
+        //Save gradients
+        val gradientsFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_GRADIENTS), Context.MODE_PRIVATE)
+        val gradientsObjOut = ObjectOutputStream(gradientsFileOut)
+        gradientsObjOut.writeObject(savedGradients)
+        gradientsObjOut.close()
+        gradientsFileOut.close()
+    }
+    fun savePatterns(context: Context){
+        //Save patterns
+        val patternsFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_PATTERNS), Context.MODE_PRIVATE)
+        val patternsObjOut = ObjectOutputStream(patternsFileOut)
+        patternsObjOut.writeObject(patterns)
+        patternsObjOut.close()
+        patternsFileOut.close()
+    }
+    fun saveDisplays(context: Context){
+        //Save displays
+        val displaysFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_DISPLAYS), Context.MODE_PRIVATE)
+        val displaysObjOut = ObjectOutputStream(displaysFileOut)
+        displaysObjOut.writeObject(displays)
+        displaysObjOut.close()
+        displaysFileOut.close()
+    }
+
+    /**
+     * Load data from file
+     */
+    //TODO: Add error handling and backwards compatibility for when classes change
+    fun load(context: Context){
+        //Load colors
+        try{
+            val colorsFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_COLORS))
+            val colorsObjectIn = ObjectInputStream(colorsFileIn)
+            this.savedColors = colorsObjectIn.readObject() as HashSet<Int>
+            colorsObjectIn.close()
+            colorsFileIn.close()
+        } catch(ex: FileNotFoundException){
+            //Do nothing
+        }
+
+        //Load gradients
+        try{
+            val gradientsFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_GRADIENTS))
+            val gradientsObjectIn = ObjectInputStream(gradientsFileIn)
+            this.savedGradients = gradientsObjectIn.readObject() as SortedArrayList<Gradient>
+            gradientsObjectIn.close()
+            gradientsFileIn.close()
+        } catch(ex: FileNotFoundException){
+            //Do nothing
+        }
+
+        //Load patterns
+        try{
+            val patternsFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_PATTERNS))
+            val patternsObjectIn = ObjectInputStream(patternsFileIn)
+            this.patterns = patternsObjectIn.readObject() as SortedArrayList<Pattern>
+            patternsObjectIn.close()
+            patternsFileIn.close()
+        } catch(ex: FileNotFoundException){
+            //Do nothing
+        }
+
+        //Load displays
+        try{
+            val displaysFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_DISPLAYS))
+            val displaysObjectIn = ObjectInputStream(displaysFileIn)
+            this.displays = displaysObjectIn.readObject() as HashSet<LightDisplay>
+            displaysObjectIn.close()
+            displaysFileIn.close()
+        } catch(ex: FileNotFoundException){
+            //Do nothing
+        }
+
     }
 }

@@ -9,6 +9,15 @@ class Pattern(
 ) : Comparable<Pattern>, Serializable {
     var duration: Int = 0
 
+    //This is necessary since lambdas are not serializable
+    companion object {
+        class PatternComparator: Serializable, Comparator<Pattern>{
+            override fun compare(o1: Pattern, o2: Pattern): Int {
+                return o1.compareTo(o2)
+            }
+        }
+    }
+
     fun generateFrameMatrix(totalNumLights: Int): List<IntArray>{
         //Determine the number of frames in the longest effect
         var length = 0
