@@ -98,4 +98,6 @@
     <string name="layers_unit">layer(s)</string>
     <string name="select_pattern">Select Pattern</string>
     <string name="delete_pattern">Delete Pattern</string>
+    <string name="layer_s">Layer(s)</string>
+    <string name="click_for_details">Click for Details</string>
 </resources>

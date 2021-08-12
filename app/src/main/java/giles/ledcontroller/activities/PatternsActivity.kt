@@ -114,8 +114,10 @@ class PatternsActivity : AppCompatActivity() {
             //Display the dialog
             previewDialog.show()
         }
-        list_saved_patterns.layoutManager = LinearLayoutManager(this)
         list_saved_patterns.adapter = adapter
+        val manager = LinearLayoutManager(this)
+        manager.isAutoMeasureEnabled = false
+        list_saved_patterns.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onResume(){

@@ -8,6 +8,7 @@ class Pattern(
     var layers: ArrayList<Layer> = ArrayList()
 ) : Comparable<Pattern>, Serializable {
     var duration: Int = 0
+    private var length = 0
 
     //This is necessary since lambdas are not serializable
     companion object {
@@ -18,16 +19,19 @@ class Pattern(
         }
     }
 
-    fun generateFrameMatrix(totalNumLights: Int): List<IntArray>{
+    init {
         //Determine the number of frames in the longest effect
-        var length = 0
         for(layer: Layer in layers){
             if(layer.effect.numFrames > length){
                 length = layer.effect.numFrames
             }
         }
-        duration = (length * MILLIS_BETWEEN_FRAMES) / 1000
 
+        //Calculate the duration of this pattern based on the length in frames
+        duration = (length * MILLIS_BETWEEN_FRAMES) / 1000
+    }
+
+    fun generateFrameMatrix(totalNumLights: Int): List<IntArray>{
         //Start with a solid black base layer on all frames
         val output = ArrayList<IntArray>()
         for(i: Int in 0 until length){

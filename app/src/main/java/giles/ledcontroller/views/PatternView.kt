@@ -19,6 +19,7 @@ class PatternView @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle) {
 
     init {
+        this.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         inflate(context, R.layout.item_pattern, this)
     }
 }
