@@ -16,7 +16,10 @@ interface ColorEffect : Effect {
     val color: Int
 }
 interface GradientEffect : Effect {
-    val gradient: Gradient
+    var gradient: Gradient
+}
+interface DynamicEffect : Effect {
+    val duration: Int
 }
 
 
@@ -48,7 +51,7 @@ class SolidColorEffect(
 
 
 class SolidGradientEffect(
-    override val gradient: Gradient
+    override var gradient: Gradient
 ) : GradientEffect {
 
     override val title = "Solid Gradient"
@@ -75,9 +78,9 @@ class SolidGradientEffect(
 
 
 class GradientCycleEffect(
-    override val gradient: Gradient,
-    val duration: Int //In seconds
-) : GradientEffect {
+    override var gradient: Gradient,
+    override val duration: Int //In seconds
+) : GradientEffect, DynamicEffect {
 
     override val title = "Gradient Cycle"
     override val numFrames: Int = duration * 1000 / MILLIS_BETWEEN_FRAMES
@@ -106,10 +109,10 @@ class GradientCycleEffect(
 
 
 class GradientWaveEffect(
-    override val gradient: Gradient,
-    val duration: Int, //In seconds
+    override var gradient: Gradient,
+    override val duration: Int, //In seconds
     val direction: EffectDirection
-) : GradientEffect{
+) : GradientEffect, DynamicEffect{
 
     override val title = "Gradient Wave"
     override val numFrames: Int = duration * 1000 / MILLIS_BETWEEN_FRAMES

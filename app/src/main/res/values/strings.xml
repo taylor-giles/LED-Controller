@@ -100,4 +100,7 @@
     <string name="delete_pattern">Delete Pattern</string>
     <string name="layer_s">Layer(s)</string>
     <string name="click_for_details">Click for Details</string>
+    <string name="_60">60</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="saved_colors_description">Save your favorite colors here for quick and easy access</string>
 </resources>

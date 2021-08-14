@@ -1,5 +1,6 @@
 package giles.ledcontroller.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +8,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +19,6 @@ import giles.ledcontroller.views.GradientRectView
 import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
-import giles.views.HeightSquareView
-import kotlinx.android.synthetic.main.activity_gradient_edit.*
 import kotlinx.android.synthetic.main.activity_pattern_edit.*
 import kotlinx.android.synthetic.main.component_add_layer_button.view.*
 import kotlinx.android.synthetic.main.item_layer.view.*
@@ -42,16 +39,17 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
         //Get the pattern to be edited (if there is one)
         val givenPattern = intent.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern?
         givenPattern?.layers?.toCollection(patternLayers)
+        edit_text_pattern_name.setText(givenPattern?.name)
 
         //Set up RecyclerView to display colors and choose new color when "Add Color" button is clicked
         val patternLayersList = list_pattern_layers
         patternLayersList.layoutManager = LinearLayoutManager(this)
-        adapter = LayerViewAdapter(patternLayers,
+        adapter = LayerViewAdapter(patternLayers, this, display.numLights,
             //OnClickListener for "Add Color" button
             {
-                //Store display as intent extra
+                //Store number of lights as intent extra
                 val layerEditIntent = Intent(this, LayerEditActivity::class.java)
-                layerEditIntent.putExtra(getString(R.string.EXTRA_DISPLAY), display)
+                layerEditIntent.putExtra(getString(R.string.EXTRA_NUMLIGHTS), display.numLights)
 
                 //Open LayerEditActivity
                 startActivityForResult(layerEditIntent, R.integer.EDIT_LAYER_REQUEST)
@@ -89,6 +87,17 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
                 }
             }
 
+            //TODO: Figure out why pattern editing ignores all changes
+            //If the given pattern exists, then remove it
+            if(givenPattern != null){
+                for(pattern: Pattern in AppData.patterns){
+                    if(pattern == givenPattern){
+                        AppData.patterns.remove(pattern)
+                        break
+                    }
+                }
+            }
+
             //Get name
             var name = edit_text_pattern_name.text.toString()
 
@@ -98,36 +107,19 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
             }
 
             //Keep incrementing the suffix number until the name is valid
-            if(!checkName(name)){
+            if(!checkName(name)) {
                 var suffix = 1
                 name += (suffix++).toString()
-                while(!checkName(name)){
-                    name = (name.substring(0, name.length - (suffix-1).toString().length)) + (suffix++).toString()
+                while (!checkName(name)) {
+                    name = (name.substring(0, name.length - (suffix - 1).toString().length)
+                            ) + (suffix++).toString()
                 }
             }
 
-            //TODO: Figure out why original pattern is not removed after edit
-
-            //If the given pattern exists, then edit it
-            var handled = false
-            if(givenPattern != null){
-                for(pattern: Pattern in AppData.patterns){
-                    if(pattern == givenPattern){
-                        pattern.name = name
-                        pattern.layers = patternLayers
-                        Toast.makeText(this, "Pattern saved as $name", Toast.LENGTH_SHORT).show()
-                        handled = true
-                        break
-                    }
-                }
-            }
-
-            //If the given pattern does not exist, save a new one
-            if(!handled){
-                AppData.patterns.add(Pattern(name, patternLayers))
-                AppData.savePatterns(this)
-                Toast.makeText(this, "Pattern saved as $name", Toast.LENGTH_SHORT).show()
-            }
+            //Save the new pattern
+            AppData.patterns.add(Pattern(name, patternLayers))
+            AppData.savePatterns(this)
+            Toast.makeText(this, "Pattern saved as $name", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -172,6 +164,8 @@ const val GRADIENT_LAYER_TYPE = 2
 const val ADD_LAYER_BUTTON_TYPE = 3
 class LayerViewAdapter(
     private val dataSet: ArrayList<Layer>,
+    private val context: Context,
+    private val numLights: Int,
     private val addButtonListener: View.OnClickListener,
     private val dragListener: OnDragStartListener
 ): RecyclerView.Adapter<LayerViewAdapter.LayerViewHolder>(),
@@ -249,6 +243,15 @@ class LayerViewAdapter(
             holder.removeButton!!.setOnClickListener{
                 dataSet.remove(dataSet[holder.absoluteAdapterPosition])
                 notifyItemRemoved(holder.absoluteAdapterPosition)
+            }
+
+            //Give behavior to the edit button
+            holder.editButton!!.setOnClickListener {
+                //Open the LayerEditActivity to edit this layer
+                val layerEditIntent = Intent(context, LayerEditActivity::class.java)
+                layerEditIntent.putExtra(context.getString(R.string.EXTRA_LAYER), dataSet[position])
+                layerEditIntent.putExtra(context.getString(R.string.EXTRA_NUMLIGHTS), numLights)
+                context.startActivity(layerEditIntent)
             }
 
             //Attach the onDrag listener to the handle via onTouch

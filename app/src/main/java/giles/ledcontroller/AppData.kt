@@ -23,6 +23,21 @@ object AppData{
 
 
     /**
+     * Checks whether or not the given String can be used as a name for a [Gradient].
+     * A name is valid iff there are no [Gradient]s already saved with that name.
+     *
+     * @return true if the name is valid, false otherwise.
+     */
+    fun isGradientNameValid(name: String) : Boolean{
+        for(gradient: Gradient in AppData.savedGradients){
+            if(gradient.name == name){
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
      * Functions to save data to file
      */
     fun save(context: Context){

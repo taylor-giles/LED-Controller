@@ -76,7 +76,6 @@ class Gradient @JvmOverloads constructor (
         }
     }
 
-
     override fun compareTo(other: Gradient): Int {
         return when {
             name != other.name -> name.compareTo(other.name)

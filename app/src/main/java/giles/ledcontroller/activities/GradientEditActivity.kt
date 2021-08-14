@@ -90,6 +90,17 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
 
         //Assign action to save button
         btn_save_gradient.setOnClickListener {
+            //If the given gradient exists, then remove it
+            if(givenGradient != null){
+                for(gradient: Gradient in AppData.savedGradients){
+                    if(gradient == givenGradient){
+                        AppData.savedGradients.remove(gradient)
+                        AppData.saveGradients(this)
+                        break
+                    }
+                }
+            }
+            
             //Get name
             var name = text_edit_gradient_name.text.toString()
 
@@ -104,17 +115,6 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
                 name += (suffix++).toString()
                 while(!checkName(name)){
                     name = (name.substring(0, name.length - (suffix-1).toString().length)) + (suffix++).toString()
-                }
-            }
-
-            //If the given gradient exists, then remove it
-            if(givenGradient != null){
-                for(gradient: Gradient in AppData.savedGradients){
-                    if(gradient == givenGradient){
-                        AppData.savedGradients.remove(gradient)
-                        AppData.saveGradients(this)
-                        break
-                    }
                 }
             }
 

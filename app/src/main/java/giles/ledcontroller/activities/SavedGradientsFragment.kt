@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import giles.ledcontroller.AppData
+import giles.ledcontroller.Gradient
 import giles.ledcontroller.R
 import giles.ledcontroller.views.GradientRectView
 import giles.ledcontroller.views.GradientView
@@ -69,14 +70,15 @@ class SavedGradientsFragment : Fragment() {
         adapter = GradientViewAdapter(AppData.savedGradients) { clickedView ->
             //Select the clicked view
             adapter.selectView(clickedView as GradientView)
+            val selectedGradient = adapter.selectedGradient!!
 
             //Create a GradientRectView to show in the preview dialog
             val gradientPreview = GradientRectView(clickedView.context)
             previewDialogView.preview_selected_gradient.addView(gradientPreview)
 
             //Assign a gradient to the display preview and title
-            gradientPreview.displayGradient(adapter.selectedGradient)
-            previewDialog.setTitle(adapter.selectedGradient?.name)
+            gradientPreview.displayGradient(selectedGradient)
+            previewDialog.setTitle(selectedGradient.name)
 
             //Set the behavior of the preview dialog delete button
             previewDialogView.btn_delete_selected_gradient.setOnClickListener {
@@ -84,10 +86,10 @@ class SavedGradientsFragment : Fragment() {
                 AlertDialog.Builder(fragmentView.context)
                     .setTitle(R.string.remove_gradient)
                     .setMessage("Are you sure you want to delete the gradient called " +
-                            adapter.selectedGradient?.name + "?")
+                            selectedGradient.name + "?")
                     .setPositiveButton(R.string.delete) { _, _ ->
                         //Delete the currently selected gradient and update the list
-                        AppData.savedGradients.remove(adapter.selectedGradient!!)
+                        AppData.savedGradients.remove(selectedGradient)
                         updateAdapter()
 
                         //Dismiss the dialog
@@ -101,8 +103,29 @@ class SavedGradientsFragment : Fragment() {
             previewDialogView.btn_edit_selected_gradient.setOnClickListener {
                 //Open the GradientEditActivity to edit this gradient
                 val gradientEditIntent = Intent(requireActivity(), GradientEditActivity::class.java)
-                gradientEditIntent.putExtra(getString(R.string.EXTRA_GRADIENT), adapter.selectedGradient)
+                gradientEditIntent.putExtra(getString(R.string.EXTRA_GRADIENT), selectedGradient)
                 startActivity(gradientEditIntent)
+                previewDialog.dismiss()
+            }
+
+            //Set the behavior of the preview dialog duplicate button
+            previewDialogView.btn_duplicate_selected_gradient.setOnClickListener {
+                //Keep incrementing the suffix number until the name is valid
+                var name = "Copy of " + selectedGradient.name
+                if(!AppData.isGradientNameValid(name)){
+                    var suffix = 1
+                    name += (suffix++).toString()
+                    while(!AppData.isGradientNameValid(name)){
+                        name = (name.substring(0, name.length - (suffix-1).toString().length)) + (suffix++).toString()
+                    }
+                }
+
+                //Duplicate the selected gradient
+                AppData.savedGradients.add(Gradient(name, selectedGradient.colors, selectedGradient.positions))
+                AppData.saveGradients(this.requireActivity())
+
+                //Update the list of gradients and close the dialog
+                updateAdapter()
                 previewDialog.dismiss()
             }
 

@@ -8,10 +8,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_gradient_selection.xml" value="0.26666666666666666" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_patterns.xml" value="0.26666666666666666" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/fragment_saved_colors.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_gradient.xml" value="0.1" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_pattern.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_delay_effect_options.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_directional_effect_options.xml" value="0.24259259259259258" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_gradient_preview.xml" value="0.262037037037037" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_pattern_preview.xml" value="0.33" />
-        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_speed_effect_options.xml" value="0.24722222222222223" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_speed_effect_options.xml" value="0.3138888888888889" />
       </map>
     </option>
   </component>
