@@ -15,8 +15,8 @@ object AppData{
     //ArrayList to store saved gradients
     var savedGradients = SortedArrayList(Gradient.Companion.GradientComparator())
 
-    //Set to store LED displays
-    var displays = HashSet<LightDisplay>()
+    //The LightDisplay being used by the app
+    var display = LightDisplay(500)
 
     //ArrayList to store saved patterns
     var patterns = SortedArrayList(Pattern.Companion.PatternComparator())
@@ -29,7 +29,7 @@ object AppData{
      * @return true if the name is valid, false otherwise.
      */
     fun isGradientNameValid(name: String) : Boolean{
-        for(gradient: Gradient in AppData.savedGradients){
+        for(gradient: Gradient in savedGradients){
             if(gradient.name == name){
                 return false
             }
@@ -44,7 +44,7 @@ object AppData{
         saveColors(context)
         saveGradients(context)
         savePatterns(context)
-        saveDisplays(context)
+        saveDisplay(context)
     }
     fun saveColors(context: Context){
         //Save colors
@@ -70,13 +70,13 @@ object AppData{
         patternsObjOut.close()
         patternsFileOut.close()
     }
-    fun saveDisplays(context: Context){
+    fun saveDisplay(context: Context){
         //Save displays
-        val displaysFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_DISPLAYS), Context.MODE_PRIVATE)
-        val displaysObjOut = ObjectOutputStream(displaysFileOut)
-        displaysObjOut.writeObject(displays)
-        displaysObjOut.close()
-        displaysFileOut.close()
+        val displayFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_DISPLAYS), Context.MODE_PRIVATE)
+        val displayObjOut = ObjectOutputStream(displayFileOut)
+        displayObjOut.writeObject(display)
+        displayObjOut.close()
+        displayFileOut.close()
     }
 
     /**
@@ -119,11 +119,11 @@ object AppData{
 
         //Load displays
         try{
-            val displaysFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_DISPLAYS))
-            val displaysObjectIn = ObjectInputStream(displaysFileIn)
-            this.displays = displaysObjectIn.readObject() as HashSet<LightDisplay>
-            displaysObjectIn.close()
-            displaysFileIn.close()
+            val displayFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_DISPLAYS))
+            val displayObjectIn = ObjectInputStream(displayFileIn)
+            this.display = displayObjectIn.readObject() as LightDisplay
+            displayObjectIn.close()
+            displayFileIn.close()
         } catch(ex: FileNotFoundException){
             //Do nothing
         }

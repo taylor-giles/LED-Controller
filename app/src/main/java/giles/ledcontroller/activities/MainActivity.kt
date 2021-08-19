@@ -7,8 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
-import giles.ledcontroller.AppData
-import giles.ledcontroller.R
+import giles.ledcontroller.*
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,6 +19,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         AppData.load(this)
+
+        text_device_connected.setOnClickListener{
+            val deviceIntent = Intent(this, DeviceSelectActivity::class.java)
+            startActivity(deviceIntent)
+        }
 
         //Set up color picker
         val colorPickerView = ColorPickerView(this, showSavedColors = false)
@@ -67,12 +71,18 @@ class MainActivity : AppCompatActivity() {
         //BluetoothConnection.connect(address, uuid, this)
     }
 
+    //Display a solid color
     private fun colorChange(color: Int){
-        //Update current display message
-        text_current_display.text = String.format("#%06X", 0xFFFFFF and color)
+        //Create a temp SolidColorEffect pattern to display this color on all lights
+        val lights = ArrayList<Int>()
+        for(i in 0 until AppData.display.numLights){
+            lights.add(i)
+        }
+        val layers = ArrayList<Layer>()
+        layers.add(Layer(SolidColorEffect(color), lights))
 
-        //Change brightness bar color
-        //bar_brightness.thumb.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+        //Display the color
+        display(Pattern(String.format("#%06X", 0xFFFFFF and color), layers))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -83,7 +93,16 @@ class MainActivity : AppCompatActivity() {
                     //Saved Colors activity - a color was selected
                     resources.getInteger(R.integer.SAVED_COLORS_REQUEST) ->
                         colorChange(data!!.getIntExtra(getString(R.string.EXTRA_COLOR), 0))
+
+                    //Patterns activity - a pattern was selected
+                    resources.getInteger(R.integer.PATTERNS_REQUEST) ->
+                        display(data!!.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern)
                 }
         }
+    }
+
+    fun display(pattern: Pattern){
+        text_current_display.text = pattern.name
+        AppData.display.displayPattern(this, pattern)
     }
 }

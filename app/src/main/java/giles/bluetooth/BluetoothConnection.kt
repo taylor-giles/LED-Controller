@@ -3,86 +3,87 @@ package giles.bluetooth
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothSocket
 import android.content.Context
-import android.os.AsyncTask
 import android.widget.Toast
 import java.io.IOException
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.util.*
 
-object BluetoothConnection{
-    var isConnected = false
-    lateinit var uuid: UUID
-    lateinit var address: String
-    lateinit var name: String
+class BluetoothConnection (val uuid: UUID, val address: String, val adapter: BluetoothAdapter){
     private var bluetoothSocket: BluetoothSocket? = null
+    private val device = adapter.getRemoteDevice(address)
 
+    fun sendInt(message: Int){
+        val b: ByteBuffer = ByteBuffer.allocate(4)
+        b.order(ByteOrder.BIG_ENDIAN)
+        b.putInt(message)
+        val result: ByteArray = b.array()
+        sendByteArray(result)
+    }
 
-    fun sendCommand(input: String){
-        if(bluetoothSocket != null){
+    fun sendByteArray(message: ByteArray){
+        if(isConnected()){
             try{
-                bluetoothSocket!!.outputStream.write(input.toByteArray())
+                bluetoothSocket!!.outputStream.write(message)
             } catch(e : IOException){
                 e.printStackTrace()
             }
         } else {
-            throw NullPointerException("Must call connect() before calling sendCommand()")
+            throw NullPointerException("Cannot send message while disconnected")
         }
-
     }
 
+    fun sendOneByte(message: Int){
+        if(isConnected()){
+            try{
+                bluetoothSocket!!.outputStream.write(message)
+            } catch(e : IOException){
+                e.printStackTrace()
+            }
+        } else {
+            throw NullPointerException("Cannot send message while disconnected")
+        }
+    }
+
+    fun sendOneByte(message: Byte){
+        sendByteArray(byteArrayOf(message))
+    }
 
     fun disconnect(){
         if(bluetoothSocket != null){
             try{
                 bluetoothSocket!!.close()
                 bluetoothSocket = null
-                isConnected = false
             } catch(e: IOException){
                 e.printStackTrace()
             }
         } else {
-            throw NullPointerException("Must call connect() before calling sendCommand()")
+            throw NullPointerException("Cannot disconnect a null socket")
         }
     }
 
-
     fun connect(context: Context){
-        ConnectToDevice(address, uuid)
-        if(isConnected){
+        //TODO: This does not get run because I am creating a new BluetoothConnection object rather than changing this one.
+        if(isConnected()){
+            disconnect()
+        }
+        try{
+            if(!isConnected()){
+                adapter.cancelDiscovery()
+                bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(uuid)
+                bluetoothSocket!!.connect()
+            }
+        } catch(e: IOException){
+            e.printStackTrace()
+        }
+        if(isConnected()){
             Toast.makeText(context, "Successfully connected to device", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(context, "Unable to connect to device", Toast.LENGTH_SHORT).show()
         }
     }
 
-
-    private class ConnectToDevice(private var address: String?, private var uuid: UUID?): AsyncTask<Void, Void, String>(){
-        private var connectSuccess = true
-        private var bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-
-        override fun onPreExecute(){
-            super.onPreExecute()
-            //progress = ProgressDialog.show(context, "Connecting...", "Please Wait")
-        }
-
-        override fun doInBackground(vararg params: Void?): String? {
-            try{
-                if(!isConnected){
-                    val device = bluetoothAdapter.getRemoteDevice(address)
-                    bluetoothSocket = device.createInsecureRfcommSocketToServiceRecord(uuid)
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
-                    bluetoothSocket!!.connect()
-                }
-            } catch(e: IOException){
-                connectSuccess = false
-                e.printStackTrace()
-            }
-            return null
-        }
-
-        override fun onPostExecute(result: String?) {
-            super.onPostExecute(result)
-            isConnected = connectSuccess
-            //progress.dismiss()
-        }
+    fun isConnected(): Boolean {
+        return bluetoothSocket != null
     }
 }
