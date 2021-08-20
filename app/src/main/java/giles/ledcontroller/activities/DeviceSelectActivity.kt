@@ -6,16 +6,22 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.harrysoft.androidbluetoothserial.BluetoothManager
 import giles.bluetooth.BluetoothConnection
 import giles.ledcontroller.AppData
+import giles.ledcontroller.LightDisplay
 import giles.ledcontroller.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_device_select.*
 import kotlinx.android.synthetic.main.item_bluetooth_device.view.*
 import java.util.*
@@ -23,6 +29,8 @@ import kotlin.collections.ArrayList
 
 class DeviceSelectActivity : AppCompatActivity() {
     private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+    lateinit var adapter: BluetoothDeviceItemAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_select)
@@ -34,6 +42,7 @@ class DeviceSelectActivity : AppCompatActivity() {
         }
 
         btn_refresh.setOnClickListener{ refreshList() }
+        refreshList()
     }
 
     private fun refreshList(){
@@ -48,30 +57,12 @@ class DeviceSelectActivity : AppCompatActivity() {
         }
 
         recycler_device_select.layoutManager = LinearLayoutManager(this)
-        recycler_device_select.adapter = BluetoothDeviceItemAdapter(this, list) { clickedView ->
-            AppData.display.connection?.disconnect()
-            AppData.display.connection = BluetoothConnection(
-                UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"),
-                clickedView.text_bluetooth_address.text.toString(), bluetoothAdapter)
-            AppData.display.connection!!.connect(this)
-            AppData.display.connection!!.sendInt(AppData.display.numLights)
+        adapter = BluetoothDeviceItemAdapter(this, list) { clickedView ->
+            adapter.selectView(clickedView as BluetoothDeviceItemAdapter.BluetoothDeviceView)
+            AppData.display.bluetooth.connect(adapter.selectedDevice!!)
             finish()
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == resources.getInteger(R.integer.ENABLE_BLUETOOTH_REQUEST)){
-            if(resultCode == Activity.RESULT_OK){
-                if(bluetoothAdapter!!.isEnabled){
-                    Toast.makeText(this, "Bluetooth has been enabled", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this,"Bluetooth is disabled", Toast.LENGTH_SHORT).show()
-                }
-            } else if(resultCode == Activity.RESULT_CANCELED){
-                Toast.makeText(this,"Enable Bluetooth to continue", Toast.LENGTH_SHORT).show()
-            }
-        }
+        recycler_device_select.adapter = adapter
     }
 }
 
@@ -80,16 +71,29 @@ class BluetoothDeviceItemAdapter(
     private val items: List<BluetoothDevice>,
     private val itemOnClickListener: View.OnClickListener
 ): RecyclerView.Adapter<BluetoothDeviceItemAdapter.BluetoothViewHolder>() {
-    class BluetoothViewHolder(val view: View): RecyclerView.ViewHolder(view){
+    var selectedDevice: BluetoothDevice? = null
+
+    class BluetoothViewHolder(val view: BluetoothDeviceView): RecyclerView.ViewHolder(view){
         //Change title and MAC address display
         fun setDevice(device: BluetoothDevice){
+            view.device = device
             view.text_bluetooth_name.text = device.name
             view.text_bluetooth_address.text = device.address
         }
     }
 
+    class BluetoothDeviceView @JvmOverloads constructor(
+        context : Context,
+        attrs: AttributeSet? = null,
+        defStyle: Int = 0,
+        var device: BluetoothDevice? = null
+    ): FrameLayout(context, attrs, defStyle)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BluetoothViewHolder {
-        return BluetoothViewHolder(LayoutInflater.from(context).inflate(R.layout.item_bluetooth_device, parent, false))
+        val view = LayoutInflater.from(context).inflate(R.layout.item_bluetooth_device, parent, false)
+        val deviceView = BluetoothDeviceView(context)
+        deviceView.addView(view)
+        return BluetoothViewHolder(deviceView)
     }
 
     override fun onBindViewHolder(holder: BluetoothViewHolder, position: Int){
@@ -100,5 +104,9 @@ class BluetoothDeviceItemAdapter(
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    fun selectView(view: BluetoothDeviceView){
+        selectedDevice = view.device
     }
 }

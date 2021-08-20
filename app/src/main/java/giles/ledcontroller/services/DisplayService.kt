@@ -4,36 +4,28 @@ import android.app.*
 import android.content.Intent
 import android.graphics.Color
 import android.os.IBinder
+import giles.bluetooth.BluetoothSerial
 import giles.ledcontroller.AppData
-import giles.ledcontroller.MILLIS_BETWEEN_FRAMES
 import giles.ledcontroller.Pattern
 import giles.ledcontroller.R
 import giles.ledcontroller.activities.MainActivity
+import kotlin.concurrent.withLock
 
 /**
  * A foreground service which sends pattern frame data over bluetooth to the connected device
  */
 class DisplayService: Service(){
-    val channelId = "ForegroundServiceChannel"
-    override fun onCreate() {
-        super.onCreate()
-    }
+    private val channelId = "DisplayServiceChannel"
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         //Get pattern from intent extra
         val pattern = intent.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern
 
-        //Generate frame matrix
-        val frameMatrix = pattern.generateFrameMatrix(AppData.display.numLights)
-
         //Make notification
         createNotificationChannel()
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+            this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT
         )
         val notification: Notification = Notification.Builder(this, channelId)
             .setContentTitle("Foreground Service")
@@ -44,34 +36,46 @@ class DisplayService: Service(){
         //Send service to foreground
         startForeground(1, notification)
 
-        //Create thread to display pattern until BT connection is broken
         val thread = Thread {
-            while(AppData.display.connection!!.isConnected()) {
+            //Generate frame matrix
+            val frameMatrix = pattern.generateFrameMatrix(AppData.display.numLights)
+            while(AppData.display.bluetooth.connectionState == BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED) {
                 //Iterate over frames
                 for (frame in frameMatrix) {
-                    //Iterate over lights in frame
-                    for (color in frame) {
-                        //Send brightness-adjusted R, G, B components of color via BT Serial
-                        AppData.display.connection!!.sendOneByte((Color.red(color) * AppData.display.brightness).toInt().toByte())
-                        AppData.display.connection!!.sendOneByte((Color.green(color) * AppData.display.brightness).toInt().toByte())
-                        AppData.display.connection!!.sendOneByte((Color.blue(color) * AppData.display.brightness).toInt().toByte())
+                    //Wait until ready for next frame
+                    try {
+                        AppData.display.frameSemaphore.acquire()
+                    } catch (e: InterruptedException){
+                        stopForeground(true)
+                        stopSelf()
+                        return@Thread
                     }
 
-//                    //Wait
-//                    try {
-//                        Thread.sleep(MILLIS_BETWEEN_FRAMES.toLong())
-//                    } catch (e: InterruptedException) {
-//                        e.printStackTrace()
-//                    }
-                    if (!AppData.display.connection!!.isConnected()) {
+                    //Iterate over lights in frame
+                    for (color in frame) {
+                        //Make a byte array
+                        val array = byteArrayOf(
+                            (Color.red(color) * AppData.display.brightness).toInt().toByte(),
+                            (Color.green(color) * AppData.display.brightness).toInt().toByte(),
+                            (Color.blue(color) * AppData.display.brightness).toInt().toByte()
+                        )
+                        //Send array over BT serial connection
+                        AppData.display.bluetooth.write(array)
+                    }
+                    if(AppData.display.bluetooth.connectionState != BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
+                        stopForeground(true)
                         stopSelf()
+                        return@Thread
                     }
                 }
             }
+            stopForeground(true)
             stopSelf()
+            return@Thread
         }
         thread.start()
-        return START_STICKY
+
+        return START_REDELIVER_INTENT
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -81,7 +85,7 @@ class DisplayService: Service(){
     private fun createNotificationChannel() {
         val serviceChannel = NotificationChannel(
             channelId,
-            "Foreground Service Channel",
+            "Pattern Display Notification",
             NotificationManager.IMPORTANCE_DEFAULT
         )
         val manager = getSystemService(
