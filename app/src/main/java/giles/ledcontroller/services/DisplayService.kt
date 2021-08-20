@@ -4,12 +4,12 @@ import android.app.*
 import android.content.Intent
 import android.graphics.Color
 import android.os.IBinder
+import android.util.Log
 import giles.bluetooth.BluetoothSerial
 import giles.ledcontroller.AppData
 import giles.ledcontroller.Pattern
 import giles.ledcontroller.R
 import giles.ledcontroller.activities.MainActivity
-import kotlin.concurrent.withLock
 
 /**
  * A foreground service which sends pattern frame data over bluetooth to the connected device
@@ -39,7 +39,10 @@ class DisplayService: Service(){
         val thread = Thread {
             //Generate frame matrix
             val frameMatrix = pattern.generateFrameMatrix(AppData.display.numLights)
-            while(AppData.display.bluetooth.connectionState == BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED) {
+
+            //Continuously send frame data while connected to BT
+            while(AppData.display.bluetooth.connectionState ==
+                BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED) {
                 //Iterate over frames
                 for (frame in frameMatrix) {
                     //Wait until ready for next frame
@@ -52,21 +55,23 @@ class DisplayService: Service(){
                     }
 
                     //Iterate over lights in frame
+                    val array = ByteArray(frame.size * 3)
+                    var i = 0
                     for (color in frame) {
-                        //Make a byte array
-                        val array = byteArrayOf(
-                            (Color.red(color) * AppData.display.brightness).toInt().toByte(),
-                            (Color.green(color) * AppData.display.brightness).toInt().toByte(),
-                            (Color.blue(color) * AppData.display.brightness).toInt().toByte()
-                        )
-                        //Send array over BT serial connection
-                        AppData.display.bluetooth.write(array)
+                        array[i++] = (Color.red(color) * AppData.display.brightness).toInt().toByte()
+                        array[i++] = (Color.green(color) * AppData.display.brightness).toInt().toByte()
+                        array[i++] = (Color.blue(color) * AppData.display.brightness).toInt().toByte()
                     }
-                    if(AppData.display.bluetooth.connectionState != BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
+                    //Check to make sure connection is still established
+                    if(AppData.display.bluetooth.connectionState !=
+                        BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
                         stopForeground(true)
                         stopSelf()
                         return@Thread
                     }
+
+                    //Send array over BT serial connection
+                    AppData.display.bluetooth.write(array)
                 }
             }
             stopForeground(true)

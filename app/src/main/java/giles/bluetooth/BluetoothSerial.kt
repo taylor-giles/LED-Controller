@@ -352,7 +352,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
 
         override fun run() {
             Log.i(TAG, "BEGIN Transmission Thread")
-            val buffer = ByteArray(1024)
+            val buffer = ByteArray(3072)
             var bytes: Int
 
             // Keep listening to the InputStream while connected

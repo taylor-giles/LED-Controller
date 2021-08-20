@@ -9,8 +9,6 @@ import java.io.Serializable
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.concurrent.Semaphore
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
 
 class LightDisplay(
     val numLights: Int
@@ -20,13 +18,14 @@ class LightDisplay(
     val bluetooth = BluetoothSerial(this)
 
     //Thread locking mechanism to ensure frames are sent over BT only after receiving byte over BT
-    val frameSemaphore = Semaphore(1)
+    val frameSemaphore = Semaphore(0)
 
     fun displayPattern(context: Context, pattern: Pattern){
         if(bluetooth.connectionState != BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
             throw IllegalStateException("Must have a BT connection to display a pattern")
         }
 
+        //TODO: Stop currently running service
         //Start service to send pattern data over serial
         val serviceIntent = Intent(context, DisplayService::class.java)
         serviceIntent.putExtra(context.getString(R.string.EXTRA_PATTERN), pattern)
