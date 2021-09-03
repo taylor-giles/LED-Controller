@@ -1,9 +1,11 @@
 package giles.ledcontroller.activities
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
@@ -24,6 +26,15 @@ class MainActivity : AppCompatActivity() {
             val deviceIntent = Intent(this, DeviceSelectActivity::class.java)
             startActivity(deviceIntent)
         }
+
+        //Brightness bar
+        bar_brightness.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                AppData.display.brightness = progress.toFloat() / seekBar.max.toFloat()
+            }
+        })
 
         //Set up color picker
         val colorPickerView = ColorPickerView(this, showSavedColors = false)

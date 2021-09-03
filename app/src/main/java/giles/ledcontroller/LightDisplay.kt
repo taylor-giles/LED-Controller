@@ -19,17 +19,23 @@ class LightDisplay(
 
     //Thread locking mechanism to ensure frames are sent over BT only after receiving byte over BT
     val frameSemaphore = Semaphore(0)
+    private lateinit var serviceIntent: Intent
 
+    @Throws(IllegalStateException::class)
     fun displayPattern(context: Context, pattern: Pattern){
         if(bluetooth.connectionState != BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
             throw IllegalStateException("Must have a BT connection to display a pattern")
         }
 
-        //TODO: Stop currently running service
+        //Stop currently running service (if it exists)
+        if(this::serviceIntent.isInitialized){
+            context.stopService(serviceIntent)
+        }
+
         //Start service to send pattern data over serial
-        val serviceIntent = Intent(context, DisplayService::class.java)
+        serviceIntent = Intent(context, DisplayService::class.java)
         serviceIntent.putExtra(context.getString(R.string.EXTRA_PATTERN), pattern)
-        context.startService(serviceIntent)
+        context.startForegroundService(serviceIntent)
     }
 
     override fun onConnected(device: BluetoothDevice) {

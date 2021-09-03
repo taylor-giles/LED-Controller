@@ -4,18 +4,20 @@ import android.app.*
 import android.content.Intent
 import android.graphics.Color
 import android.os.IBinder
-import android.util.Log
+import androidx.core.app.NotificationCompat
 import giles.bluetooth.BluetoothSerial
 import giles.ledcontroller.AppData
 import giles.ledcontroller.Pattern
 import giles.ledcontroller.R
 import giles.ledcontroller.activities.MainActivity
 
+
 /**
  * A foreground service which sends pattern frame data over bluetooth to the connected device
  */
 class DisplayService: Service(){
     private val channelId = "DisplayServiceChannel"
+    private lateinit var displayThread: Thread
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         //Get pattern from intent extra
@@ -25,23 +27,26 @@ class DisplayService: Service(){
         createNotificationChannel()
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT
+            this,
+            0, notificationIntent, 0
         )
-        val notification: Notification = Notification.Builder(this, channelId)
-            .setContentTitle("Foreground Service")
+        val notification: Notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Display Service is Running")
             .setContentText("Displaying " + pattern.name)
+            .setSmallIcon(R.drawable.ic_chevron_right_gray_32dp)
             .setContentIntent(pendingIntent)
             .build()
 
         //Send service to foreground
+
         startForeground(1, notification)
 
-        val thread = Thread {
+        displayThread = Thread {
             //Generate frame matrix
             val frameMatrix = pattern.generateFrameMatrix(AppData.display.numLights)
 
             //Continuously send frame data while connected to BT
-            while(AppData.display.bluetooth.connectionState ==
+            while(!Thread.currentThread().isInterrupted && AppData.display.bluetooth.connectionState ==
                 BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED) {
                 //Iterate over frames
                 for (frame in frameMatrix) {
@@ -54,7 +59,7 @@ class DisplayService: Service(){
                         return@Thread
                     }
 
-                    //Iterate over lights in frame
+                    //Iterate over lights in frame to build byte array
                     val array = ByteArray(frame.size * 3)
                     var i = 0
                     for (color in frame) {
@@ -62,9 +67,10 @@ class DisplayService: Service(){
                         array[i++] = (Color.green(color) * AppData.display.brightness).toInt().toByte()
                         array[i++] = (Color.blue(color) * AppData.display.brightness).toInt().toByte()
                     }
-                    //Check to make sure connection is still established
+                    //Check to make sure connection is still established and this thread is not interrupted
                     if(AppData.display.bluetooth.connectionState !=
-                        BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
+                        BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED ||
+                        Thread.currentThread().isInterrupted){
                         stopForeground(true)
                         stopSelf()
                         return@Thread
@@ -78,9 +84,9 @@ class DisplayService: Service(){
             stopSelf()
             return@Thread
         }
-        thread.start()
+        displayThread.start()
 
-        return START_REDELIVER_INTENT
+        return START_STICKY
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -88,14 +94,20 @@ class DisplayService: Service(){
     }
 
     private fun createNotificationChannel() {
-        val serviceChannel = NotificationChannel(
+        val notificationChannel = NotificationChannel(
             channelId,
-            "Pattern Display Notification",
-            NotificationManager.IMPORTANCE_DEFAULT
+            "Display Service Channel",
+            NotificationManager.IMPORTANCE_LOW
         )
         val manager = getSystemService(
             NotificationManager::class.java
         )
-        manager.createNotificationChannel(serviceChannel)
+        manager.createNotificationChannel(notificationChannel)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        displayThread.interrupt()
     }
 }
+

@@ -16,7 +16,7 @@ object AppData{
     var savedGradients = SortedArrayList(Gradient.Companion.GradientComparator())
 
     //The LightDisplay being used by the app
-    var display = LightDisplay(500)
+    var display = LightDisplay(300)
 
     //ArrayList to store saved patterns
     var patterns = SortedArrayList(Pattern.Companion.PatternComparator())
