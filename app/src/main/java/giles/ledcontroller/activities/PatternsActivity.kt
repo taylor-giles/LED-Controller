@@ -12,6 +12,7 @@ import giles.ledcontroller.*
 import giles.ledcontroller.views.PatternDemoView
 import giles.ledcontroller.views.PatternView
 import giles.ledcontroller.views.PatternViewAdapter
+import giles.util.ColorUtils
 import kotlinx.android.synthetic.main.activity_patterns.*
 import kotlinx.android.synthetic.main.layout_selected_pattern_preview.view.*
 
@@ -67,7 +68,7 @@ class PatternsActivity : AppCompatActivity() {
             for(layer: Layer in adapter.selectedPattern!!.layers){
                 val content = when(layer.effect){
                     is GradientEffect -> (layer.effect as GradientEffect).gradient.name
-                    is ColorEffect -> String.format("#%06X", 0xFFFFFF and (layer.effect as ColorEffect).color)
+                    is ColorEffect -> ColorUtils.getHexString((layer.effect as ColorEffect).color)
                     else -> ""
                 }
                 if(counter < 5 || adapter.selectedPattern!!.layers.size == counter + 1){
@@ -109,7 +110,7 @@ class PatternsActivity : AppCompatActivity() {
             }
 
             //Start the preview demo
-            demoView.demo(adapter.selectedPattern!!, 1000)
+            demoView.demo(adapter.selectedPattern!!, AppData.display.numLights)
 
             //Display the dialog
             previewDialog.show()

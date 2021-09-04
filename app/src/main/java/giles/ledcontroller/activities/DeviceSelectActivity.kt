@@ -59,7 +59,7 @@ class DeviceSelectActivity : AppCompatActivity() {
         recycler_device_select.layoutManager = LinearLayoutManager(this)
         adapter = BluetoothDeviceItemAdapter(this, list) { clickedView ->
             adapter.selectView(clickedView as BluetoothDeviceItemAdapter.BluetoothDeviceView)
-            AppData.display.bluetooth.connect(adapter.selectedDevice!!)
+            AppData.display.connectBluetoothDevice(adapter.selectedDevice!!)
             finish()
         }
         recycler_device_select.adapter = adapter

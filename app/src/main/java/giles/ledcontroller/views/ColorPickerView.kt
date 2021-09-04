@@ -85,7 +85,7 @@ class ColorPickerView @JvmOverloads constructor(
 
     private fun updateDisplay(color: Int){
         //Update hex color label
-        colorDisplay.text = String.format("#%06X", 0xFFFFFF and color)
+        colorDisplay.text = ColorUtils.getHexString(color)
     }
 
     fun setOnColorSelectedListener(listener: ColorPicker.OnColorSelectedListener){
@@ -101,9 +101,9 @@ class ColorPickerView @JvmOverloads constructor(
             savedColorsAdapter?.notifyDataSetChanged()
             AppData.saveColors(this.context)
 
-            Toast.makeText(context, "Saved color " + String.format("#%06X", 0xFFFFFF and color), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Saved color " + ColorUtils.getHexString(color), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(context, "Color " + String.format("#%06X", 0xFFFFFF and color) + " is already saved", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Color " + ColorUtils.getHexString(color) + " is already saved", Toast.LENGTH_SHORT).show()
         }
     }
 }

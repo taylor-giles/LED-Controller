@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.larswerkman.holocolorpicker.ColorPicker
 import giles.ledcontroller.*
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.MenuItem
+import giles.util.ColorUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -93,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         layers.add(Layer(SolidColorEffect(color), lights))
 
         //Display the color
-        display(Pattern(String.format("#%06X", 0xFFFFFF and color), layers))
+        display(Pattern(ColorUtils.getHexString(color), layers))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,7 +115,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun display(pattern: Pattern){
-        text_current_display.text = pattern.name
-        AppData.display.displayPattern(this, pattern)
+        try{
+            //Display the pattern
+            AppData.display.displayPattern(this, pattern)
+            text_current_display.text = pattern.name
+        } catch(ex: IllegalStateException) {
+            //The display is not connected
+            Toast.makeText(this, "Connect a display device before selecting a connection", Toast.LENGTH_SHORT).show()
+            text_current_display.text = getString(R.string.none)
+        }
     }
 }

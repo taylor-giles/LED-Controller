@@ -7,7 +7,6 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import giles.bluetooth.BluetoothSerial
 import giles.ledcontroller.AppData
-import giles.ledcontroller.Pattern
 import giles.ledcontroller.R
 import giles.ledcontroller.activities.MainActivity
 
@@ -21,7 +20,7 @@ class DisplayService: Service(){
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         //Get pattern from intent extra
-        val pattern = intent.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern
+        val pattern = AppData.display.currentPattern
 
         //Make notification
         createNotificationChannel()
@@ -38,7 +37,6 @@ class DisplayService: Service(){
             .build()
 
         //Send service to foreground
-
         startForeground(1, notification)
 
         displayThread = Thread {

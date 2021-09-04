@@ -12,7 +12,6 @@
     <string name="solid_gradient">Solid Gradient</string>
     <string name="gradient_cycle">Gradient Cycle</string>
     <string name="gradient_wave">Gradient Wave</string>
-    <string name="select_device">Select Device</string>
     <string-array name="effect_names">
         <item>Solid Color</item>
         <item>Solid Gradient</item>
@@ -21,6 +20,7 @@
     </string-array>
 
     <!-- Button & Display Strings -->
+    <string name="select_device">Select Device</string>
     <string name="refresh">Refresh</string>
     <string name="color_label">Color:</string>
     <string name="saturation">Saturation</string>
@@ -103,4 +103,6 @@
     <string name="_60">60</string>
     <string name="duplicate">Duplicate</string>
     <string name="saved_colors_description">Save your favorite colors here for quick and easy access</string>
+    <string name="_32">32</string>
+    <string name="_20">20</string>
 </resources>

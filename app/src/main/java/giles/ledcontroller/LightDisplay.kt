@@ -16,10 +16,14 @@ class LightDisplay(
 
     var brightness: Float = 1f
     val bluetooth = BluetoothSerial(this)
+    lateinit var device: BluetoothDevice
+    lateinit var currentPattern: Pattern
+
+    //Service-related variables
+    private lateinit var serviceIntent: Intent
 
     //Thread locking mechanism to ensure frames are sent over BT only after receiving byte over BT
     val frameSemaphore = Semaphore(0)
-    private lateinit var serviceIntent: Intent
 
     @Throws(IllegalStateException::class)
     fun displayPattern(context: Context, pattern: Pattern){
@@ -34,27 +38,47 @@ class LightDisplay(
 
         //Start service to send pattern data over serial
         serviceIntent = Intent(context, DisplayService::class.java)
-        serviceIntent.putExtra(context.getString(R.string.EXTRA_PATTERN), pattern)
+        currentPattern = pattern
         context.startForegroundService(serviceIntent)
+    }
+
+    fun connectBluetoothDevice(device: BluetoothDevice){
+        this.device = device
+        bluetooth.connect(device)
     }
 
     override fun onConnected(device: BluetoothDevice) {
         //Send the number of lights
-        val buffer: ByteBuffer = ByteBuffer.allocate(4)
-        buffer.order(ByteOrder.BIG_ENDIAN)
-        buffer.putInt(numLights)
-        val result: ByteArray = buffer.array()
-        bluetooth.write(result)
+        val buffer1: ByteBuffer = ByteBuffer.allocate(4)
+        buffer1.order(ByteOrder.BIG_ENDIAN)
+        buffer1.putInt(numLights)
+        bluetooth.write(buffer1.array())
+
+        //Send the refresh rate
+        val buffer2: ByteBuffer = ByteBuffer.allocate(4)
+        buffer2.order(ByteOrder.BIG_ENDIAN)
+        buffer2.putInt(MILLIS_BETWEEN_FRAMES)
+        bluetooth.write(buffer2.array())
     }
 
+    //Runs in the ConnectThread
     override fun onConnectionFailure() {
-        // Start the service over to restart listening mode
-        bluetooth.start()
+        // Wait 5 minutes then try again
+        try{
+            Thread.sleep(30000)
+        } catch(ex: InterruptedException){
+            return
+        }
+
+        if(bluetooth.connectionState != BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED){
+            bluetooth.connect(device)
+        }
     }
 
+    //Runs in the TransmissionThread
     override fun onConnectionLost() {
-        // Start the service over to restart listening mode
-        bluetooth.start()
+        // Attempt to re-establish connection
+        bluetooth.connect(device)
     }
 
     override fun onMessageReceived(numBytes: Int, msg: ByteArray) {
@@ -64,4 +88,11 @@ class LightDisplay(
     }
 
     override fun onMessageSent(buffer: ByteArray?) { /* Do nothing */ }
+
+    override fun onFailure(){
+        //TODO: Stop currently running service (if it exists)
+//        if(this::serviceIntent.isInitialized && this::currentContext.isInitialized){
+//            currentContext.stopService(serviceIntent)
+//        }
+    }
 }

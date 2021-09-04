@@ -23,6 +23,7 @@ import android.widget.Toast
 import android.widget.SeekBar
 
 import android.widget.SeekBar.OnSeekBarChangeListener
+import giles.util.ColorUtils
 import kotlinx.android.synthetic.main.layout_directional_effect_options.*
 import kotlin.math.log2
 
@@ -147,8 +148,8 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             }
         })
 
-        //TODO: Get the number of lights
-        numLights = 1000
+        //Get the number of lights
+        numLights = AppData.display.numLights
 
         //Get the layer to be edited (if there is one)
         val givenLayer = intent.getSerializableExtra(getString(R.string.EXTRA_LAYER)) as Layer?
@@ -256,7 +257,7 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private fun setColor(color: Int){
         this.color = color
         colorPreview.foreground = ColorDrawable(color)
-        colorPreviewText.text = String.format("#%06X", 0xFFFFFF and color)
+        colorPreviewText.text = ColorUtils.getHexString(color)
         colorOpacityText.text = Color.alpha(color).toString()
         colorOpacityBar.progress = Color.alpha(color)
     }

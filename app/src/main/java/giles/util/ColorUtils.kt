@@ -8,4 +8,8 @@ object ColorUtils {
         Color.colorToHSV(color, hsv)
         return hsv[0]
     }
+
+    fun getHexString(color: Int): String{
+        return String.format("#%06X", 0xFFFFFF and color)
+    }
 }

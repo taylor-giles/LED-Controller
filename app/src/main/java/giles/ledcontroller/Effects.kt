@@ -2,9 +2,6 @@ package giles.ledcontroller
 
 import java.io.Serializable
 
-const val MILLIS_BETWEEN_FRAMES = 200
-const val MIN_EFFECT_DURATION = 15 //Minimum duration of any effect, in seconds
-
 enum class EffectDirection { START_TO_END, END_TO_START }
 
 interface Effect : Serializable {

@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import giles.ledcontroller.R
+import giles.util.ColorUtils
 import giles.views.WidthSquareView
 
 const val COLOR_VIEW_PADDING = 30 //The amount of padding, in pixels, around the color/TextBox square
@@ -51,7 +52,7 @@ class ColorView @JvmOverloads constructor(
     fun setColor(color: Int){
         this.color = color
         view.setBackgroundColor(color)
-        title.text = String.format("#%06X", 0xFFFFFF and color)
+        title.text = ColorUtils.getHexString(color)
         title.typeface = Typeface.MONOSPACE
         title.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
         title.setTextColor(ContextCompat.getColor(context, android.R.color.black))

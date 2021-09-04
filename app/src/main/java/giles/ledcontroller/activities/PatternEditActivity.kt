@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import giles.ledcontroller.*
 import giles.ledcontroller.views.GradientRectView
+import giles.util.ColorUtils
 import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
@@ -211,7 +212,7 @@ class LayerViewAdapter(
 
         fun setColor(color: Int){
             colorPreview.setBackgroundColor(color)
-            contentText?.text = String.format("#%06X", 0xFFFFFF and color)
+            contentText?.text = ColorUtils.getHexString(color)
             gradientView.visibility = View.GONE
             colorPreview.visibility = View.VISIBLE
         }

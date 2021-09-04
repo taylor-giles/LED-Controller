@@ -18,6 +18,7 @@ import giles.ledcontroller.Gradient
 import giles.ledcontroller.R
 import giles.ledcontroller.views.ColorPickerView
 import giles.ledcontroller.views.GradientRectView
+import giles.util.ColorUtils
 import giles.util.ItemTouchHelperAdapter
 import giles.util.ItemTouchHelperCallback
 import giles.util.OnDragStartListener
@@ -178,7 +179,7 @@ class GradientColorViewAdapter(
 
         fun setColor(color: Int){
             colorPreview!!.setBackgroundColor(color)
-            textDisplay!!.text = String.format("#%06X", 0xFFFFFF and color)
+            textDisplay!!.text = ColorUtils.getHexString(color)
             opacityText!!.setText(Color.alpha(color).toString())
             opacityBar!!.progress = Color.alpha(color)
         }

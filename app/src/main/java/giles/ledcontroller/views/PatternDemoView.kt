@@ -25,7 +25,6 @@ class PatternDemoView @JvmOverloads constructor(
      * Run the demo by changing the colors of the views in the layout based on the frame matrix
      */
     fun demo(pattern: Pattern, numLights: Int){
-        val frameMatrix = pattern.generateFrameMatrix(numLights)
         val views = ArrayList<View>()
         this.removeAllViews()
 
@@ -40,6 +39,9 @@ class PatternDemoView @JvmOverloads constructor(
         //Create thread to run demo until this view is no longer on the screen
         val thread = Thread {
             do {
+                //Generate matrix
+                val frameMatrix = pattern.generateFrameMatrix(numLights)
+
                 //Iterate over frames
                 for (frame in frameMatrix) {
                     //Iterate over lights in frame

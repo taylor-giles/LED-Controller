@@ -52,6 +52,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
         fun onConnectionLost()
         fun onMessageReceived(numBytes: Int, msg: ByteArray)
         fun onMessageSent(buffer: ByteArray?)
+        fun onFailure()
     }
 
     /**
@@ -259,9 +260,11 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
                 mmServerSocket!!.close()
             } catch (e: IOException) {
                 Log.e(TAG, "close() of server failed", e)
+                btListener.onFailure()
             }
         }
     }
+
 
     /**
      * This thread runs while attempting to make an outgoing connection
@@ -286,6 +289,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
                     mmSocket!!.close()
                 } catch (e2: IOException) {
                     Log.e(TAG, "unable to close() socket during connection failure", e2)
+                    btListener.onFailure()
                 }
                 connectionFailed()
                 return
@@ -302,10 +306,8 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
             try {
                 mmSocket!!.close()
             } catch (e: IOException) {
-                Log.e(
-                    TAG,
-                    "close() of connect socket failed", e
-                )
+                Log.e(TAG, "close() of connect socket failed", e)
+                btListener.onFailure()
             }
         }
 
@@ -318,6 +320,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
                 tmp = mmDevice.createRfcommSocketToServiceRecord(SERIAL_BT_UUID)
             } catch (e: IOException) {
                 Log.e(TAG, "Socket create() failed", e)
+                btListener.onFailure()
             }
             mmSocket = tmp
             connectionState = BluetoothConnectionState.STATE_CONNECTING
@@ -344,6 +347,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
                 tmpOut = socket.outputStream
             } catch (e: IOException) {
                 Log.e(TAG, "temp sockets not created", e)
+                btListener.onFailure()
             }
             inStream = tmpIn
             outStream = tmpOut
@@ -382,6 +386,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
                 btListener.onMessageSent(buffer)
             } catch (e: IOException) {
                 Log.e(TAG, "Exception during write", e)
+                btListener.onFailure()
             }
         }
 
@@ -390,6 +395,7 @@ class BluetoothSerial(val btListener: BluetoothSerialListener) {
                 socket!!.close()
             } catch (e: IOException) {
                 Log.e(TAG, "close() of connect socket failed", e)
+                btListener.onFailure()
             }
         }
     }
