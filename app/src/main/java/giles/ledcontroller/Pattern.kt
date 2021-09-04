@@ -49,11 +49,11 @@ class Pattern(
             for(effectMatrix: List<IntArray> in effectMatrices){
                 val frame = effectMatrix[frameNum % effectMatrix.size]
                 for(light: Int in 0 until totalNumLights){
-                    val alpha = Color.alpha(frame[light]) / 255
-                    val red = Color.red(output[frameNum][light]) * (1-alpha) + Color.red(frame[light]) * alpha
-                    val green = Color.green(output[frameNum][light]) * (1-alpha) + Color.green(frame[light]) * alpha
-                    val blue = Color.blue(output[frameNum][light]) * (1-alpha) + Color.blue(frame[light]) * alpha
-                    output[frameNum][light] = Color.rgb(red, green, blue)
+                    val alpha = Color.alpha(frame[light]).toFloat() / 255f
+                    val red = Color.red(output[frameNum][light]).toFloat() * (1f-alpha) + Color.red(frame[light]).toFloat() * alpha
+                    val green = Color.green(output[frameNum][light]).toFloat() * (1f-alpha) + Color.green(frame[light]).toFloat() * alpha
+                    val blue = Color.blue(output[frameNum][light]).toFloat() * (1f-alpha) + Color.blue(frame[light]).toFloat() * alpha
+                    output[frameNum][light] = Color.rgb(red.toInt(), green.toInt(), blue.toInt())
                 }
             }
         }
