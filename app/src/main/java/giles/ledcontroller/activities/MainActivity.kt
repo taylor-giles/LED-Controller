@@ -25,13 +25,13 @@ class MainActivity : AppCompatActivity() {
 
         //Select controller button behavior
         btn_select_controller.setOnClickListener {
-            val displayIntent = Intent(this, DisplaySelectActivity::class.java)
-            startActivityForResult(displayIntent, resources.getInteger(R.integer.DISPLAY_REQUEST))
+            val displayIntent = Intent(this, ControllerSelectActivity::class.java)
+            startActivityForResult(displayIntent, resources.getInteger(R.integer.CONTROLLER_REQUEST))
         }
 
         //Connect button behavior
         btn_attempt_connection.setOnClickListener {
-            AppData.currentDisplay.attemptConnection()
+            AppData.currentController.attemptConnection()
         }
 
         //Brightness bar
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                AppData.currentDisplay.brightness = progress.toFloat() / seekBar.max.toFloat()
+                AppData.currentController.brightness = progress.toFloat() / seekBar.max.toFloat()
             }
         })
 
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     private fun colorChange(color: Int){
         //Create a temp SolidColorEffect pattern to display this color on all lights
         val lights = ArrayList<Int>()
-        for(i in 0 until AppData.currentDisplay.numLights){
+        for(i in 0 until AppData.currentController.numLights){
             lights.add(i)
         }
         val layers = ArrayList<Layer>()
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
 
                             //Create a temp GradientCycleEffect pattern to display this gradient on all lights
                             val lights = ArrayList<Int>()
-                            for(i in 0 until AppData.currentDisplay.numLights){
+                            for(i in 0 until AppData.currentController.numLights){
                                 lights.add(i)
                             }
                             val layers = ArrayList<Layer>()
@@ -136,17 +136,17 @@ class MainActivity : AppCompatActivity() {
                         display(data!!.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern)
 
                     //Display selection activity - a display was selected
-                    resources.getInteger(R.integer.DISPLAY_REQUEST) -> {
-                        //NOTE - The selected display has already been set as current display in AppData by DisplaySelectActivity
-                        text_current_display_name.text = AppData.currentDisplay.name
+                    resources.getInteger(R.integer.CONTROLLER_REQUEST) -> {
+                        //NOTE - The selected display has already been set as current display in AppData by ControllerSelectActivity
+                        text_current_display_name.text = AppData.currentController.name
                         updateDisplayStatus()
 
                         //Attempt to connect to the display
-                        if(AppData.currentDisplay.attemptConnection()){
-                            Toast.makeText(this, "Successfully connected to " + AppData.currentDisplay.device.name, Toast.LENGTH_SHORT).show()
+                        if(AppData.currentController.attemptConnection()){
+                            Toast.makeText(this, "Successfully connected to " + AppData.currentController.device.name, Toast.LENGTH_SHORT).show()
                             updateDisplayStatus()
                         } else {
-                            Toast.makeText(this, "Unable to connect to " + AppData.currentDisplay.device.name, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Unable to connect to " + AppData.currentController.device.name, Toast.LENGTH_SHORT).show()
                             updateDisplayStatus()
                         }
                     }
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
     fun display(pattern: Pattern){
         try{
             //Display the pattern
-            AppData.currentDisplay.displayPattern(this, pattern)
+            AppData.currentController.displayPattern(this, pattern)
             text_current_pattern.text = pattern.name
         } catch(ex: IllegalStateException) {
             //The display is not connected
@@ -168,12 +168,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateDisplayStatus(){
-        text_current_display_name.text = AppData.currentDisplay.name
+        text_current_display_name.text = AppData.currentController.name
         btn_attempt_connection.visibility = View.VISIBLE
 
-        if(AppData.currentDisplay.isConnected()){
+        if(AppData.currentController.isConnected()){
             text_device_connected.text = getString(R.string.connected_to)
-            text_connected_device_name.text = AppData.currentDisplay.device.name
+            text_connected_device_name.text = AppData.currentController.device.name
             btn_attempt_connection.visibility = View.GONE
         } else {
             text_device_connected.text = getString(R.string.no_device_connected)

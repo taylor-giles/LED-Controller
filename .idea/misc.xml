@@ -9,6 +9,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/drawable/ic_baseline_wb_sunny_24.xml" value="0.22395833333333334" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_controller_edit.xml" value="0.29010416666666666" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_controller_select.xml" value="0.128125" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_device_select.xml" value="0.3260416666666667" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_display_edit.xml" value="0.2828125" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/activity_display_select.xml" value="0.3260416666666667" />
@@ -18,12 +20,14 @@
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/fragment_saved_colors.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/fragment_saved_gradients.xml" value="0.321025641025641" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_bluetooth_device.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_controller.xml" value="0.29010416666666666" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_display.xml" value="0.3260416666666667" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_gradient.xml" value="0.1" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/item_pattern.xml" value="0.26666666666666666" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_delay_effect_options.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_directional_effect_options.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_color_preview.xml" value="0.28958333333333336" />
+        <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_controller_preview.xml" value="0.29010416666666666" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_display_preview.xml" value="0.28958333333333336" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_gradient_preview.xml" value="0.262037037037037" />
         <entry key="..\:/Users/super/Documents/All Files/Projects/LED-Controller/app/src/main/res/layout/layout_selected_pattern_preview.xml" value="0.33" />

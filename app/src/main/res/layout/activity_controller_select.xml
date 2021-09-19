@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DisplaySelectActivity">
+    tools:context=".activities.ControllerSelectActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_display_select"
+        android:id="@+id/recycler_controller_select"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -20,12 +20,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_controller"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true" app:srcCompat="@drawable/ic_add_white_56dp"
-        android:id="@+id/fab_add_display" app:maxImageSize="48dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:contentDescription="@string/add_controller"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/add_display" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="48dp"
+        app:srcCompat="@drawable/ic_add_white_56dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

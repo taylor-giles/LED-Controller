@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.DisplaySelectActivity"
+            android:name=".activities.ControllerSelectActivity"
             android:exported="true" />
         <activity
             android:name=".activities.GradientSelectionActivity"
@@ -30,7 +30,7 @@
         <activity
             android:name=".activities.GradientEditActivity"
             android:label="@string/title_activity_gradient_edit" />
-        <activity android:name=".activities.DisplayEditActivity" />
+        <activity android:name=".activities.ControllerEditActivity" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

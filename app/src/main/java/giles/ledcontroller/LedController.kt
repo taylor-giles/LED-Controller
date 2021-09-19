@@ -3,16 +3,13 @@ package giles.ledcontroller
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.content.Intent
-import android.os.Parcel
-import android.os.Parcelable
 import giles.bluetooth.BluetoothSerial
 import giles.ledcontroller.services.DisplayService
-import java.io.Serializable
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.concurrent.Semaphore
 
-class LightDisplay(
+class LedController(
     val name: String,
     val numLights: Int
 ) : BluetoothSerial.BluetoothSerialListener {
@@ -54,7 +51,7 @@ class LightDisplay(
     }
 
     /**
-     * Attempts to connect to the [BluetoothDevice] associated with this [LightDisplay].
+     * Attempts to connect to the [BluetoothDevice] associated with this [LedController].
      * @return true on successful connection, false otherwise
      */
     fun attemptConnection(): Boolean{

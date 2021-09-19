@@ -20,7 +20,7 @@ class DisplayService: Service(){
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         //Get pattern from intent extra
-        val pattern = AppData.currentDisplay.currentPattern
+        val pattern = AppData.currentController.currentPattern
 
         //Make notification
         createNotificationChannel()
@@ -41,16 +41,16 @@ class DisplayService: Service(){
 
         displayThread = Thread {
             //Generate frame matrix
-            val frameMatrix = pattern.generateFrameMatrix(AppData.currentDisplay.numLights)
+            val frameMatrix = pattern.generateFrameMatrix(AppData.currentController.numLights)
 
             //Continuously send frame data while connected to BT
-            while(!Thread.currentThread().isInterrupted && AppData.currentDisplay.bluetooth.connectionState ==
+            while(!Thread.currentThread().isInterrupted && AppData.currentController.bluetooth.connectionState ==
                 BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED) {
                 //Iterate over frames
                 for (frame in frameMatrix) {
                     //Wait until ready for next frame
                     try {
-                        AppData.currentDisplay.frameSemaphore.acquire()
+                        AppData.currentController.frameSemaphore.acquire()
                     } catch (e: InterruptedException){
                         stopForeground(true)
                         stopSelf()
@@ -61,12 +61,12 @@ class DisplayService: Service(){
                     val array = ByteArray(frame.size * 3)
                     var i = 0
                     for (color in frame) {
-                        array[i++] = (Color.red(color) * AppData.currentDisplay.brightness).toInt().toByte()
-                        array[i++] = (Color.green(color) * AppData.currentDisplay.brightness).toInt().toByte()
-                        array[i++] = (Color.blue(color) * AppData.currentDisplay.brightness).toInt().toByte()
+                        array[i++] = (Color.red(color) * AppData.currentController.brightness).toInt().toByte()
+                        array[i++] = (Color.green(color) * AppData.currentController.brightness).toInt().toByte()
+                        array[i++] = (Color.blue(color) * AppData.currentController.brightness).toInt().toByte()
                     }
                     //Check to make sure connection is still established and this thread is not interrupted
-                    if(AppData.currentDisplay.bluetooth.connectionState !=
+                    if(AppData.currentController.bluetooth.connectionState !=
                         BluetoothSerial.BluetoothConnectionState.STATE_CONNECTED ||
                         Thread.currentThread().isInterrupted){
                         stopForeground(true)
@@ -75,7 +75,7 @@ class DisplayService: Service(){
                     }
 
                     //Send array over BT serial connection
-                    AppData.currentDisplay.bluetooth.write(array)
+                    AppData.currentController.bluetooth.write(array)
                 }
             }
             stopForeground(true)

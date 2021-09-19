@@ -4,7 +4,7 @@
     <string name="FILE_COLORS">colors</string>
     <string name="FILE_GRADIENTS">gradients</string>
     <string name="FILE_PATTERNS">patterns</string>
-    <string name="FILE_DISPLAYS">displays</string>
+    <string name="FILE_CONTROLLERS">controllers</string>
 
     <!-- Names of Extras -->
     <string name="EXTRA_ADDRESS">Address</string>
@@ -12,7 +12,7 @@
     <string name="EXTRA_GRADIENT">Gradient</string>
     <string name="EXTRA_PATTERN">Pattern</string>
     <string name="EXTRA_LAYER">Layer</string>
-    <string name="EXTRA_DISPLAY">Display</string>
+    <string name="EXTRA_CONTROLLER">Controller</string>
     <string name="EXTRA_NUMLIGHTS">NumLights</string>
 
     <!--Request Codes-->
@@ -23,6 +23,6 @@
     <integer name="PATTERNS_REQUEST"> 5 </integer>
     <integer name="SELECT_GRADIENT_REQUEST"> 6 </integer>
     <integer name="EDIT_LAYER_REQUEST"> 7 </integer>
-    <integer name="DISPLAY_REQUEST"> 8 </integer>
+    <integer name="CONTROLLER_REQUEST"> 8 </integer>
 
 </resources>

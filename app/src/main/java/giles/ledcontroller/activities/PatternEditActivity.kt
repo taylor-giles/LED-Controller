@@ -41,12 +41,12 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
         //Set up RecyclerView to display colors and choose new color when "Add Color" button is clicked
         val patternLayersList = list_pattern_layers
         patternLayersList.layoutManager = LinearLayoutManager(this)
-        adapter = LayerViewAdapter(patternLayers, this, AppData.currentDisplay.numLights,
+        adapter = LayerViewAdapter(patternLayers, this, AppData.currentController.numLights,
             //OnClickListener for "Add Color" button
             {
                 //Store number of lights as intent extra
                 val layerEditIntent = Intent(this, LayerEditActivity::class.java)
-                layerEditIntent.putExtra(getString(R.string.EXTRA_NUMLIGHTS), AppData.currentDisplay.numLights)
+                layerEditIntent.putExtra(getString(R.string.EXTRA_NUMLIGHTS), AppData.currentController.numLights)
 
                 //Open LayerEditActivity
                 startActivityForResult(layerEditIntent, R.integer.EDIT_LAYER_REQUEST)

@@ -110,7 +110,7 @@ class PatternSelectActivity : AppCompatActivity() {
             }
 
             //Start the preview demo
-            demoView.demo(adapter.selectedPattern!!, AppData.currentDisplay.numLights)
+            demoView.demo(adapter.selectedPattern!!, AppData.currentController.numLights)
 
             //Display the dialog
             previewDialog.show()

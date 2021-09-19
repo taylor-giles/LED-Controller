@@ -7,41 +7,39 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import giles.ledcontroller.LightDisplay
-import giles.ledcontroller.Pattern
+import giles.ledcontroller.LedController
 import giles.ledcontroller.R
-import kotlinx.android.synthetic.main.item_display.view.*
-import kotlinx.android.synthetic.main.item_pattern.view.*
+import kotlinx.android.synthetic.main.item_controller.view.*
 
-class DisplayView @JvmOverloads constructor(
+class ControllerView @JvmOverloads constructor(
     context : Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-    var display: LightDisplay? = null
+    var controller: LedController? = null
 ) : ConstraintLayout(context, attrs, defStyle) {
 
     init {
         this.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        inflate(context, R.layout.item_display, this)
+        inflate(context, R.layout.item_controller, this)
     }
 
     /**
-     * A RecyclerView adapter for displaying [LightDisplay]s
+     * A RecyclerView adapter for displaying [LedController]s
      */
-    class DisplayViewAdapter(
-        internal var dataSet: List<LightDisplay>,
+    class ControllerViewAdapter(
+        internal var dataSet: List<LedController>,
         private val onItemClickListener: View.OnClickListener? = null
-    ): RecyclerView.Adapter<DisplayViewAdapter.DisplayViewHolder>(){
+    ): RecyclerView.Adapter<ControllerViewAdapter.ControllerViewHolder>(){
 
-        private var selectedView: DisplayView? = null
-        var selectedDisplay: LightDisplay? = null
+        private var selectedView: ControllerView? = null
+        var selectedController: LedController? = null
 
         /**
-         * A ViewHolder for views displaying [LightDisplay]s
+         * A ViewHolder for views displaying [LedController]s
          */
-        class DisplayViewHolder constructor(
-            val view: DisplayView,
-            private val parentAdapter: DisplayViewAdapter,
+        class ControllerViewHolder constructor(
+            val view: ControllerView,
+            private val parentAdapter: ControllerViewAdapter,
             onItemClickListener: View.OnClickListener?
         ) : RecyclerView.ViewHolder(view){
             init {
@@ -59,24 +57,24 @@ class DisplayView @JvmOverloads constructor(
                 }
             }
 
-            fun setDisplay(display: LightDisplay){
-                view.text_display_name.text = display.name
-                view.text_display_num_lights.text = display.numLights.toString()
-                view.text_display_device_name.text = display.device.name
-                view.display = display
+            fun setController(controller: LedController){
+                view.text_controller_name.text = controller.name
+                view.text_controller_num_lights.text = controller.numLights.toString()
+                view.text_controller_device_name.text = controller.device.name
+                view.controller = controller
             }
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DisplayViewHolder {
-            //Create a new ViewHolder for a view inflated from the item_display layout
-            val viewHolder = DisplayViewHolder(DisplayView(parent.context), this, onItemClickListener)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ControllerViewHolder {
+            //Create a new ViewHolder for a view inflated from the item_controller layout
+            val viewHolder = ControllerViewHolder(ControllerView(parent.context), this, onItemClickListener)
             checkSelection(viewHolder.view)
             return viewHolder
         }
 
-        override fun onBindViewHolder(holder: DisplayViewHolder, position: Int) {
-            //Set display of the view
-            holder.setDisplay(dataSet[position])
+        override fun onBindViewHolder(holder: ControllerViewHolder, position: Int) {
+            //Set controller of the view
+            holder.setController(dataSet[position])
             checkSelection(holder.view)
         }
 
@@ -87,24 +85,24 @@ class DisplayView @JvmOverloads constructor(
          * Updates the selectedView variable to ensure that the correct display
          * stays selected even when it gets recycled to a different view.
          */
-        private fun checkSelection(view: DisplayView){
-            if(view.display == selectedDisplay){
+        private fun checkSelection(view: ControllerView){
+            if(view.controller == selectedController){
                 selectedView = view
             }
         }
 
         /**
-         * Marks the display of the given view as the currently selected display, and the given view as the currently
+         * Marks the controller of the given view as the currently selected display, and the given view as the currently
          * selected view. If the given view was already selected, then it is deselected.
          */
-        fun selectView(view: DisplayView){
+        fun selectView(view: ControllerView){
             //If this view is the same as the previously selected view, then this view was just de-selected
-            if(view.display == selectedDisplay){
+            if(view.controller == selectedController){
                 deselect()
             } else {
-                //Set the selected view and display to match this view
+                //Set the selected view and controller to match this view
                 selectedView = view
-                selectedDisplay = view.display
+                selectedController = view.controller
             }
         }
 
@@ -112,7 +110,7 @@ class DisplayView @JvmOverloads constructor(
          * If there is a currently selected view, de-select it.
          */
         fun deselect(){
-            selectedDisplay = null
+            selectedController = null
             if(selectedView != null){
                 val prevSelectedView = selectedView!!
                 selectedView = null

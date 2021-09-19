@@ -18,11 +18,11 @@ object AppData{
     //ArrayList to store saved gradients
     var savedGradients = SortedArrayList(Gradient.Companion.GradientComparator())
 
-    //The LightDisplay currently being used by the app
-    lateinit var currentDisplay : LightDisplay
+    //The LedController currently being used by the app
+    lateinit var currentController : LedController
 
     //All saved LightDisplays
-    var savedDisplays = ArrayList<LightDisplay>()
+    var savedControllers = ArrayList<LedController>()
 
     //ArrayList to store saved patterns
     var patterns = SortedArrayList(Pattern.Companion.PatternComparator())
@@ -50,7 +50,7 @@ object AppData{
         saveColors(context)
         saveGradients(context)
         savePatterns(context)
-        saveDisplay(context)
+        saveController(context)
     }
     fun saveColors(context: Context){
         //Save colors
@@ -76,11 +76,11 @@ object AppData{
         patternsObjOut.close()
         patternsFileOut.close()
     }
-    fun saveDisplay(context: Context){
+    fun saveController(context: Context){
         //Save displays
-        val displayFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_DISPLAYS), Context.MODE_PRIVATE)
+        val displayFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_CONTROLLERS), Context.MODE_PRIVATE)
         val displayObjOut = ObjectOutputStream(displayFileOut)
-        displayObjOut.writeObject(currentDisplay)
+        displayObjOut.writeObject(currentController)
         displayObjOut.close()
         displayFileOut.close()
     }
@@ -125,9 +125,9 @@ object AppData{
 
         //Load display
         try{
-            val displayFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_DISPLAYS))
+            val displayFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_CONTROLLERS))
             val displayObjectIn = ObjectInputStream(displayFileIn)
-            this.currentDisplay = displayObjectIn.readObject() as LightDisplay
+            this.currentController = displayObjectIn.readObject() as LedController
             displayObjectIn.close()
             displayFileIn.close()
         } catch(ex: FileNotFoundException){
