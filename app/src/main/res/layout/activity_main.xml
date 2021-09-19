@@ -11,15 +11,6 @@
             android:layout_height="wrap_content"
             tools:context=".activities.MainActivity">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_device_connected"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" android:id="@+id/text_device_connected"
-                android:layout_marginTop="24dp"/>
-
         <!--<View-->
                 <!--android:id="@+id/divider"-->
                 <!--android:layout_width="match_parent"-->
@@ -30,22 +21,35 @@
                 <!--app:layout_constraintTop_toBottomOf="@+id/text_current_display_label" android:layout_marginTop="16dp"/>-->
 
         <TextView
-                android:text="@string/current_display_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/text_current_display_label"
-                app:layout_constraintTop_toBottomOf="@+id/divider3" android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="24dp"
-                android:textSize="18sp"/>
+            android:id="@+id/text_device_connected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/no_device_connected"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_select_controller" />
+
+        <TextView
+            android:id="@+id/text_now_showing_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/now_showing_label"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <TextView
                 android:text="@string/black_hex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/text_current_display" app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/text_current_pattern" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="24dp"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="@+id/text_current_display_label"
-                app:layout_constraintBottom_toBottomOf="@+id/text_current_display_label"/>
+                app:layout_constraintTop_toTopOf="@+id/text_now_showing_label"
+                app:layout_constraintBottom_toBottomOf="@+id/text_now_showing_label"/>
 
         <View
                 android:id="@+id/divider3"
@@ -71,7 +75,7 @@
                 app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="11dp"
                 android:max="100" android:progress="100"
                 app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="40dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_current_display_label"/>
+                app:layout_constraintTop_toBottomOf="@+id/text_now_showing_label"/>
         <View
                 android:id="@+id/divider2"
                 android:layout_width="match_parent"
@@ -90,6 +94,56 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider2"></LinearLayout>
+
+        <TextView
+            android:id="@+id/textView36"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:text="Current Controller:"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_select_controller"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Controller"
+            app:layout_constraintBottom_toBottomOf="@+id/text_current_display_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView36" />
+
+        <TextView
+            android:id="@+id/text_current_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/none_selected"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/textView36"
+            app:layout_constraintTop_toBottomOf="@+id/textView36" />
+
+        <Button
+            android:id="@+id/btn_attempt_connection"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connect Now"
+            app:layout_constraintBottom_toBottomOf="@+id/text_device_connected"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_device_connected" />
+
+        <TextView
+            android:id="@+id/text_connected_device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_device_connected"
+            app:layout_constraintStart_toEndOf="@+id/text_device_connected"
+            app:layout_constraintTop_toTopOf="@+id/text_device_connected" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

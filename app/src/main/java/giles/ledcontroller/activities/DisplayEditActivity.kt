@@ -1,6 +1,5 @@
 package giles.ledcontroller.activities
 
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Context
@@ -15,25 +14,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.harrysoft.androidbluetoothserial.BluetoothManager
-import giles.bluetooth.BluetoothConnection
 import giles.ledcontroller.AppData
 import giles.ledcontroller.LightDisplay
 import giles.ledcontroller.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_device_select.*
+import kotlinx.android.synthetic.main.activity_display_edit.*
 import kotlinx.android.synthetic.main.item_bluetooth_device.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 
-class DeviceSelectActivity : AppCompatActivity() {
+class DisplayEditActivity : AppCompatActivity() {
     private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
     lateinit var adapter: BluetoothDeviceItemAdapter
+    private var givenDisplay: LightDisplay? = null
+    private var selectedDevice: BluetoothDevice? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_device_select)
+        setContentView(R.layout.activity_display_edit)
 
         //Request to enable bluetooth if disabled
         if(!bluetoothAdapter!!.isEnabled){
@@ -41,7 +37,53 @@ class DeviceSelectActivity : AppCompatActivity() {
             startActivityForResult(enableBluetoothIntent, resources.getInteger(R.integer.ENABLE_BLUETOOTH_REQUEST))
         }
 
-        btn_refresh.setOnClickListener{ refreshList() }
+        //Get the display to edit
+        givenDisplay = intent.getSerializableExtra(getString(R.string.EXTRA_DISPLAY)) as LightDisplay?
+        if(givenDisplay != null){
+            edit_display_name.setText(givenDisplay!!.name)
+            edit_display_num_lights.setText(givenDisplay!!.name)
+            text_display_edit_device_name.text = givenDisplay!!.device.name
+            selectedDevice = givenDisplay!!.device
+        }
+
+        //Set up save button behavior
+        btn_save_display.setOnClickListener {
+            //Make sure a device has been selected
+            if(selectedDevice != null){
+                //Make default name if none is given
+                var name = edit_display_name.text.toString()
+                if(name.isBlank() || name.isEmpty()){
+                    name = "Untitled Display"
+                }
+
+                //Keep incrementing the suffix number until the name is valid
+                if(!checkName(name)){
+                    var suffix = 1
+                    name += (suffix++).toString()
+                    while(!checkName(name)){
+                        name = (name.substring(0, name.length - (suffix-1).toString().length)) + (suffix++).toString()
+                    }
+                }
+
+                //Remove edited display
+                if(givenDisplay != null){
+                    AppData.savedDisplays.remove(givenDisplay)
+                }
+
+                //Make and save display
+                val display = LightDisplay(name, edit_display_num_lights.text.toString().toInt())
+                AppData.savedDisplays.add(display)
+                display.device = selectedDevice!!
+                finish()
+            } else {
+                Toast.makeText(this, "Choose a Bluetooth device for this LED display", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //Set up cancel button behavior
+        btn_cancel_display_edit.setOnClickListener { finish() }
+
+        btn_refresh_device_list.setOnClickListener{ refreshList() }
         refreshList()
     }
 
@@ -56,13 +98,29 @@ class DeviceSelectActivity : AppCompatActivity() {
             }
         }
 
+        //Set up adapter with device item click behavior
         recycler_device_select.layoutManager = LinearLayoutManager(this)
         adapter = BluetoothDeviceItemAdapter(this, list) { clickedView ->
             adapter.selectView(clickedView as BluetoothDeviceItemAdapter.BluetoothDeviceView)
-            AppData.display.connectBluetoothDevice(adapter.selectedDevice!!)
-            finish()
+            text_display_edit_device_name.text = adapter.selectedDevice!!.name
+            selectedDevice = adapter.selectedDevice
         }
         recycler_device_select.adapter = adapter
+    }
+
+    /**
+     * Checks whether or not the given String can be used as a name for a [LightDisplay].
+     * A name is valid iff there are no [LightDisplay]s already saved with that name.
+     *
+     * @return true if the name is valid, false otherwise.
+     */
+    private fun checkName(name: String) : Boolean{
+        for(display: LightDisplay in AppData.savedDisplays){
+            if(display.name == name){
+                return false
+            }
+        }
+        return true
     }
 }
 

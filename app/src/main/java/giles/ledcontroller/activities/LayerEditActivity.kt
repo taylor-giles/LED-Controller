@@ -148,9 +148,6 @@ class LayerEditActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             }
         })
 
-        //Get the number of lights
-        numLights = AppData.display.numLights
-
         //Get the layer to be edited (if there is one)
         val givenLayer = intent.getSerializableExtra(getString(R.string.EXTRA_LAYER)) as Layer?
         if(givenLayer != null){

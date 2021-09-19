@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="giles.ledcontroller">
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,8 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.DisplaySelectActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.GradientSelectionActivity"
-            android:label="@string/select_gradient"/>
+            android:label="@string/select_gradient" />
         <activity
             android:name=".activities.LayerEditActivity"
             android:label="@string/title_activity_edit_layer" />
@@ -24,7 +22,7 @@
             android:name=".activities.PatternEditActivity"
             android:label="@string/title_activity_edit_pattern" />
         <activity
-            android:name=".activities.PatternsActivity"
+            android:name=".activities.PatternSelectActivity"
             android:label="@string/title_activity_patterns" />
         <activity
             android:name=".activities.SavedColorsActivity"
@@ -32,13 +30,21 @@
         <activity
             android:name=".activities.GradientEditActivity"
             android:label="@string/title_activity_gradient_edit" />
-        <activity android:name=".activities.DeviceSelectActivity" />
+        <activity android:name=".activities.DisplayEditActivity" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".services.DisplayService"/>
+
+        <service android:name=".services.DisplayService" />
     </application>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
 </manifest>

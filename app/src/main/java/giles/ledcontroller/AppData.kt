@@ -18,8 +18,11 @@ object AppData{
     //ArrayList to store saved gradients
     var savedGradients = SortedArrayList(Gradient.Companion.GradientComparator())
 
-    //The LightDisplay being used by the app
-    var display = LightDisplay(300)
+    //The LightDisplay currently being used by the app
+    lateinit var currentDisplay : LightDisplay
+
+    //All saved LightDisplays
+    var savedDisplays = ArrayList<LightDisplay>()
 
     //ArrayList to store saved patterns
     var patterns = SortedArrayList(Pattern.Companion.PatternComparator())
@@ -77,7 +80,7 @@ object AppData{
         //Save displays
         val displayFileOut: FileOutputStream = context.openFileOutput(context.getString(R.string.FILE_DISPLAYS), Context.MODE_PRIVATE)
         val displayObjOut = ObjectOutputStream(displayFileOut)
-        displayObjOut.writeObject(display)
+        displayObjOut.writeObject(currentDisplay)
         displayObjOut.close()
         displayFileOut.close()
     }
@@ -120,16 +123,15 @@ object AppData{
             //Do nothing
         }
 
-        //Load displays
+        //Load display
         try{
             val displayFileIn: FileInputStream = context.openFileInput(context.getString(R.string.FILE_DISPLAYS))
             val displayObjectIn = ObjectInputStream(displayFileIn)
-            this.display = displayObjectIn.readObject() as LightDisplay
+            this.currentDisplay = displayObjectIn.readObject() as LightDisplay
             displayObjectIn.close()
             displayFileIn.close()
         } catch(ex: FileNotFoundException){
             //Do nothing
         }
-
     }
 }

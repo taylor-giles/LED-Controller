@@ -16,7 +16,7 @@ import giles.util.ColorUtils
 import kotlinx.android.synthetic.main.activity_patterns.*
 import kotlinx.android.synthetic.main.layout_selected_pattern_preview.view.*
 
-class PatternsActivity : AppCompatActivity() {
+class PatternSelectActivity : AppCompatActivity() {
 
     private lateinit var adapter: PatternViewAdapter
 
@@ -110,7 +110,7 @@ class PatternsActivity : AppCompatActivity() {
             }
 
             //Start the preview demo
-            demoView.demo(adapter.selectedPattern!!, AppData.display.numLights)
+            demoView.demo(adapter.selectedPattern!!, AppData.currentDisplay.numLights)
 
             //Display the dialog
             previewDialog.show()

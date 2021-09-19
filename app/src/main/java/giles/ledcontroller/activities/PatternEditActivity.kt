@@ -28,14 +28,10 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
     private val patternLayers = ArrayList<Layer>()
     private lateinit var adapter: LayerViewAdapter
     private lateinit var touchHelper: ItemTouchHelper
-    private lateinit var display: LightDisplay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pattern_edit)
-
-        //TODO: Ask user to choose display
-        display = LightDisplay(1000,)
 
         //Get the pattern to be edited (if there is one)
         val givenPattern = intent.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern?
@@ -45,12 +41,12 @@ class PatternEditActivity : AppCompatActivity(), OnDragStartListener {
         //Set up RecyclerView to display colors and choose new color when "Add Color" button is clicked
         val patternLayersList = list_pattern_layers
         patternLayersList.layoutManager = LinearLayoutManager(this)
-        adapter = LayerViewAdapter(patternLayers, this, display.numLights,
+        adapter = LayerViewAdapter(patternLayers, this, AppData.currentDisplay.numLights,
             //OnClickListener for "Add Color" button
             {
                 //Store number of lights as intent extra
                 val layerEditIntent = Intent(this, LayerEditActivity::class.java)
-                layerEditIntent.putExtra(getString(R.string.EXTRA_NUMLIGHTS), display.numLights)
+                layerEditIntent.putExtra(getString(R.string.EXTRA_NUMLIGHTS), AppData.currentDisplay.numLights)
 
                 //Open LayerEditActivity
                 startActivityForResult(layerEditIntent, R.integer.EDIT_LAYER_REQUEST)

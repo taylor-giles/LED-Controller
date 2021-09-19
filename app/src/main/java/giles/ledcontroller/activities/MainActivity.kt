@@ -1,7 +1,6 @@
 package giles.ledcontroller.activities
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -24,9 +23,15 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         AppData.load(this)
 
-        text_device_connected.setOnClickListener{
-            val deviceIntent = Intent(this, DeviceSelectActivity::class.java)
-            startActivity(deviceIntent)
+        //Select controller button behavior
+        btn_select_controller.setOnClickListener {
+            val displayIntent = Intent(this, DisplaySelectActivity::class.java)
+            startActivityForResult(displayIntent, resources.getInteger(R.integer.DISPLAY_REQUEST))
+        }
+
+        //Connect button behavior
+        btn_attempt_connection.setOnClickListener {
+            AppData.currentDisplay.attemptConnection()
         }
 
         //Brightness bar
@@ -34,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                AppData.display.brightness = progress.toFloat() / seekBar.max.toFloat()
+                AppData.currentDisplay.brightness = progress.toFloat() / seekBar.max.toFloat()
             }
         })
 
@@ -55,7 +60,7 @@ class MainActivity : AppCompatActivity() {
 
         //Add patterns menu item
         val patternsMenuItem = MenuItem(this, "Patterns")
-        val patternsIntent = Intent(this, PatternsActivity::class.java)
+        val patternsIntent = Intent(this, PatternSelectActivity::class.java)
         patternsMenuItem.view.setOnClickListener{
             startActivityForResult(patternsIntent, resources.getInteger(R.integer.PATTERNS_REQUEST))
         }
@@ -88,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     private fun colorChange(color: Int){
         //Create a temp SolidColorEffect pattern to display this color on all lights
         val lights = ArrayList<Int>()
-        for(i in 0 until AppData.display.numLights){
+        for(i in 0 until AppData.currentDisplay.numLights){
             lights.add(i)
         }
         val layers = ArrayList<Layer>()
@@ -103,13 +108,49 @@ class MainActivity : AppCompatActivity() {
         when(resultCode){
             RESULT_OK ->
                 when(requestCode){
-                    //Saved Colors activity - a color was selected
-                    resources.getInteger(R.integer.SAVED_COLORS_REQUEST) ->
-                        colorChange(data!!.getIntExtra(getString(R.string.EXTRA_COLOR), 0))
+                    //Saved Colors activity - a color or gradient was selected
+                    resources.getInteger(R.integer.SAVED_COLORS_REQUEST) -> {
+                        val color = data!!.getIntExtra(getString(R.string.EXTRA_COLOR), 0)
+                        if(color == 0){
+                            //A gradient was selected
+                            val gradient = data.getSerializableExtra(getString(R.string.EXTRA_GRADIENT)) as Gradient
+
+                            //Create a temp GradientCycleEffect pattern to display this gradient on all lights
+                            val lights = ArrayList<Int>()
+                            for(i in 0 until AppData.currentDisplay.numLights){
+                                lights.add(i)
+                            }
+                            val layers = ArrayList<Layer>()
+                            layers.add(Layer(GradientCycleEffect(gradient, 20), lights))
+
+                            //Display the gradient
+                            display(Pattern(gradient.name, layers))
+                        } else {
+                            //A color was selected
+                            colorChange(color)
+                        }
+                    }
 
                     //Patterns activity - a pattern was selected
                     resources.getInteger(R.integer.PATTERNS_REQUEST) ->
                         display(data!!.getSerializableExtra(getString(R.string.EXTRA_PATTERN)) as Pattern)
+
+                    //Display selection activity - a display was selected
+                    resources.getInteger(R.integer.DISPLAY_REQUEST) -> {
+                        //NOTE - The selected display has already been set as current display in AppData by DisplaySelectActivity
+                        text_current_display_name.text = AppData.currentDisplay.name
+                        updateDisplayStatus()
+
+                        //Attempt to connect to the display
+                        if(AppData.currentDisplay.attemptConnection()){
+                            Toast.makeText(this, "Successfully connected to " + AppData.currentDisplay.device.name, Toast.LENGTH_SHORT).show()
+                            updateDisplayStatus()
+                        } else {
+                            Toast.makeText(this, "Unable to connect to " + AppData.currentDisplay.device.name, Toast.LENGTH_SHORT).show()
+                            updateDisplayStatus()
+                        }
+                    }
+
                 }
         }
     }
@@ -117,12 +158,27 @@ class MainActivity : AppCompatActivity() {
     fun display(pattern: Pattern){
         try{
             //Display the pattern
-            AppData.display.displayPattern(this, pattern)
-            text_current_display.text = pattern.name
+            AppData.currentDisplay.displayPattern(this, pattern)
+            text_current_pattern.text = pattern.name
         } catch(ex: IllegalStateException) {
             //The display is not connected
             Toast.makeText(this, "Connect a display device before selecting a connection", Toast.LENGTH_SHORT).show()
-            text_current_display.text = getString(R.string.none)
+            text_current_pattern.text = getString(R.string.none)
+        }
+    }
+
+    private fun updateDisplayStatus(){
+        text_current_display_name.text = AppData.currentDisplay.name
+        btn_attempt_connection.visibility = View.VISIBLE
+
+        if(AppData.currentDisplay.isConnected()){
+            text_device_connected.text = getString(R.string.connected_to)
+            text_connected_device_name.text = AppData.currentDisplay.device.name
+            btn_attempt_connection.visibility = View.GONE
+        } else {
+            text_device_connected.text = getString(R.string.no_device_connected)
+            text_connected_device_name.text = ""
+            btn_attempt_connection.visibility = View.VISIBLE
         }
     }
 }

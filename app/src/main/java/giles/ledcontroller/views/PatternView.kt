@@ -26,7 +26,7 @@ class PatternView @JvmOverloads constructor(
 
 
 /**
- * A RecyclerView adapter for displaying gradients
+ * A RecyclerView adapter for displaying patterns
  */
 class PatternViewAdapter(
     var dataSet: ArrayList<Pattern>,
@@ -37,7 +37,7 @@ class PatternViewAdapter(
     var selectedPattern: Pattern? = null
 
     /**
-     * A ViewHolder for views displaying gradient colors and the button used to add a new color to the gradient
+     * A ViewHolder for views displaying patterns
      */
     class PatternViewHolder constructor(
         val view: PatternView,
@@ -68,14 +68,14 @@ class PatternViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PatternViewHolder {
-        //Create a new ViewHolder for a view inflated from the item_gradient layout
+        //Create a new ViewHolder for a view inflated from the item_pattern layout
         val viewHolder = PatternViewHolder(PatternView(parent.context), this, onItemClickListener)
         checkSelection(viewHolder.view)
         return viewHolder
     }
 
     override fun onBindViewHolder(holder: PatternViewHolder, position: Int) {
-        //Set gradient of the view
+        //Set pattern of the view
         holder.setPattern(dataSet[position])
         checkSelection(holder.view)
     }

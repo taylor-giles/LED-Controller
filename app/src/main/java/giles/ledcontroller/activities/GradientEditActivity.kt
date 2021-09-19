@@ -85,7 +85,7 @@ class GradientEditActivity : AppCompatActivity(), OnDragStartListener {
         touchHelper.attachToRecyclerView(gradientColorsList)
 
         //Assign action to cancel button
-        btn_cancel_gradient.setOnClickListener {
+        btn_cancel_gradient_edit.setOnClickListener {
             finish()
         }
 
@@ -180,6 +180,7 @@ class GradientColorViewAdapter(
         fun setColor(color: Int){
             colorPreview!!.setBackgroundColor(color)
             textDisplay!!.text = ColorUtils.getHexString(color)
+
             opacityText!!.setText(Color.alpha(color).toString())
             opacityBar!!.progress = Color.alpha(color)
         }

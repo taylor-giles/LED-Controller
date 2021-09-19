@@ -12,15 +12,9 @@
     <string name="solid_gradient">Solid Gradient</string>
     <string name="gradient_cycle">Gradient Cycle</string>
     <string name="gradient_wave">Gradient Wave</string>
-    <string-array name="effect_names">
-        <item>Solid Color</item>
-        <item>Solid Gradient</item>
-        <item>Gradient Cycle</item>
-        <item>Gradient Wave</item>
-    </string-array>
+    <string name="select_device">Select Device</string>
 
     <!-- Button & Display Strings -->
-    <string name="select_device">Select Device</string>
     <string name="refresh">Refresh</string>
     <string name="color_label">Color:</string>
     <string name="saturation">Saturation</string>
@@ -105,4 +99,26 @@
     <string name="saved_colors_description">Save your favorite colors here for quick and easy access</string>
     <string name="_32">32</string>
     <string name="_20">20</string>
+    <string name="add_display">Add display</string>
+    <string name="display_name">Display Name</string>
+    <string name="device_name">Device Name</string>
+    <string name="name_of_display_label">Name of Display:</string>
+    <string name="number_of_lights">Number of Lights:</string>
+    <string name="refresh_list">Refresh List</string>
+    <string name="none_selected">None selected</string>
+    <string name="click_for_options">Click for Options</string>
+    <string name="bluetooth_device_label">Bluetooth Device:</string>
+    <string name="number_of_lights_label">Number of Lights:</string>
+    <string name="name_label">Name:</string>
+    <string name="now_showing_label">Now Showing:</string>
+    <string name="connected_to">Connected to</string>
+    <string name="select_display">Select Display</string>
+    <string name="display">Display</string>
+    <string name="remove_display">Remove Display</string>
+    <string-array name="effect_names">
+        <item>Solid Color</item>
+        <item>Solid Gradient</item>
+        <item>Gradient Cycle</item>
+        <item>Gradient Wave</item>
+    </string-array>
 </resources>
