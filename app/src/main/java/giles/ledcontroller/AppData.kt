@@ -6,7 +6,7 @@ import java.io.*
 import java.util.*
 
 const val MILLIS_BETWEEN_FRAMES = 100 //The number of milliseconds between frames
-const val MIN_EFFECT_DURATION = 5 //Minimum duration of any effect, in seconds
+const val MIN_EFFECT_DURATION = 5 //Minimum duration of any effect, in seconds/
 
 /**
  * Static object to store app data shared by multiple classes

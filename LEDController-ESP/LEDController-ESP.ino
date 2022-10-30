@@ -87,10 +87,16 @@ void setup() {
   delay(50);
 
   //Flash lights (LEDs and onboard LED)
+  digitalWrite(ONBOARD_LED, HIGH);
   fill_solid(leds, numLights, CRGB::Red);
   FastLED.show();
-  digitalWrite(ONBOARD_LED, HIGH);
-  delay(1000);
+  delay(300);
+  fill_solid(leds, numLights, CRGB::Green);
+  FastLED.show();
+  delay(300);
+  fill_solid(leds, numLights, CRGB::Blue);
+  FastLED.show();
+  delay(300);
   digitalWrite(ONBOARD_LED, LOW);
   FastLED.clear();
   FastLED.show();
